@@ -19,6 +19,7 @@
 # misc
 .DS_Store
 *.pem
+push_to_github.bat
 
 # debug
 npm-debug.log*
