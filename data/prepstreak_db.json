@@ -1,0 +1,86 @@
+{
+  "users": {
+    "usr_eb45a0701b26b47635aca242": {
+      "id": "usr_eb45a0701b26b47635aca242",
+      "fullName": "Kalaiyarasu",
+      "email": "kalaiskeditz@gmail.com",
+      "passwordHash": "$2b$10$6dTFmQutZOyNjkFtWygJS.7z8rmM/3Agd4e60g2AjNkd3LDGFu9ve",
+      "salt": "06786322a770c80d3ccb597cd82d1296",
+      "targetExamId": "upsc-cse",
+      "createdAt": "2026-10-05T15:29:54.652Z",
+      "updatedAt": "2026-10-05T15:29:54.652Z"
+    },
+    "usr_cb866b9f9f4497b167aa115a": {
+      "id": "usr_cb866b9f9f4497b167aa115a",
+      "fullName": "Kumaran",
+      "email": "smily1918@gmail.com",
+      "passwordHash": "$2b$10$LEtb2qFbMJ09PNw.RRseu.fu7/v78yL2ptHN8Yqj4P0muB9vjorWC",
+      "salt": "6c322094164ffafa06feee09f2719c2a",
+      "targetExamId": "upsc-cse",
+      "createdAt": "2026-10-05T15:39:36.890Z",
+      "updatedAt": "2026-10-05T15:39:36.890Z"
+    }
+  },
+  "usersByEmail": {
+    "kalaiskeditz@gmail.com": "usr_eb45a0701b26b47635aca242",
+    "smily1918@gmail.com": "usr_cb866b9f9f4497b167aa115a"
+  },
+  "sessions": {
+    "eyJ1c2VySWQiOiJ1c3JfY2I4NjZiOWY5ZjQ0OTdiMTY3YWExMTVhIiwiZW1haWwiOiJzbWlseTE5MThAZ21haWwuY29tIiwiZXhwIjoxNzkzODA2Nzc2fQ.kqJjYpyADgSqAe3nsroDAH9Vf1zGKO3JAp9g8l1FLM8": {
+      "token": "eyJ1c2VySWQiOiJ1c3JfY2I4NjZiOWY5ZjQ0OTdiMTY3YWExMTVhIiwiZW1haWwiOiJzbWlseTE5MThAZ21haWwuY29tIiwiZXhwIjoxNzkzODA2Nzc2fQ.kqJjYpyADgSqAe3nsroDAH9Vf1zGKO3JAp9g8l1FLM8",
+      "userId": "usr_cb866b9f9f4497b167aa115a",
+      "createdAt": "2026-10-05T15:39:36.904Z",
+      "expiresAt": "2026-11-04T15:39:36.904Z"
+    }
+  },
+  "profiles": {
+    "usr_eb45a0701b26b47635aca242": {
+      "id": "usr_eb45a0701b26b47635aca242",
+      "fullName": "Kalaiyarasu",
+      "email": "kalaiskeditz@gmail.com",
+      "avatarUrl": "forest",
+      "selectedExam": "upsc-cse",
+      "currentStreak": 0,
+      "longestStreak": 0,
+      "totalQuestionsAttempted": 0,
+      "totalQuestionsCorrect": 0,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 0,
+      "studyTimeMinutes": 0,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-05T15:29:54.652Z",
+      "updatedAt": "2026-10-05T15:31:05.321Z",
+      "selectedSubject": "upsc-gs-1"
+    },
+    "usr_cb866b9f9f4497b167aa115a": {
+      "id": "usr_cb866b9f9f4497b167aa115a",
+      "fullName": "Kumaran",
+      "email": "smily1918@gmail.com",
+      "avatarUrl": "forest",
+      "selectedExam": "upsc-cse",
+      "currentStreak": 0,
+      "longestStreak": 0,
+      "totalQuestionsAttempted": 0,
+      "totalQuestionsCorrect": 0,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 0,
+      "studyTimeMinutes": 0,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 50,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-05T15:39:36.890Z",
+      "updatedAt": "2026-10-05T15:40:26.112Z",
+      "selectedSubject": "upsc-gs-1"
+    }
+  },
+  "practiceHistory": {
+    "usr_eb45a0701b26b47635aca242": [],
+    "usr_cb866b9f9f4497b167aa115a": []
+  },
+  "pendingRegistrations": {},
+  "passwordResets": {}
+}

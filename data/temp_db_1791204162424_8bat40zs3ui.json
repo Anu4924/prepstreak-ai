@@ -1,0 +1,142 @@
+{
+  "users": {
+    "usr_49cc0b892e1c8ded372c18c4": {
+      "id": "usr_49cc0b892e1c8ded372c18c4",
+      "fullName": "Anu",
+      "email": "anu492480@gmail.com",
+      "passwordHash": "$2b$10$zgiq5OgvbdneblSxMk28oOtnT43HjVr/6JrztcU4HHWNFrEErDI4O",
+      "salt": "d79bc651d899387dedac0f5d89057548",
+      "targetExamId": "sbi-po",
+      "createdAt": "2026-10-04T17:06:34.252Z",
+      "updatedAt": "2026-10-04T17:06:34.252Z"
+    },
+    "usr_74a39add9a8c1dc8100b6862": {
+      "id": "usr_74a39add9a8c1dc8100b6862",
+      "fullName": "Agan",
+      "email": "agan38172@gmail.com",
+      "passwordHash": "$2b$10$ZEvq2LeeCLPNOQNcGBuvvO1mC2n/kU9j4ZJlDpBWhpS1WAH.sXE4K",
+      "salt": "c7dbb27ea25a2b97afa5180f8e0be14e",
+      "targetExamId": "indian-navy",
+      "createdAt": "2026-10-05T11:55:33.487Z",
+      "updatedAt": "2026-10-05T11:55:33.487Z"
+    },
+    "usr_9d1cca4b53d59c72b64579a6": {
+      "id": "usr_9d1cca4b53d59c72b64579a6",
+      "fullName": "Aspirant Alpha",
+      "email": "aspirant_a_1791204131669@example.com",
+      "passwordHash": "$2b$10$CL6RnHyqalmQjy1ACenDo.SZjLDzotI0DQOEom5b9Se/n76Dp6Kre",
+      "salt": "45ee428c43fe430dd3c4cd823ad2a180",
+      "targetExamId": "sbi-po",
+      "createdAt": "2026-10-05T12:42:11.747Z",
+      "updatedAt": "2026-10-05T12:42:11.747Z"
+    }
+  },
+  "usersByEmail": {
+    "anu492480@gmail.com": "usr_49cc0b892e1c8ded372c18c4",
+    "agan38172@gmail.com": "usr_74a39add9a8c1dc8100b6862",
+    "aspirant_a_1791204131669@example.com": "usr_9d1cca4b53d59c72b64579a6"
+  },
+  "sessions": {},
+  "profiles": {
+    "usr_49cc0b892e1c8ded372c18c4": {
+      "id": "usr_49cc0b892e1c8ded372c18c4",
+      "fullName": "Anu",
+      "email": "anu492480@gmail.com",
+      "avatarUrl": "forest",
+      "selectedExam": "sbi-po",
+      "currentStreak": 0,
+      "longestStreak": 0,
+      "totalQuestionsAttempted": 0,
+      "totalQuestionsCorrect": 0,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 0,
+      "studyTimeMinutes": 0,
+      "onboardingCompleted": true,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-04T17:06:34.252Z",
+      "updatedAt": "2026-10-04T17:06:56.038Z",
+      "selectedSubject": "quantitative-aptitude"
+    },
+    "usr_74a39add9a8c1dc8100b6862": {
+      "id": "usr_74a39add9a8c1dc8100b6862",
+      "fullName": "Agan",
+      "email": "agan38172@gmail.com",
+      "avatarUrl": "forest",
+      "selectedExam": "indian-navy",
+      "currentStreak": 0,
+      "longestStreak": 0,
+      "totalQuestionsAttempted": 0,
+      "totalQuestionsCorrect": 0,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 0,
+      "studyTimeMinutes": 0,
+      "onboardingCompleted": true,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-05T11:55:33.487Z",
+      "updatedAt": "2026-10-05T11:57:29.563Z",
+      "selectedSubject": "general-science"
+    },
+    "usr_9d1cca4b53d59c72b64579a6": {
+      "id": "usr_9d1cca4b53d59c72b64579a6",
+      "fullName": "Aspirant Alpha",
+      "email": "aspirant_a_1791204131669@example.com",
+      "avatarUrl": "forest",
+      "selectedExam": "sbi-po",
+      "currentStreak": 0,
+      "longestStreak": 0,
+      "totalQuestionsAttempted": 0,
+      "totalQuestionsCorrect": 0,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 0,
+      "studyTimeMinutes": 0,
+      "onboardingCompleted": false,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-05T12:42:11.747Z",
+      "updatedAt": "2026-10-05T12:42:11.747Z"
+    }
+  },
+  "practiceHistory": {
+    "usr_49cc0b892e1c8ded372c18c4": [],
+    "usr_74a39add9a8c1dc8100b6862": [],
+    "usr_9d1cca4b53d59c72b64579a6": []
+  },
+  "pendingRegistrations": {
+    "test_aspirant_1791204080260@example.com": {
+      "fullName": "Test Aspirant",
+      "email": "test_aspirant_1791204080260@example.com",
+      "passwordHash": "bcrypt_hash_placeholder",
+      "targetExamId": "sbi-po",
+      "otpHash": "89a01e58f39cb57c2ef61c97827110aaa61211feedda0a0469a516f2ea9457ef",
+      "salt": "6f1befb83ba653eb6decf235e807af8e",
+      "expiresAt": 1791204680260,
+      "resendAvailableAt": 1791204140260,
+      "attempts": 1
+    },
+    "test_aspirant_1791204131665@example.com": {
+      "fullName": "Test Aspirant",
+      "email": "test_aspirant_1791204131665@example.com",
+      "passwordHash": "bcrypt_hash_placeholder",
+      "targetExamId": "sbi-po",
+      "otpHash": "ee11dc0a8a8e7d0c4205ee6ee75ca1016ae8c25cf99b68a19246218ba4253dcb",
+      "salt": "547ef45bf5fbcf6b1bf043b5b060edb6",
+      "expiresAt": 1791204731665,
+      "resendAvailableAt": 1791204191665,
+      "attempts": 1
+    },
+    "test_aspirant_1791204162422@example.com": {
+      "fullName": "Test Aspirant",
+      "email": "test_aspirant_1791204162422@example.com",
+      "passwordHash": "bcrypt_hash_placeholder",
+      "targetExamId": "sbi-po",
+      "otpHash": "3d7d94f19e75f50cc8f03f925a521f180e67de0b08a6c58a3cd5ffe953eb84c0",
+      "salt": "71d069aa4a412ea8607e0987aa188522",
+      "expiresAt": 1791204762422,
+      "resendAvailableAt": 1791204222422,
+      "attempts": 1
+    }
+  },
+  "passwordResets": {}
+}
