@@ -1,8 +1,24 @@
-# PrepStreak AI
+# 🎯 PrepStreak AI
 
-**PrepStreak AI** is a production-quality, AI-powered government competitive exam preparation platform engineered to help aspirants master syllabus topics through dynamic AI-generated questions, instant explanations, timed tests, performance diagnostics, and daily study streaks.
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+
+> **PrepStreak AI** is a production-quality, AI-powered government competitive exam preparation platform engineered to help aspirants master syllabus topics through dynamic AI-generated questions, instant explanations, timed tests, performance diagnostics, and daily study streaks.
 
 The platform launches with comprehensive coverage for **SBI PO (State Bank of India Probationary Officer)** and is architected to scale effortlessly to IBPS PO, SSC CGL, RRB NTPC, and state civil services (TNPSC).
+
+---
+
+## ✨ Key Features
+
+- 🤖 **Axmok AI Tutor**: 24/7 interactive conversational mentor providing deep conceptual explanations, shortcuts, and study guidance.
+- 🎯 **Dynamic Adaptive Practice**: Real exam-grade practice questions covering Quantitative Aptitude, Reasoning, English, and Banking Awareness.
+- ⏱️ **Timed Mock Test Engine**: Exam-condition test simulations with real-time timers, question palettes, scorecards, and negative marking analysis.
+- 🔥 **Study Streak & Habit Building**: 7-day study streak trackers, daily sprints, and milestone badges designed to maintain consistency.
+- 📊 **Diagnostic Performance Analytics**: Detailed weak-topic identification, accuracy telemetry, and actionable recommendations.
+- 🔐 **Secure Auth & Email OTP**: Complete aspirant onboarding with email verification (powered by Resend / SMTP) and protected session cookies.
 
 ---
 
