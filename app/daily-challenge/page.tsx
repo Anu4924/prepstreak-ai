@@ -12,7 +12,7 @@ import { Flame, ArrowRight, ShieldCheck, CheckCircle2, Layers } from "lucide-rea
 
 export default function DailyChallengePage() {
   const { profile } = useAuth();
-  const examId = profile?.currentExam && profile.currentExam !== "None" ? profile.currentExam : "sbi-po";
+  const examId = profile?.examId || (profile?.currentExam && profile.currentExam !== "None" ? profile.currentExam : "sbi-po");
 
   const bp = useMemo(() => getExamBlueprint(examId), [examId]);
   const testBp = useMemo(() => getTestBlueprint(examId, "mini_mock"), [examId]);
@@ -103,7 +103,7 @@ export default function DailyChallengePage() {
           </div>
 
           <Button
-            href="/tests"
+            href={`/tests?type=mini_mock&examId=${examId}`}
             variant="primary"
             size="lg"
             className="w-full justify-center text-base"

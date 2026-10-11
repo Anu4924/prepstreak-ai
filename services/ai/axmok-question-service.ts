@@ -778,11 +778,14 @@ function getCurriculumBankForTopic(
     ];
   }
 
-  // 8. General Tamil & Literature (TNPSC)
+  // 8. General Tamil & Literature / Tamil Culture (TNPSC & State Exams)
   if (
     topicId.includes("tamil") ||
     topicName.toLowerCase().includes("tamil") ||
-    topicId.includes("thirukkural")
+    topicId.includes("thirukkural") ||
+    topicName.toLowerCase().includes("thirukkural") ||
+    topicId.includes("sangam") ||
+    topicId.includes("keezhadi")
   ) {
     return [
       {
@@ -804,10 +807,531 @@ function getCurriculumBankForTopic(
         learningTip:
           "TNPSC பொதுத்தமிழ் வினாக்களில் வல்லினம் மிகும் இடங்கள் (8 விதிகளும்) மிக முக்கியமான மதிப்பெண் களமாகும்.",
       },
+      {
+        question:
+          "'துப்பார்க்குத் துப்பாய துப்பாக்கித் துப்பார்க்குத்\nதுப்பாய தூஉம் மழை' — இக்குறட்பாவில் பயின்றுவந்துள்ள அணி யாது?",
+        options: [
+          { id: "A", text: "சொல் பின்வரு நிலையணி" },
+          { id: "B", text: "பொருள் பின்வரு நிலையணி" },
+          { id: "C", text: "சொற்பொருள் பின்வரு நிலையணி" },
+          { id: "D", text: "வேற்றுமையணி" },
+        ],
+        correctAnswer: "A",
+        explanation:
+          "இக்குறளில் 'துப்பு' என்ற சொல் பலமுறை வந்து வெவ்வேறு பொருள்களைத் தருகிறது (உண்பவர்க்கு, உணவாக, உண்டாக்கி). செய்யுளில் வந்த சொல்லே மீண்டும் மீண்டும் வந்து வெவ்வேறு பொருளைத் தருவது 'சொல் பின்வரு நிலையணி' ஆகும்.",
+        shortcut:
+          "ஒரே சொல் பலமுறை வந்து வெவ்வேறு பொருள் தந்தால் 'சொல் பின்வரு நிலையணி'; ஒரே பொருள் தந்தால் 'சொற்பொருள் பின்வரு நிலையணி'.",
+        commonMistake:
+          "துப்பு என்ற ஒரே சொல் மீண்டும் மீண்டும் வருவதால் சொற்பொருள் பின்வரு நிலையணி எனத் தவறாகக் கருதுதல்.",
+        learningTip:
+          "திருக்குறள் வான்சிறப்பு அதிகாரத்தில் உள்ள இவ்வரிகள் TNPSC தேர்வுகளில் அடிக்கடி கேட்கப்படும் வினாக்களுள் ஒன்றாகும்.",
+      },
+      {
+        question:
+          "கீழடி அகழாய்வு எந்த ஆற்றங்கரையில் அமைந்துள்ள பழங்காலத் தமிழ் நாகரிகத்தின் எச்சங்களை வெளிப்படுத்தியது?",
+        options: [
+          { id: "A", text: "காவிரி ஆறு" },
+          { id: "B", text: "வைகை ஆறு" },
+          { id: "C", text: "தாமிரபரணி ஆறு" },
+          { id: "D", text: "பாலாறு" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "சிவகங்கை மாவட்டம் திருப்புவனம் வட்டத்தில் வைகை ஆற்றின் தென் கரையில் அமைந்துள்ள கீழடி அகழாய்வு, கி.மு. 6ஆம் நூற்றாண்டைச் சார்ந்த நகரமயமாதல் பெற்ற வைகை சமவெளி நாகரிகத்தை உறுதி செய்துள்ளது.",
+        shortcut:
+          "கீழடி (சிவகங்கை) = வைகை நாகரிகம்; ஆதிச்சநல்லூர் (தூத்துக்குடி) = தாமிரபரணி நாகரிகம்.",
+        commonMistake:
+          "ஆதிச்சநல்லூர் மற்றும் கீழடி ஆகியவற்றை ஒரே ஆற்றுப்படுகை என மாற்றி நினைவில் கொள்ளுதல்.",
+        learningTip:
+          "தமிழ்நாடு தொல்லியல் துறை வெளியிட்ட ஆய்வறிக்கையின்படி கீழடி நாகரிகக் காலம் கி.மு. 580 என கதிரியக்கக் கரிமக் கணிப்பு (Carbon dating) உறுதி செய்துள்ளது.",
+      },
+      {
+        question:
+          "எட்டுத்தொகை நூல்களுள் 'ஒத்த' என்ற அடைமொழியுடன் குறிக்கப்படும் சங்க நூல் எது?",
+        options: [
+          { id: "A", text: "நற்றிணை" },
+          { id: "B", text: "பதிற்றுப்பத்து" },
+          { id: "C", text: "கலித்தொகை" },
+          { id: "D", text: "பரிபாடல்" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "'நற்றிணை நல்ல குறுந்தொகை ஐங்குறுநூறு ஒத்த பதிற்றுப்பத்து ஓங்கு பரிபாடல் கற்றறிந்தார் ஏத்தும் கலியோடு அகம் புறம் என்று இத்திறத்த எட்டுத்தொகை' என்ற பழம்பாடலின்படி 'ஒத்த பதிற்றுப்பத்து' எனக் குறிப்பிடப்படுகிறது.",
+        shortcut:
+          "நல் = குறுந்தொகை; நற்றிணை = நல்; ஒத்த = பதிற்றுப்பத்து; ஓங்கு = பரிபாடல்; கற்றறிந்தார் ஏத்தும் = கலித்தொகை.",
+        commonMistake:
+          "பரிபாடலுக்குரிய 'ஓங்கு' அடைமொழியை பதிற்றுப்பத்திற்குப் பொருத்துதல்.",
+        learningTip:
+          "எட்டுத்தொகை அடைமொழிப் பாடலை மனப்பாடம் செய்து வைத்திருப்பது TNPSC குரூப் 4 & 2 தேர்வுகளுக்கு அவசியமானது.",
+      },
     ];
   }
 
-  // 9. Generic Exam Standard Topics
+  // 9. Indian History & Freedom Struggle (UPSC, SSC, State PSC)
+  if (
+    topicId.includes("history") ||
+    topicName.toLowerCase().includes("history") ||
+    topicId.includes("freedom") ||
+    topicName.toLowerCase().includes("freedom") ||
+    topicId.includes("national-movement") ||
+    subjectName.toLowerCase().includes("history")
+  ) {
+    return [
+      {
+        question:
+          "Which of the following events was the immediate trigger for the launch of the Non-Cooperation Movement in 1920 by Mahatma Gandhi?",
+        options: [
+          { id: "A", text: "Rowlatt Act and Jallianwala Bagh Massacre combined with the Khilafat issue" },
+          { id: "B", text: "Partition of Bengal in 1905" },
+          { id: "C", text: "Failure of the Cripps Mission" },
+          { id: "D", text: "Announcement of the Communal Award" },
+        ],
+        correctAnswer: "A",
+        explanation:
+          "The Non-Cooperation Movement (1920-1922) was initiated following the draconian Rowlatt Act of 1919, the brutal Jallianwala Bagh Massacre (April 13, 1919), and to support the Khilafat cause.",
+        shortcut:
+          "1919 trilogy: Rowlatt Act -> Jallianwala Bagh -> Khilafat -> 1920 Non-Cooperation Movement.",
+        commonMistake:
+          "Confusing the Non-Cooperation Movement (1920) with the Civil Disobedience Movement (1930) or Quit India (1942).",
+        learningTip:
+          "Chronology of Gandhian Mass Movements: Non-Cooperation (1920) -> Civil Disobedience (1930) -> Quit India (1942).",
+      },
+      {
+        question:
+          "During the reign of which Chola monarch was the magnificent Brihadisvara Temple (Big Temple) in Thanjavur constructed?",
+        options: [
+          { id: "A", text: "Rajendra Chola I" },
+          { id: "B", text: "Rajaraja Chola I" },
+          { id: "C", text: "Kulothunga Chola I" },
+          { id: "D", text: "Parantaka Chola I" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "The Brihadisvara Temple at Thanjavur, consecrated in 1010 CE, was built by Rajaraja Chola I. Rajendra Chola I built the Brihadisvara temple at Gangaikonda Cholapuram.",
+        shortcut:
+          "Rajaraja I = Thanjavur Brihadisvara Temple; Rajendra I = Gangaikonda Cholapuram.",
+        commonMistake:
+          "Confusing Rajaraja I (Thanjavur) with his son Rajendra I (Gangaikonda Cholapuram).",
+        learningTip:
+          "The temple is a UNESCO World Heritage Site renowned for its vimana rising to 66 meters without binding mortar.",
+      },
+      {
+        question:
+          "Who among the following founded the 'Satyashodhak Samaj' in 1873 to promote social equality and advocate education for backward castes and women?",
+        options: [
+          { id: "A", text: "Jyotirao Phule" },
+          { id: "B", text: "Dr. B.R. Ambedkar" },
+          { id: "C", text: "Swami Dayananda Saraswati" },
+          { id: "D", text: "Raja Ram Mohan Roy" },
+        ],
+        correctAnswer: "A",
+        explanation:
+          "Jyotirao Phule founded the Satyashodhak Samaj (Truth-Seekers' Society) in Pune in September 1873. He authored 'Gulamgiri' in 1873, dedicated to the American abolitionist movement.",
+        shortcut:
+          "Satyashodhak Samaj + Gulamgiri = Jyotirao Phule (1873).",
+        commonMistake:
+          "Confusing Satyashodhak Samaj with Arya Samaj (Dayananda Saraswati) or Brahmo Samaj (Ram Mohan Roy).",
+        learningTip:
+          "Savitribai Phule, along with Jyotirao Phule, founded the first indigenous school for girls in Bhide Wada, Pune in 1848.",
+      },
+    ];
+  }
+
+  // 10. Geography, Environment & Biodiversity
+  if (
+    topicId.includes("geography") ||
+    topicName.toLowerCase().includes("geography") ||
+    topicId.includes("environment") ||
+    topicName.toLowerCase().includes("environment") ||
+    topicId.includes("river") ||
+    topicId.includes("climate") ||
+    subjectName.toLowerCase().includes("geography") ||
+    subjectName.toLowerCase().includes("environmental")
+  ) {
+    return [
+      {
+        question:
+          "Which of the following Indian rivers flows westward through a rift valley between the Vindhya and Satpura mountain ranges into the Arabian Sea?",
+        options: [
+          { id: "A", text: "Godavari" },
+          { id: "B", text: "Narmada" },
+          { id: "C", text: "Mahanadi" },
+          { id: "D", text: "Krishna" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "The Narmada and Tapti are the two major west-flowing peninsular rivers in India that flow through rift valleys. The Narmada originates from the Amarkantak plateau and flows between the Vindhya (north) and Satpura (south) ranges into the Gulf of Khambhat.",
+        shortcut:
+          "West-flowing rift valley rivers = Narmada & Tapti. East-flowing deltaic rivers = Mahanadi, Godavari, Krishna, Cauvery.",
+        commonMistake:
+          "Assuming all major peninsular rivers drain eastward into the Bay of Bengal.",
+        learningTip:
+          "West-flowing rivers do not form extensive deltas; they form estuaries due to steep gradients and fast currents.",
+      },
+      {
+        question:
+          "Which National Park in India is the world's primary sanctuary and stronghold for the endangered Great Indian One-Horned Rhinoceros (Rhinoceros unicornis)?",
+        options: [
+          { id: "A", text: "Kaziranga National Park" },
+          { id: "B", text: "Jim Corbett National Park" },
+          { id: "C", text: "Gir National Park" },
+          { id: "D", text: "Sundarbans National Park" },
+        ],
+        correctAnswer: "A",
+        explanation:
+          "Kaziranga National Park in Assam hosts approximately two-thirds of the world's great one-horned rhinoceros population and is a designated UNESCO World Heritage Site.",
+        shortcut:
+          "Kaziranga = One-horned Rhino (Assam); Gir = Asiatic Lion (Gujarat); Sundarbans = Royal Bengal Tiger (West Bengal).",
+        commonMistake:
+          "Confusing Kaziranga (Rhinos) with Manas (famous for Golden Langur and Pygmy Hog).",
+        learningTip:
+          "Assam has seven national parks, with Kaziranga and Manas being UNESCO Natural World Heritage Sites.",
+      },
+      {
+        question:
+          "What is the primary international agreement aimed at phasing out ozone-depleting substances (ODSs), universally recognized as one of the most successful environmental treaties in history?",
+        options: [
+          { id: "A", text: "Kyoto Protocol" },
+          { id: "B", text: "Montreal Protocol" },
+          { id: "C", text: "Paris Agreement" },
+          { id: "D", text: "Basel Convention" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "The Montreal Protocol on Substances that Deplete the Ozone Layer (agreed in 1987) targets the phaseout of chlorofluorocarbons (CFCs) and halons. The Kigali Amendment (2016) further phased down hydrofluorocarbons (HFCs).",
+        shortcut:
+          "Montreal = Ozone layer (CFCs); Kyoto & Paris = Greenhouse gases / Climate change; Basel = Hazardous waste.",
+        commonMistake:
+          "Mixing up Montreal Protocol (Ozone depletion) with Kyoto Protocol (Greenhouse gas reductions).",
+        learningTip:
+          "World Ozone Day is celebrated annually on September 16, marking the signing of the Montreal Protocol.",
+      },
+    ];
+  }
+
+  // 11. General Science (Physics, Chemistry, Biology)
+  if (
+    topicId.includes("science") ||
+    topicName.toLowerCase().includes("science") ||
+    topicId.includes("biology") ||
+    topicId.includes("physics") ||
+    topicId.includes("chemistry") ||
+    subjectName.toLowerCase().includes("science")
+  ) {
+    return [
+      {
+        question:
+          "Which hormone, secreted by the beta cells of the Islets of Langerhans in the pancreas, is primarily responsible for facilitating cellular glucose uptake and lowering blood sugar levels?",
+        options: [
+          { id: "A", text: "Glucagon" },
+          { id: "B", text: "Insulin" },
+          { id: "C", text: "Somatostatin" },
+          { id: "D", text: "Thyroxine" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "Insulin is produced by the beta cells of the pancreatic islets. It promotes the absorption of glucose from the blood into skeletal muscle and adipose tissue. Glucagon, produced by alpha cells, elevates blood glucose levels.",
+        shortcut:
+          "Beta cells = Insulin (lowers blood sugar); Alpha cells = Glucagon (raises blood sugar).",
+        commonMistake:
+          "Inverting the functions of Insulin (hypoglycemic) and Glucagon (hyperglycemic).",
+        learningTip:
+          "Deficiency in insulin production or cellular resistance to it causes Diabetes Mellitus (Type 1 and Type 2 respectively).",
+      },
+      {
+        question:
+          "The optical phenomenon responsible for the sparkling of diamonds and the transmission of light through optical fiber cables is known as:",
+        options: [
+          { id: "A", text: "Total Internal Reflection" },
+          { id: "B", text: "Diffraction" },
+          { id: "C", text: "Polarization" },
+          { id: "D", text: "Optical Dispersion" },
+        ],
+        correctAnswer: "A",
+        explanation:
+          "Total Internal Reflection (TIR) occurs when light travels from an optically denser medium to a rarer medium at an angle of incidence greater than the critical angle. Diamonds have a high refractive index (~2.42) and small critical angle (~24.4°), trapping light via multiple TIRs.",
+        shortcut:
+          "Optical fibers + Diamond sparkle + Mirages in deserts = Total Internal Reflection (TIR).",
+        commonMistake:
+          "Confusing Total Internal Reflection with simple surface refraction or dispersion.",
+        learningTip:
+          "Two conditions for TIR: (1) Light must travel from denser to rarer medium; (2) Angle of incidence > Critical angle.",
+      },
+      {
+        question:
+          "What is the chemical name and formula of 'Baking Soda' commonly used in culinary preparation and fire extinguishers?",
+        options: [
+          { id: "A", text: "Sodium carbonate (Na2CO3)" },
+          { id: "B", text: "Sodium hydrogen carbonate (NaHCO3)" },
+          { id: "C", text: "Calcium hypochlorite (CaOCl2)" },
+          { id: "D", text: "Sodium hydroxide (NaOH)" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "Baking soda is Sodium bicarbonate (Sodium hydrogen carbonate, NaHCO3). Washing soda is Sodium carbonate decahydrate (Na2CO3·10H2O), and Bleaching powder is CaOCl2.",
+        shortcut:
+          "Baking Soda = Sodium BI-carbonate (NaHCO3) ['Bi' for Buying bakery items]; Washing Soda = Sodium Carbonate.",
+        commonMistake:
+          "Confusing Baking Soda (NaHCO3) with Washing Soda (Na2CO3) or Baking Powder (mixture of NaHCO3 and tartaric acid).",
+        learningTip:
+          "When heated, 2 NaHCO3 -> Na2CO3 + H2O + CO2. The released CO2 causes cakes and dough to rise and become spongy.",
+      },
+    ];
+  }
+
+  // 12. Indian Economy & Banking Awareness (Banking, SSC & UPSC)
+  if (
+    topicId.includes("economy") ||
+    topicName.toLowerCase().includes("economy") ||
+    topicId.includes("banking") ||
+    topicName.toLowerCase().includes("banking") ||
+    subjectName.toLowerCase().includes("banking") ||
+    subjectName.toLowerCase().includes("economic")
+  ) {
+    return [
+      {
+        question:
+          "The interest rate at which the Reserve Bank of India (RBI) lends short-term funds to commercial banks against government securities is called the:",
+        options: [
+          { id: "A", text: "Reverse Repo Rate" },
+          { id: "B", text: "Repo Rate" },
+          { id: "C", text: "Cash Reserve Ratio (CRR)" },
+          { id: "D", text: "Statutory Liquidity Ratio (SLR)" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "Repo Rate (Repurchase Option Rate) is the rate at which RBI lends money to commercial banks against eligible securities. Reverse Repo Rate is the rate at which RBI borrows funds from commercial banks.",
+        shortcut:
+          "RBI to Banks = Repo Rate; Banks to RBI = Reverse Repo Rate.",
+        commonMistake:
+          "Confusing Repo Rate with Bank Rate (Bank rate does not require collateral/securities agreement).",
+        learningTip:
+          "Repo rate increases are used by central banks as a contractionary monetary policy tool to curb inflation.",
+      },
+      {
+        question:
+          "Which metric represents the difference between the total revenue expenditure and total non-debt revenue receipts of the government?",
+        options: [
+          { id: "A", text: "Fiscal Deficit" },
+          { id: "B", text: "Revenue Deficit" },
+          { id: "C", text: "Primary Deficit" },
+          { id: "D", text: "Monetized Deficit" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "Revenue Deficit = Revenue Expenditure - Revenue Receipts. Fiscal Deficit = Total Expenditure - Total Receipts excluding borrowings. Primary Deficit = Fiscal Deficit - Interest Payments.",
+        shortcut:
+          "Primary Deficit = Fiscal Deficit minus Interest Payments.",
+        commonMistake:
+          "Assuming Fiscal Deficit includes total borrowings (it specifically excludes borrowings to indicate how much must be borrowed).",
+        learningTip:
+          "The Fiscal Responsibility and Budget Management (FRBM) Act mandates target ceilings on fiscal and revenue deficits.",
+      },
+    ];
+  }
+
+  // 13. English Language & Verbal Ability
+  if (
+    topicId.includes("english") ||
+    topicName.toLowerCase().includes("english") ||
+    topicId.includes("grammar") ||
+    topicId.includes("vocab") ||
+    subjectName.toLowerCase().includes("english") ||
+    subjectName.toLowerCase().includes("verbal")
+  ) {
+    return [
+      {
+        question:
+          "Identify the segment of the sentence that contains a grammatical error:\n'Neither the manager nor the assistant supervisors (A) / was present in the auditorium (B) / when the chief guest arrived (C) / No error (D).'",
+        options: [
+          { id: "A", text: "Segment A" },
+          { id: "B", text: "Segment B" },
+          { id: "C", text: "Segment C" },
+          { id: "D", text: "Segment D (No error)" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "According to the rule of proximity for correlative conjunctions ('Neither... nor', 'Either... or'), the verb must agree with the subject closest to it. Here, 'assistant supervisors' is plural, so the verb must be 'were present', not 'was present'.",
+        shortcut:
+          "In 'Either... or' and 'Neither... nor', match the verb with the nearest subject.",
+        commonMistake:
+          "Matching the verb to the first singular subject ('the manager') instead of the closer plural subject.",
+        learningTip:
+          "Proximity Rule: Neither [singular] nor [plural] -> Plural verb. Neither [plural] nor [singular] -> Singular verb.",
+      },
+      {
+        question:
+          "Select the word that is most nearly OPPOSITE in meaning (Antonym) to the word 'METICULOUS':",
+        options: [
+          { id: "A", text: "Scrupulous" },
+          { id: "B", text: "Careless" },
+          { id: "C", text: "Punctilious" },
+          { id: "D", text: "Methodical" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "'Meticulous' means showing great attention to detail; very careful and precise. Its antonym is 'Careless' or 'Sloppy'. 'Scrupulous', 'Punctilious', and 'Methodical' are synonyms.",
+        shortcut:
+          "Three options (Scrupulous, Punctilious, Methodical) are synonyms; the odd one out is Careless.",
+        commonMistake:
+          "Selecting a synonym when asked for the antonym.",
+        learningTip:
+          "Exam strategy: If three options share identical meanings, the fourth distinct option is often the correct antonym.",
+      },
+    ];
+  }
+
+  // 14. Child Development & Pedagogy (Teaching Exams: CTET, State TET)
+  if (
+    topicId.includes("pedagogy") ||
+    topicName.toLowerCase().includes("pedagogy") ||
+    topicId.includes("child") ||
+    topicName.toLowerCase().includes("child") ||
+    subjectName.toLowerCase().includes("teaching") ||
+    subjectName.toLowerCase().includes("pedagogy")
+  ) {
+    return [
+      {
+        question:
+          "According to Jean Piaget's theory of cognitive development, during which stage does a child first acquire the ability to understand 'conservation' (that quantity does not change with container shape)?",
+        options: [
+          { id: "A", text: "Sensorimotor Stage (0–2 years)" },
+          { id: "B", text: "Preoperational Stage (2–7 years)" },
+          { id: "C", text: "Concrete Operational Stage (7–11 years)" },
+          { id: "D", text: "Formal Operational Stage (11+ years)" },
+        ],
+        correctAnswer: "C",
+        explanation:
+          "Piaget's Concrete Operational stage (7–11 years) is characterized by the mastery of logical operations on concrete objects, including conservation (mass, volume, number) and reversibility.",
+        shortcut:
+          "Conservation + Reversibility = Concrete Operational Stage (7–11 yrs).",
+        commonMistake:
+          "Selecting the Preoperational stage, during which children suffer from centration and lack conservation.",
+        learningTip:
+          "Piaget's 4 Stages: Sensorimotor (Object permanence) -> Preoperational (Egocentrism, Animism) -> Concrete Operational (Conservation) -> Formal Operational (Abstract logic).",
+      },
+      {
+        question:
+          "Lev Vygotsky conceptualized the gap between what a child can achieve independently and what they can achieve with guidance from a More Knowledgeable Other (MKO) as the:",
+        options: [
+          { id: "A", text: "Zone of Proximal Development (ZPD)" },
+          { id: "B", text: "Schema Equilibrium" },
+          { id: "C", text: "Operant Conditioning Domain" },
+          { id: "D", text: "Moral Development Sphere" },
+        ],
+        correctAnswer: "A",
+        explanation:
+          "The Zone of Proximal Development (ZPD) is Vygotsky's central construct defining the range of tasks a learner cannot yet do alone but can accomplish with instructional scaffolding from an adult or skilled peer.",
+        shortcut:
+          "Vygotsky = ZPD + Scaffolding + More Knowledgeable Other (MKO) + Social Constructivism.",
+        commonMistake:
+          "Attributing scaffolding or ZPD to Piaget or Skinner.",
+        learningTip:
+          "Scaffolding is temporary support provided by an educator that is gradually dismantled as student competence develops.",
+      },
+    ];
+  }
+
+  // 15. Computer Aptitude & Digital Literacy
+  if (
+    topicId.includes("computer") ||
+    topicName.toLowerCase().includes("computer") ||
+    topicId.includes("it-literacy") ||
+    subjectName.toLowerCase().includes("computer")
+  ) {
+    return [
+      {
+        question:
+          "In modern computer memory architecture, which of the following provides the fastest read/write access speed to the Central Processing Unit (CPU)?",
+        options: [
+          { id: "A", text: "RAM (Random Access Memory)" },
+          { id: "B", text: "CPU Registers and Cache Memory" },
+          { id: "C", text: "Solid State Drive (NVMe SSD)" },
+          { id: "D", text: "Virtual Memory on Paging Disk" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "Memory hierarchy from fastest to slowest: CPU Registers -> L1/L2/L3 Cache -> Main Memory (RAM) -> Solid State Drive -> Hard Disk Drive -> Optical/Tape storage.",
+        shortcut:
+          "Fastest: Registers > Cache > RAM > Secondary Storage.",
+        commonMistake:
+          "Thinking RAM is the fastest memory in the computer (internal CPU cache operates at near-clock speeds).",
+        learningTip:
+          "L1 Cache is integrated directly into the core, offering single-cycle latency.",
+      },
+      {
+        question:
+          "Which protocol operates at the Application Layer of the TCP/IP model to provide secure, encrypted transmission of hypertext documents over port 443?",
+        options: [
+          { id: "A", text: "HTTP" },
+          { id: "B", text: "HTTPS (with TLS/SSL)" },
+          { id: "C", text: "FTP" },
+          { id: "D", text: "SMTP" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "HTTPS (HyperText Transfer Protocol Secure) encrypts communications using Transport Layer Security (TLS) over port 443. Standard unencrypted HTTP operates over port 80.",
+        shortcut:
+          "Port 80 = HTTP (unencrypted); Port 443 = HTTPS (encrypted TLS); Port 25 = SMTP.",
+        commonMistake:
+          "Confusing transport protocol (TCP port) with network encryption layers.",
+        learningTip:
+          "HTTPS guarantees confidentiality, data integrity, and server authentication via digital certificates.",
+      },
+    ];
+  }
+
+  // 16. Core Engineering & Technical Disciplines (GATE, RRB JE, TNPSC Technical)
+  if (
+    topicId.includes("engineering") ||
+    topicName.toLowerCase().includes("engineering") ||
+    topicId.includes("technical") ||
+    subjectName.toLowerCase().includes("engineering") ||
+    subjectName.toLowerCase().includes("technical")
+  ) {
+    return [
+      {
+        question:
+          "In an electrical circuit, what is the equivalent resistance of three 12 Ω resistors connected in parallel across a DC voltage source?",
+        options: [
+          { id: "A", text: "36 Ω" },
+          { id: "B", text: "4 Ω" },
+          { id: "C", text: "6 Ω" },
+          { id: "D", text: "8 Ω" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "For n identical resistors of resistance R in parallel: R_eq = R / n. Here R = 12 Ω and n = 3, so R_eq = 12 / 3 = 4 Ω. Alternatively: 1/R_eq = 1/12 + 1/12 + 1/12 = 3/12 = 1/4 -> R_eq = 4 Ω.",
+        shortcut:
+          "N identical resistors of resistance R in parallel: R_eq = R / N. 12 / 3 = 4 Ω instantly.",
+        commonMistake:
+          "Adding them in series (12 + 12 + 12 = 36 Ω).",
+        learningTip:
+          "Parallel combination always yields an equivalent resistance smaller than the smallest individual branch resistance.",
+      },
+      {
+        question:
+          "What is the worst-case time complexity of the standard QuickSort algorithm when the partition choice is persistently unbalanced?",
+        options: [
+          { id: "A", text: "O(n log n)" },
+          { id: "B", text: "O(n^2)" },
+          { id: "C", text: "O(log n)" },
+          { id: "D", text: "O(n)" },
+        ],
+        correctAnswer: "B",
+        explanation:
+          "When the pivot is consistently the smallest or largest element (e.g. sorted array with first element as pivot), the recursion tree degenerates into n levels of n work, yielding O(n^2) time complexity. Average case is O(n log n).",
+        shortcut:
+          "MergeSort worst case = O(n log n); QuickSort worst case = O(n^2); Randomized QuickSort expected = O(n log n).",
+        commonMistake:
+          "Assuming QuickSort has O(n log n) in all cases (unlike MergeSort or HeapSort).",
+        learningTip:
+          "Using Randomized Pivot selection or Median-of-Three partitioning avoids the worst-case O(n^2) degradation.",
+      },
+    ];
+  }
+
+  // 17. Generic Exam Standard Topics Fallback
   return [
     {
       question: `In ${examName}, when analyzing problem constraints in ${topicName}, which systematic protocol yields the highest accuracy?`,
@@ -864,22 +1388,22 @@ function getCurriculumBankForTopic(
         "A statement is only valid if it holds in 100% of all possible configurations.",
     },
     {
-      question: `What is the most effective time allocation strategy for a 5-question puzzle or set on ${topicName} in ${examName}?`,
+      question: `What is the most effective time allocation strategy for a question set on ${topicName} in ${examName}?`,
       options: [
-        { id: "A", text: "Spend 2–2.5 minutes sketching the master framework, then answer all 5 questions in 30 seconds each" },
+        { id: "A", text: "Spend 2–2.5 minutes sketching the master framework, then answer all associated questions in 30 seconds each" },
         { id: "B", text: "Answer question 1 by trial and error, then start from scratch for question 2" },
         { id: "C", text: "Spend 8 minutes without writing any intermediate steps" },
-        { id: "D", text: "Mark all 5 randomly without evaluating" },
+        { id: "D", text: "Mark all randomly without evaluating" },
       ],
       correctAnswer: "A",
       explanation:
         "High scorers invest initial minutes into building the complete solution structure. Once the representation is locked, solving all associated questions takes under 30 seconds.",
       shortcut:
-        "Frontload diagramming time to rapidly unlock the entire 5-mark question cluster.",
+        "Frontload diagramming time to rapidly unlock the entire question cluster.",
       commonMistake:
         "Rushing the master diagram and having to restart after discovering a contradiction midway.",
       learningTip:
-        "A clean diagram solves 5 marks at once with 100% sectional accuracy.",
+        "A clean diagram solves multiple marks at once with 100% sectional accuracy.",
     },
   ];
 }

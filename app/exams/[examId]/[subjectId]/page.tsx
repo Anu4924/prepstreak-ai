@@ -10,7 +10,8 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { getExamById, CENTRAL_EXAM_CATALOGUE } from "@/lib/data/examCatalogue";
 import { getSubjectsForExam, getSubjectById } from "@/lib/data/subjectRegistry";
 import { getTopicsForSubject } from "@/lib/data/topicRegistry";
-import { Filter, Search } from "lucide-react";
+import { Filter, Search, CheckSquare } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 
 export default function TopicSelectionPage() {
   const params = useParams();
@@ -53,6 +54,17 @@ export default function TopicSelectionPage() {
           { label: exam.name, href: `/exams/${exam.id}` },
           { label: subject.name },
         ]}
+        action={
+          <Button
+            href={`/tests?examId=${exam.id}&subjectId=${subject.id}`}
+            variant="primary"
+            size="sm"
+            className="bg-forest-900 text-white hover:bg-forest-800"
+            leftIcon={<CheckSquare className="w-4 h-4 mr-1" />}
+          >
+            Take Subject Test
+          </Button>
+        }
         badge={
           <Badge variant="forest" size="md">
             {allTopics.length} Topics

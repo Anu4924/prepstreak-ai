@@ -60,8 +60,13 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, [isBrandNewUser]);
 
-  // Onboarding trigger: if onboarding not completed
-  const needsOnboarding = Boolean(profile) && !profile?.onboardingCompleted;
+  // Onboarding trigger: only if user has never selected an exam AND onboarding is not marked complete
+  const hasSelectedExam =
+    Boolean(targetExamId && targetExamId !== "None") ||
+    Boolean(profile?.currentExam && profile.currentExam !== "None") ||
+    Boolean(user?.targetExamId && user.targetExamId !== "None");
+
+  const needsOnboarding = Boolean(profile) && !profile?.onboardingCompleted && !hasSelectedExam;
 
   const handleOnboardingComplete = async (
     examId: string,
@@ -69,6 +74,7 @@ export default function DashboardPage() {
     goal: number = 20,
     difficulty: "Easy" | "Medium" | "Hard" | "Adaptive" = "Adaptive"
   ) => {
+    setIsOnboardingOpen(false);
     await updateProfile({
       selected_exam: examId,
       selected_subject: subjectId || "",
@@ -81,7 +87,6 @@ export default function DashboardPage() {
       dailyQuestionGoal: goal,
       preferredDifficulty: difficulty,
     });
-    setIsOnboardingOpen(false);
   };
 
   const handleSelectTargetExam = async (examId: string) => {

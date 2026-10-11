@@ -225,3 +225,61 @@ CREATE POLICY "Users can insert or update own topic performance"
   ON public.user_topic_performance FOR ALL
   USING (auth.uid() = user_id);
 
+-- 3. Test Results Table
+CREATE TABLE IF NOT EXISTS public.test_results (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  exam_id TEXT NOT NULL,
+  test_title TEXT NOT NULL,
+  test_type TEXT NOT NULL DEFAULT 'mini_mock',
+  score NUMERIC(6,2) NOT NULL DEFAULT 0.00,
+  total_marks NUMERIC(6,2) NOT NULL DEFAULT 0.00,
+  total_questions INTEGER NOT NULL DEFAULT 0,
+  attempted INTEGER NOT NULL DEFAULT 0,
+  correct INTEGER NOT NULL DEFAULT 0,
+  incorrect INTEGER NOT NULL DEFAULT 0,
+  accuracy NUMERIC(5,2) NOT NULL DEFAULT 0.00,
+  time_taken INTEGER NOT NULL DEFAULT 0,
+  analysis_json JSONB DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+CREATE INDEX IF NOT EXISTS idx_test_results_user_id ON public.test_results(user_id);
+
+ALTER TABLE public.test_results ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Users can view own test results" ON public.test_results;
+CREATE POLICY "Users can view own test results"
+  ON public.test_results FOR SELECT
+  USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can insert own test results" ON public.test_results;
+CREATE POLICY "Users can insert own test results"
+  ON public.test_results FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+
+-- 4. User Daily Streaks Table
+CREATE TABLE IF NOT EXISTS public.user_daily_streaks (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  activity_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  questions_solved INTEGER NOT NULL DEFAULT 0,
+  time_spent_seconds INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
+  UNIQUE(user_id, activity_date)
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_daily_streaks ON public.user_daily_streaks(user_id, activity_date);
+
+ALTER TABLE public.user_daily_streaks ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Users can view own daily streaks" ON public.user_daily_streaks;
+CREATE POLICY "Users can view own daily streaks"
+  ON public.user_daily_streaks FOR SELECT
+  USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can insert or update own daily streaks" ON public.user_daily_streaks;
+CREATE POLICY "Users can insert or update own daily streaks"
+  ON public.user_daily_streaks FOR ALL
+  USING (auth.uid() = user_id);
+

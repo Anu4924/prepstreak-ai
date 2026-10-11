@@ -297,7 +297,8 @@ export const AuthStore = {
     email: string,
     passwordOrHash: string,
     targetExamId?: string,
-    preHashed: boolean = false
+    preHashed: boolean = false,
+    customUserId?: string
   ): { user: StoredUser; profile: StoredProfile } {
     const db = ensureDb();
     const normalizedEmail = email.trim().toLowerCase();
@@ -306,7 +307,7 @@ export const AuthStore = {
       throw new Error("An account with this email address already exists.");
     }
 
-    const userId = "usr_" + crypto.randomBytes(12).toString("hex");
+    const userId = customUserId || ("usr_" + crypto.randomBytes(12).toString("hex"));
     const salt = crypto.randomBytes(16).toString("hex");
     const passwordHash = preHashed
       ? passwordOrHash
@@ -325,6 +326,7 @@ export const AuthStore = {
     };
 
     // Brand new user starts strictly at ZERO telemetry
+    const hasInitialExam = Boolean(targetExamId && targetExamId.trim() !== "" && targetExamId !== "None");
     const profile: StoredProfile = {
       id: userId,
       fullName: fullName.trim(),
@@ -338,7 +340,7 @@ export const AuthStore = {
       totalTestsCompleted: 0,
       overallAccuracy: 0,
       studyTimeMinutes: 0,
-      onboardingCompleted: false, // Shows exam selection onboarding
+      onboardingCompleted: hasInitialExam,
       progress: 0,
       dailyQuestionGoal: 20,
       preferredDifficulty: "Adaptive",
@@ -367,6 +369,64 @@ export const AuthStore = {
     return true;
   },
 
+  /**
+   * Syncs / re-keys an existing user from a legacy local ID to their Supabase Auth UUID.
+   * Preserves all profile statistics, streak, and practice history.
+   */
+  syncUserWithSupabaseId(email: string, supabaseId: string): StoredUser | null {
+    const db = ensureDb();
+    const normalizedEmail = email.trim().toLowerCase();
+    const oldUserId = db.usersByEmail[normalizedEmail];
+
+    if (!oldUserId) {
+      return db.users[supabaseId] || null;
+    }
+
+    if (oldUserId === supabaseId) {
+      return db.users[supabaseId] || null;
+    }
+
+    // Re-key from oldUserId to supabaseId
+    const oldUser = db.users[oldUserId];
+    if (oldUser) {
+      const updatedUser: StoredUser = {
+        ...oldUser,
+        id: supabaseId,
+        updatedAt: new Date().toISOString(),
+      };
+      db.users[supabaseId] = updatedUser;
+      delete db.users[oldUserId];
+    }
+    db.usersByEmail[normalizedEmail] = supabaseId;
+
+    if (db.profiles[oldUserId]) {
+      const oldProf = db.profiles[oldUserId];
+      const hasExam = Boolean(oldProf.selectedExam && oldProf.selectedExam !== "None");
+      db.profiles[supabaseId] = {
+        ...oldProf,
+        id: supabaseId,
+        onboardingCompleted: oldProf.onboardingCompleted || hasExam,
+        updatedAt: new Date().toISOString(),
+      };
+      delete db.profiles[oldUserId];
+    }
+
+    if (db.practiceHistory[oldUserId]) {
+      db.practiceHistory[supabaseId] = db.practiceHistory[oldUserId];
+      delete db.practiceHistory[oldUserId];
+    }
+
+    // Migrate any active sessions
+    for (const token of Object.keys(db.sessions)) {
+      if (db.sessions[token]?.userId === oldUserId) {
+        db.sessions[token].userId = supabaseId;
+      }
+    }
+
+    saveDb(db);
+    return db.users[supabaseId] || null;
+  },
+
   getProfileByUserId(userId: string): StoredProfile | null {
     const db = ensureDb();
     return db.profiles[userId] || null;
@@ -375,33 +435,62 @@ export const AuthStore = {
   updateUserProfile(
     userId: string,
     updates: Partial<StoredProfile>
-  ): StoredProfile | null {
+  ): StoredProfile {
     const db = ensureDb();
     let profile = db.profiles[userId];
 
     if (!profile) {
-      const user = db.users[userId];
-      if (!user) return null;
+      let user = db.users[userId];
+      if (!user && updates.email) {
+        const normEmail = updates.email.trim().toLowerCase();
+        const existingId = db.usersByEmail[normEmail];
+        if (existingId && existingId !== userId) {
+          this.syncUserWithSupabaseId(normEmail, userId);
+          user = db.users[userId];
+        }
+      }
+
+      const now = new Date().toISOString();
+      const fallbackEmail = updates.email || (user ? user.email : "");
+      const fallbackName = updates.fullName?.trim() || (user ? user.fullName : "Student");
+      const fallbackExam = updates.selectedExam || (user ? user.targetExamId : "");
+
       profile = {
         id: userId,
-        fullName: user.fullName,
-        email: user.email,
-        avatarUrl: "forest",
-        selectedExam: user.targetExamId || "",
-        currentStreak: 0,
-        longestStreak: 0,
-        totalQuestionsAttempted: 0,
-        totalQuestionsCorrect: 0,
-        totalTestsCompleted: 0,
-        overallAccuracy: 0,
-        studyTimeMinutes: 0,
-        onboardingCompleted: Boolean(user.targetExamId),
-        dailyQuestionGoal: 20,
-        preferredDifficulty: "Adaptive",
-        createdAt: user.createdAt,
-        updatedAt: new Date().toISOString(),
+        fullName: fallbackName,
+        email: fallbackEmail,
+        avatarUrl: updates.avatarUrl || "forest",
+        selectedExam: fallbackExam || "",
+        currentStreak: updates.currentStreak || 0,
+        longestStreak: updates.longestStreak || 0,
+        totalQuestionsAttempted: updates.totalQuestionsAttempted || 0,
+        totalQuestionsCorrect: updates.totalQuestionsCorrect || 0,
+        totalTestsCompleted: updates.totalTestsCompleted || 0,
+        overallAccuracy: updates.overallAccuracy || 0,
+        studyTimeMinutes: updates.studyTimeMinutes || 0,
+        onboardingCompleted: updates.onboardingCompleted ?? Boolean(fallbackExam),
+        dailyQuestionGoal: updates.dailyQuestionGoal || 20,
+        preferredDifficulty: updates.preferredDifficulty || "Adaptive",
+        createdAt: user ? user.createdAt : now,
+        updatedAt: now,
       };
       db.profiles[userId] = profile;
+
+      if (!db.users[userId]) {
+        db.users[userId] = {
+          id: userId,
+          fullName: fallbackName,
+          email: fallbackEmail,
+          passwordHash: "",
+          salt: "",
+          targetExamId: fallbackExam || "",
+          createdAt: now,
+          updatedAt: now,
+        };
+        if (fallbackEmail) {
+          db.usersByEmail[fallbackEmail.toLowerCase()] = userId;
+        }
+      }
     }
 
     if (updates.fullName !== undefined) {
@@ -414,6 +503,9 @@ export const AuthStore = {
       profile.selectedExam = updates.selectedExam;
       if (db.users[userId]) {
         db.users[userId].targetExamId = updates.selectedExam;
+      }
+      if (updates.selectedExam && updates.selectedExam !== "None" && updates.onboardingCompleted === undefined) {
+        profile.onboardingCompleted = true;
       }
     }
     if (updates.selectedSubject !== undefined)

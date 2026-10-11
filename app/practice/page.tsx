@@ -31,7 +31,7 @@ import {
 function PracticeHubContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
 
   const queryTopicId = searchParams.get("topic");
   const queryExamId = searchParams.get("examId");
@@ -44,8 +44,30 @@ function PracticeHubContent() {
     }
   }, [queryExamId, querySubjectId, queryTopicId, router]);
 
+  // Initial target exam resolved from URL or user profile
+  const initialExamId =
+    queryExamId ||
+    profile?.examId ||
+    (profile?.currentExam && profile.currentExam !== "None" ? profile.currentExam : "") ||
+    "sbi-po";
+
   // Exam Selection
-  const [selectedExamId, setSelectedExamId] = useState<string>("sbi-po");
+  const [selectedExamId, setSelectedExamId] = useState<string>(initialExamId);
+
+  // Sync to profile target exam when profile loads if no explicit URL param
+  useEffect(() => {
+    if (!queryExamId && profile?.examId && profile.examId !== selectedExamId) {
+      setSelectedExamId(profile.examId);
+      const subjs = getSubjectsForExam(profile.examId);
+      if (subjs[0]) {
+        setSelectedSubjectId(subjs[0].id);
+        const tops = getTopicsForSubject(subjs[0].id, profile.examId);
+        if (tops[0]) setSelectedTopicId(tops[0].id);
+      }
+      setSelectedSubtopicId("all");
+    }
+  }, [profile?.examId, queryExamId, selectedExamId]);
+
   const exam = getExamById(selectedExamId) || CENTRAL_EXAM_CATALOGUE[0];
 
   // Subject Selection

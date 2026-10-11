@@ -172,6 +172,55 @@ export const MASTER_SUBJECTS: Record<string, MasterSubject> = {
     iconName: "Landmark",
     defaultWeightage: "30-50 Marks",
   },
+  "environmental-science": {
+    id: "environmental-science",
+    name: "Environmental Studies & Ecology (EVS)",
+    shortDescription: "Ecosystems, biodiversity, environmental pollution, conservation, natural resources, and food webs.",
+    iconName: "Globe",
+    defaultWeightage: "30 Qs / 30 Marks",
+  },
+  "tamil-culture": {
+    id: "tamil-culture",
+    name: "Tamil Society, Heritage & Thirukkural",
+    shortDescription: "History of Tamil society, archaeological findings (Keezhadi), Thirukkural ethics, and self-respect movement.",
+    iconName: "BookOpen",
+    defaultWeightage: "Unit 8 of TNPSC Syllabus (40+ Qs)",
+  },
+  "language-tamil-hindi": {
+    id: "language-tamil-hindi",
+    name: "Regional Language (Tamil / Hindi / State)",
+    shortDescription: "Language comprehension, grammar rules, literary appreciation, vocabulary, and linguistic pedagogy.",
+    iconName: "BookOpen",
+    defaultWeightage: "30 Qs / 30 Marks",
+  },
+  "teaching-research-aptitude": {
+    id: "teaching-research-aptitude",
+    name: "Teaching & Research Aptitude",
+    shortDescription: "Teaching concepts, learner characteristics, research methods, thesis ethics, and communication in education.",
+    iconName: "BrainCircuit",
+    defaultWeightage: "UGC NET Paper 1 Core (20 Qs)",
+  },
+  "higher-education-polity": {
+    id: "higher-education-polity",
+    name: "Higher Education System & Governance",
+    shortDescription: "Institutions of higher learning in India, NEP 2020, regulatory bodies (UGC, AICTE), governance, and polity.",
+    iconName: "Landmark",
+    defaultWeightage: "10-15 Qs in Paper 1",
+  },
+  "scientific-general-aptitude": {
+    id: "scientific-general-aptitude",
+    name: "Scientific Methodology & Research Aptitude",
+    shortDescription: "Scientific data analysis, experimental modeling, laboratory standards, bioethics, and scientific reasoning.",
+    iconName: "BrainCircuit",
+    defaultWeightage: "30-50% of Technical Marks",
+  },
+  "core-engineering": {
+    id: "core-engineering",
+    name: "Core Engineering & Technical Discipline",
+    shortDescription: "Discipline-specific engineering mechanics, circuits, thermal sciences, data structures, and structural analysis.",
+    iconName: "BrainCircuit",
+    defaultWeightage: "70-72 Marks in GATE / Technical Exams",
+  },
 };
 
 // Fallback subject list if an exam has unmapped IDs

@@ -26,10 +26,12 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || "/dashboard";
 
-  const { login, isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const { login, logout, user, isAuthenticated } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -48,12 +50,11 @@ function LoginForm() {
     isError: boolean;
   } | null>(null);
 
-  // If already authenticated, redirect to dashboard or redirectTo
+  // Auto-fill email if user requested switch or passed via param
   useEffect(() => {
-    if (isAuthenticated && !isAuthLoading) {
-      router.push(redirectTo);
-    }
-  }, [isAuthenticated, isAuthLoading, router, redirectTo]);
+    const paramEmail = searchParams.get("email");
+    if (paramEmail) setEmail(paramEmail);
+  }, [searchParams]);
 
   const validateEmail = (val: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -65,23 +66,27 @@ function LoginForm() {
     if (isLoading) return;
 
     setError("");
+    setEmailError("");
+    setPasswordError("");
     setSuccessMessage("");
 
+    let hasErrors = false;
     const trimmedEmail = email.trim();
-    if (!trimmedEmail) {
-      setError("Please enter your registered email address.");
-      return;
-    }
 
-    if (!validateEmail(trimmedEmail)) {
-      setError(
-        "Please enter a valid email address (e.g., student@example.com)."
-      );
-      return;
+    if (!trimmedEmail) {
+      setEmailError("Email address is required.");
+      hasErrors = true;
+    } else if (!validateEmail(trimmedEmail)) {
+      setEmailError("Please enter a valid email address (e.g., student@example.com).");
+      hasErrors = true;
     }
 
     if (!password) {
-      setError("Please enter your password.");
+      setPasswordError("Password is required.");
+      hasErrors = true;
+    }
+
+    if (hasErrors) {
       return;
     }
 
@@ -279,14 +284,48 @@ function LoginForm() {
               </div>
             )}
 
-            <form onSubmit={handleLoginSubmit} className="space-y-4">
+            {/* Already logged in session indicator */}
+            {isAuthenticated && user && (
+              <div className="mb-6 p-4 rounded-2xl bg-forest-50 border border-forest-200 text-charcoal-900 animate-in fade-in">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-forest-700" />
+                  <span className="text-xs font-bold text-forest-900">You are already signed in</span>
+                </div>
+                <p className="text-xs text-charcoal-700 mb-3">
+                  Currently active as <strong>{user.email}</strong>.
+                </p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button variant="primary" size="sm" href={redirectTo}>
+                    Continue to Dashboard
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={async () => {
+                      await logout();
+                      setEmail("");
+                      setPassword("");
+                    }}
+                    leftIcon={<RotateCcw className="w-3.5 h-3.5 mr-1" />}
+                  >
+                    Sign Out / Switch Account
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            <form onSubmit={handleLoginSubmit} noValidate className="space-y-4">
               <Input
                 label="Email Address"
                 type="email"
                 placeholder="student@example.com"
                 autoComplete="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (emailError) setEmailError("");
+                }}
+                error={emailError}
                 leftIcon={<Mail className="w-4 h-4" />}
                 required
                 disabled={isLoading}
@@ -299,7 +338,11 @@ function LoginForm() {
                   autoComplete="current-password"
                   isPasswordToggle
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    if (passwordError) setPasswordError("");
+                  }}
+                  error={passwordError}
                   leftIcon={<Lock className="w-4 h-4" />}
                   required
                   disabled={isLoading}

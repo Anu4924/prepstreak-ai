@@ -12,35 +12,42 @@ import { TopicNavigationControls } from "@/components/ai/TopicNavigationControls
 import { AxmokAIService } from "@/services/ai/axmok-ai-service";
 import { getExamById, CENTRAL_EXAM_CATALOGUE } from "@/lib/data/examCatalogue";
 import { getSubjectsForExam, getSubjectById } from "@/lib/data/subjectRegistry";
+import { useAuth } from "@/services/auth/auth-context";
 import { getTopicsForSubject, getTopicById } from "@/lib/data/topicRegistry";
 import { BookOpen, Sparkles, Target } from "lucide-react";
 
 function LearnPageContent() {
   const searchParams = useSearchParams();
-  const rawExamId = searchParams.get("examId") || "sbi-po";
-  const rawSubjectId = searchParams.get("subjectId") || "reasoning-ability";
-  const rawTopicId = searchParams.get("topic") || searchParams.get("topicId") || "coding-decoding";
+  const { profile } = useAuth();
+
+  const queryExamId = searchParams.get("examId");
+  const querySubjectId = searchParams.get("subjectId");
+  const queryTopicId = searchParams.get("topic") || searchParams.get("topicId");
+
+  const effectiveExamId =
+    queryExamId ||
+    profile?.examId ||
+    (profile?.currentExam && profile.currentExam !== "None" ? profile.currentExam : "") ||
+    "sbi-po";
 
   const [activePromptForChat, setActivePromptForChat] = useState<string | null>(null);
 
   // 1. Resolve Exam
   const exam =
-    getExamById(rawExamId) ||
-    CENTRAL_EXAM_CATALOGUE.find((e) => e.id === rawExamId) ||
+    getExamById(effectiveExamId) ||
+    CENTRAL_EXAM_CATALOGUE.find((e) => e.id === effectiveExamId) ||
     CENTRAL_EXAM_CATALOGUE[0];
 
-  // 2. Resolve Subject
+  // 2. Resolve Subject (default to first subject of THIS exam)
   const subjects = getSubjectsForExam(exam.id);
   const subject =
-    subjects.find((s) => s.id === rawSubjectId) ||
-    getSubjectById(rawSubjectId, exam.id) ||
+    (querySubjectId && (subjects.find((s) => s.id === querySubjectId) || getSubjectById(querySubjectId, exam.id))) ||
     subjects[0];
 
-  // 3. Resolve Topics & Current Topic
+  // 3. Resolve Topics & Current Topic (default to first topic of THIS subject)
   const allSubjectTopics = getTopicsForSubject(subject.id, exam.id);
   const currentTopic =
-    allSubjectTopics.find((t) => t.id === rawTopicId) ||
-    getTopicById(rawTopicId, subject.id, exam.id) ||
+    (queryTopicId && (allSubjectTopics.find((t) => t.id === queryTopicId) || getTopicById(queryTopicId, subject.id, exam.id))) ||
     allSubjectTopics[0];
 
   // 4. Calculate previous and next topics

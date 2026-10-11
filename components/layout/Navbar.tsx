@@ -4,12 +4,12 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
-import { Menu, X, ArrowRight, LayoutDashboard } from "lucide-react";
+import { Menu, X, ArrowRight, LayoutDashboard, LogOut } from "lucide-react";
 import { useAuth } from "@/services/auth/auth-context";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isAuthenticated, profile, user } = useAuth();
+  const { isAuthenticated, profile, user, logout } = useAuth();
 
   const navLinks = [
     { label: "Exams", href: "/exams" },
@@ -41,15 +41,26 @@ export function Navbar() {
         {/* Desktop CTA actions */}
         <div className="hidden md:flex items-center space-x-3">
           {isAuthenticated ? (
-            <Button
-              variant="primary"
-              size="sm"
-              href="/dashboard"
-              leftIcon={<LayoutDashboard className="w-4 h-4 mr-1" />}
-              rightIcon={<ArrowRight className="w-4 h-4 ml-1" />}
-            >
-              Dashboard ({displayName.split(" ")[0]})
-            </Button>
+            <>
+              <Button
+                variant="primary"
+                size="sm"
+                href="/dashboard"
+                leftIcon={<LayoutDashboard className="w-4 h-4 mr-1" />}
+                rightIcon={<ArrowRight className="w-4 h-4 ml-1" />}
+              >
+                Dashboard ({displayName.split(" ")[0]})
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => logout()}
+                leftIcon={<LogOut className="w-4 h-4 mr-1 text-charcoal-500" />}
+                className="text-charcoal-600 hover:text-rose-600"
+              >
+                Sign Out
+              </Button>
+            </>
           ) : (
             <>
               <Button variant="ghost" size="sm" href="/login">
@@ -98,16 +109,30 @@ export function Navbar() {
 
           <div className="pt-4 border-t border-charcoal-100 flex flex-col space-y-2">
             {isAuthenticated ? (
-              <Button
-                variant="primary"
-                size="md"
-                href="/dashboard"
-                className="w-full justify-center"
-                onClick={() => setMobileMenuOpen(false)}
-                leftIcon={<LayoutDashboard className="w-4 h-4 mr-1" />}
-              >
-                Go to Dashboard
-              </Button>
+              <>
+                <Button
+                  variant="primary"
+                  size="md"
+                  href="/dashboard"
+                  className="w-full justify-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                  leftIcon={<LayoutDashboard className="w-4 h-4 mr-1" />}
+                >
+                  Go to Dashboard
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="md"
+                  onClick={async () => {
+                    setMobileMenuOpen(false);
+                    await logout();
+                  }}
+                  className="w-full justify-center text-rose-600 hover:bg-rose-50"
+                  leftIcon={<LogOut className="w-4 h-4 mr-1" />}
+                >
+                  Sign Out
+                </Button>
+              </>
             ) : (
               <>
                 <Button

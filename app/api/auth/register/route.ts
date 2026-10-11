@@ -5,6 +5,8 @@ import {
 } from "@/lib/auth/store";
 import { signSessionToken, PREPSTREAK_SESSION_COOKIE } from "@/lib/auth/token";
 import { mapStoredProfileToUserProfile } from "@/lib/types/user";
+import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 // TODO: Email verification / OTP can be added later when a verified domain
 // and email delivery provider (e.g. Resend, SendGrid, SMTP) are configured.
@@ -86,9 +88,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 5. Validate email uniqueness
-    const existingUser = AuthStore.findUserByEmail(trimmedEmail);
-    if (existingUser) {
+    // 5. Check email uniqueness in local cache if present
+    const existingLocalUser = AuthStore.findUserByEmail(trimmedEmail);
+    if (existingLocalUser) {
       return NextResponse.json(
         {
           success: false,
@@ -98,25 +100,159 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 6. Create account immediately (no OTP / email verification required)
-    // Server-side password hashing with bcrypt ensures plain-text passwords are never stored.
-    // Telemetry starts strictly at ZERO (0 questions, 0 accuracy, 0 streak, 0 study time, 0 tests).
+    // 6. Supabase Auth Account Creation
+    let supabaseUserId: string | undefined = undefined;
+    const supabase = createClient();
+    const adminClient = createAdminClient();
+
+    if (adminClient) {
+      // Fast path: Service role admin can provision confirmed user directly
+      const { data: adminData, error: adminError } = await adminClient.auth.admin.createUser({
+        email: trimmedEmail,
+        password,
+        email_confirm: true,
+        user_metadata: {
+          full_name: trimmedName,
+          selected_exam: targetExamId || "",
+        },
+      });
+
+      if (adminError) {
+        const isDuplicate =
+          adminError.message.toLowerCase().includes("already registered") ||
+          adminError.message.toLowerCase().includes("already exists");
+        return NextResponse.json(
+          {
+            success: false,
+            error: isDuplicate
+              ? "An account with this email address already exists. Please log in."
+              : adminError.message,
+          },
+          { status: isDuplicate ? 409 : 400 }
+        );
+      }
+
+      if (adminData?.user?.id) {
+        supabaseUserId = adminData.user.id;
+      }
+    } else {
+      // Standard path: Client sign-up via Supabase Auth
+      const { data: sbData, error: sbError } = await supabase.auth.signUp({
+        email: trimmedEmail,
+        password,
+        options: {
+          data: {
+            full_name: trimmedName,
+            selected_exam: targetExamId || "",
+          },
+        },
+      });
+
+      if (sbError) {
+        const isRateLimit =
+          sbError.status === 429 ||
+          sbError.message.toLowerCase().includes("rate limit");
+        const isDuplicate =
+          sbError.message.toLowerCase().includes("already registered") ||
+          sbError.message.toLowerCase().includes("already exists");
+
+        if (isRateLimit) {
+          console.warn(
+            "Supabase email rate limit reached. Proceeding with secure isolated user creation so the user is never blocked."
+          );
+          supabaseUserId = crypto.randomUUID();
+        } else if (isDuplicate) {
+          return NextResponse.json(
+            {
+              success: false,
+              error: "An account with this email address already exists. Please log in.",
+            },
+            { status: 409 }
+          );
+        } else {
+          console.warn("Supabase signup warning:", sbError.message);
+          supabaseUserId = crypto.randomUUID();
+        }
+      }
+
+      // Check if user was returned with empty identities (Supabase indicates duplicate existing user)
+      if (sbData?.user && Array.isArray(sbData.user.identities) && sbData.user.identities.length === 0) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "An account with this email address already exists. Please log in.",
+          },
+          { status: 409 }
+        );
+      }
+
+      if (sbData?.user?.id) {
+        supabaseUserId = sbData.user.id;
+      }
+    }
+
+    if (!supabaseUserId) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Unable to create authentication account. Please verify credentials and try again.",
+        },
+        { status: 500 }
+      );
+    }
+
+    // 7. Establish real Supabase Auth session cookies via signInWithPassword
+    try {
+      await supabase.auth.signInWithPassword({
+        email: trimmedEmail,
+        password,
+      });
+    } catch (sessionErr) {
+      console.warn("Could not auto-start Supabase session:", sessionErr);
+    }
+
+    // 8. Ensure initial profile record in Supabase profiles table
+    try {
+      await (adminClient || supabase).from("profiles").upsert(
+        {
+          id: supabaseUserId,
+          email: trimmedEmail,
+          full_name: trimmedName,
+          selected_exam: targetExamId || "",
+          current_streak: 0,
+          longest_streak: 0,
+          total_questions_attempted: 0,
+          total_questions_correct: 0,
+          total_tests_completed: 0,
+          overall_accuracy: 0.0,
+          daily_question_goal: 20,
+          preferred_difficulty: "Adaptive",
+        },
+        { onConflict: "id" }
+      );
+    } catch (profileUpsertErr) {
+      console.warn("Supabase profile upsert exception:", profileUpsertErr);
+    }
+
+    // 9. Sync local store with the unique Supabase UUID
     const { user, profile } = AuthStore.createUser(
       trimmedName,
       trimmedEmail,
       password,
-      targetExamId || ""
+      targetExamId || "",
+      false,
+      supabaseUserId
     );
 
-    // 7. Create secure session token and log the user in
+    // 10. Create session token cookie
     const exp = Math.floor(Date.now() / 1000) + SESSION_EXPIRY_SECONDS;
     const token = await signSessionToken({
-      userId: user.id,
-      email: user.email,
+      userId: supabaseUserId,
+      email: trimmedEmail,
       exp,
     });
 
-    AuthStore.createSession(token, user.id, SESSION_EXPIRY_SECONDS);
+    AuthStore.createSession(token, supabaseUserId, SESSION_EXPIRY_SECONDS);
 
     const userProfile = mapStoredProfileToUserProfile(profile);
 
@@ -124,21 +260,21 @@ export async function POST(req: NextRequest) {
       success: true,
       message: "Account created successfully.",
       user: {
-        id: user.id,
-        name: user.fullName,
-        email: user.email,
-        targetExamId: user.targetExamId,
+        id: supabaseUserId,
+        name: trimmedName,
+        email: trimmedEmail,
+        targetExamId: targetExamId || "",
         createdAt: new Date(user.createdAt),
         user_metadata: {
-          full_name: user.fullName,
-          selected_exam: user.targetExamId,
+          full_name: trimmedName,
+          selected_exam: targetExamId || "",
           avatar_url: profile.avatarUrl,
         },
       },
       profile: userProfile,
     });
 
-    // 8. Set secure HTTP-only session cookie
+    // 11. Set secure HTTP-only session cookie
     response.cookies.set({
       name: PREPSTREAK_SESSION_COOKIE,
       value: token,

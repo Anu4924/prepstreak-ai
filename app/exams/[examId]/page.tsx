@@ -16,7 +16,9 @@ import {
   FileText,
   Clock,
   ArrowLeft,
+  CheckSquare,
 } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 
 export default function SubjectSelectionPage() {
   const params = useParams();
@@ -59,6 +61,26 @@ export default function SubjectSelectionPage() {
           { label: "Exams", href: "/exams" },
           { label: exam.name },
         ]}
+        action={
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              href={`/tests?examId=${exam.id}&type=mini_mock`}
+              variant="secondary"
+              size="sm"
+              leftIcon={<CheckSquare className="w-4 h-4 text-forest-800" />}
+            >
+              Mini Mock (20 Qs)
+            </Button>
+            <Button
+              href={`/tests?examId=${exam.id}&type=full_mock`}
+              variant="outline"
+              size="sm"
+              leftIcon={<Clock className="w-4 h-4" />}
+            >
+              Full Mock Exam
+            </Button>
+          </div>
+        }
         badge={
           <Badge variant="forest" size="md">
             {subjects.length} Subjects Active

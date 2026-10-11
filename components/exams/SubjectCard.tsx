@@ -10,6 +10,7 @@ import {
   Globe,
   Landmark,
   ArrowRight,
+  CheckSquare,
 } from "lucide-react";
 
 interface SubjectCardProps {
@@ -65,15 +66,26 @@ export function SubjectCard({ subject }: SubjectCardProps) {
           <ProgressBar value={subject.progress} height="sm" variant="forest" />
         </div>
 
-        <Button
-          href={`/exams/${subject.examId}/${subject.id}`}
-          variant="outline"
-          size="sm"
-          className="w-full justify-center group-hover:bg-forest-900 group-hover:text-white group-hover:border-forest-900 transition-all"
-          rightIcon={<ArrowRight className="w-3.5 h-3.5 ml-1" />}
-        >
-          View Topics
-        </Button>
+        <div className="grid grid-cols-2 gap-2">
+          <Button
+            href={`/exams/${subject.examId}/${subject.id}`}
+            variant="outline"
+            size="sm"
+            className="justify-center group-hover:border-forest-700 transition-all text-xs"
+            rightIcon={<ArrowRight className="w-3 h-3 ml-1" />}
+          >
+            Topics
+          </Button>
+          <Button
+            href={`/tests?examId=${subject.examId}&subjectId=${subject.id}`}
+            variant="ghost"
+            size="sm"
+            className="justify-center border border-charcoal-200 hover:bg-forest-900 hover:text-white hover:border-forest-900 transition-all text-xs"
+            leftIcon={<CheckSquare className="w-3 h-3 mr-1" />}
+          >
+            Take Test
+          </Button>
+        </div>
       </div>
     </Card>
   );

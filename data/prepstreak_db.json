@@ -10,27 +10,243 @@
       "createdAt": "2026-10-05T15:29:54.652Z",
       "updatedAt": "2026-10-05T15:29:54.652Z"
     },
-    "usr_cb866b9f9f4497b167aa115a": {
-      "id": "usr_cb866b9f9f4497b167aa115a",
+    "usr_a6f6611643c0f3ac1418e317": {
+      "id": "usr_a6f6611643c0f3ac1418e317",
+      "fullName": "Anu",
+      "email": "anu492480@gmail.com",
+      "passwordHash": "$2b$10$688B4XwPCk000HxtY2WpZO37FJhj0jCp/8EbIK6FWDKbbjdSViLaC",
+      "salt": "459df74d45913a9aba920805d45f2882",
+      "targetExamId": "sbi-po",
+      "createdAt": "2026-10-09T13:42:07.073Z",
+      "updatedAt": "2026-10-09T13:42:07.073Z"
+    },
+    "b6798e29-1aa5-48ce-8420-b32eec843601": {
+      "id": "b6798e29-1aa5-48ce-8420-b32eec843601",
+      "fullName": "Karthik Raman",
+      "email": "karthik_1791730250258@gmail.com",
+      "passwordHash": "$2b$10$CwYvmikK8ZkV/DlBL9SaR.euc462.9oTx6uHUK26F8aq47GOJ.FW6",
+      "salt": "74595fa006548ab1998e863aa0446163",
+      "targetExamId": "tnpsc-group-4",
+      "createdAt": "2026-10-11T14:50:56.270Z",
+      "updatedAt": "2026-10-11T14:50:56.270Z"
+    },
+    "f2e8be3b-8809-44e4-9e13-ce6122662bf0": {
+      "id": "f2e8be3b-8809-44e4-9e13-ce6122662bf0",
+      "fullName": "Rahul Verma",
+      "email": "user_b_1791730436207@test.com",
+      "passwordHash": "$2b$10$nOg9aNdurzBurfloQ7AW0eK3RpW3lx95YexwkGtfrePgXK44x0oQa",
+      "salt": "0133449d5492798b9b268ad99a7c9bac",
+      "targetExamId": "ssc-cgl",
+      "createdAt": "2026-10-11T14:53:57.835Z",
+      "updatedAt": "2026-10-11T14:53:57.835Z"
+    },
+    "db841a9f-02ee-4b09-90c8-9b0b990003c5": {
+      "id": "db841a9f-02ee-4b09-90c8-9b0b990003c5",
+      "fullName": "Ananya Sharma",
+      "email": "ananya_1791730471848@gmail.com",
+      "passwordHash": "$2b$10$BL5UWJXmYLKmAiFi83KYSeKuqIHCaWS5Dk3/zNi6/oduU5adudzW2",
+      "salt": "d38956e82c00a6cdc507557843537d45",
+      "targetExamId": "rrb-ntpc",
+      "createdAt": "2026-10-11T14:54:33.456Z",
+      "updatedAt": "2026-10-11T14:54:33.456Z"
+    },
+    "7435aa38-ee7e-40fb-a239-5e91f6b38ae6": {
+      "id": "7435aa38-ee7e-40fb-a239-5e91f6b38ae6",
+      "fullName": "Rahul Verma",
+      "email": "rahul_1791730474040@gmail.com",
+      "passwordHash": "$2b$10$/P62TmkoL5ZrqQLuZpV2X.Fuekv/LaPo1TIpq/YRLfxDEajYalWfi",
+      "salt": "e95823f04bf267f08af0859fc2be9a05",
+      "targetExamId": "ssc-cgl",
+      "createdAt": "2026-10-11T14:54:34.916Z",
+      "updatedAt": "2026-10-11T14:54:34.916Z"
+    },
+    "e078e68d-cc7d-47c4-8288-fd2b311e3074": {
+      "id": "e078e68d-cc7d-47c4-8288-fd2b311e3074",
+      "fullName": "Suresh Kumar",
+      "email": "suresh_tnpsc_1791733665471@gmail.com",
+      "passwordHash": "$2b$10$bGaEGDrf1xk5c3dnZkKXLuFzud/WnC3lhjRpZeHnAB4lKwh.PD3WS",
+      "salt": "f8e4f2fc8cd317626f35ad797d38dccd",
+      "targetExamId": "tnpsc-group-4",
+      "createdAt": "2026-10-11T15:47:47.470Z",
+      "updatedAt": "2026-10-11T15:47:47.470Z"
+    },
+    "dd7580cb-d1bd-4710-93b5-4cf491174aeb": {
+      "id": "dd7580cb-d1bd-4710-93b5-4cf491174aeb",
+      "fullName": "Deepa Selvam",
+      "email": "deepa_tnpsc_1791734911384@gmail.com",
+      "passwordHash": "$2b$10$piwPKyrDZ5gTgMZKfntU3uhUf8rTijyo7Su3Ygb2lgfHTWGNIGxnm",
+      "salt": "57a52d403f59b653dfd34c011cf2b7b2",
+      "targetExamId": "tnpsc-group-4",
+      "createdAt": "2026-10-11T16:08:33.726Z",
+      "updatedAt": "2026-10-11T16:08:33.726Z"
+    },
+    "57cf4986-8acd-405d-8915-5353b789183f": {
+      "id": "57cf4986-8acd-405d-8915-5353b789183f",
+      "fullName": "Kalai",
+      "email": "sriii191811@gmail.com",
+      "passwordHash": "$2b$10$oAh9PW9UKiHGfXpXMeXmu.pwu4Xw4AumXfwHgbh.7L/q2.lvIXC22",
+      "salt": "dc9f2bb3a6ed113e9bd6d1d6c64e1bf0",
+      "targetExamId": "upsc-ese",
+      "createdAt": "2026-10-11T13:27:40.286Z",
+      "updatedAt": "2026-10-11T16:20:48.515Z"
+    },
+    "81462005-6a12-474f-9118-178a600eda13": {
+      "id": "81462005-6a12-474f-9118-178a600eda13",
+      "fullName": "E2E Student",
+      "email": "student_e2e_1791735727629@gmail.com",
+      "passwordHash": "$2b$10$Az0FeP.87mO3DZRalY7ZxubeGxZHzmozEPvXQf3Stg0xcwhWDbL9a",
+      "salt": "4f935fabe3cd729882e30cb61020fae3",
+      "targetExamId": "ssc-cgl",
+      "createdAt": "2026-10-11T16:22:09.507Z",
+      "updatedAt": "2026-10-11T16:22:09.507Z"
+    },
+    "59fa374b-7918-40c5-87d3-132d7e867686": {
+      "id": "59fa374b-7918-40c5-87d3-132d7e867686",
+      "fullName": "Persistence Test Aspirant",
+      "email": "persistent_user_1791736884697@gmail.com",
+      "passwordHash": "$2b$10$Wr1HX.LRxj5L3yzyEpgy/.FDFrC3/txJTeFGPOhuJTU4EZuhGNhti",
+      "salt": "bd81dda2e65e36b3c6ef1daf8014aace",
+      "targetExamId": "ssc-cgl",
+      "createdAt": "2026-10-11T16:41:27.194Z",
+      "updatedAt": "2026-10-11T16:41:27.194Z"
+    },
+    "a5968c41-6e3b-4f82-8182-e7b88efd2b26": {
+      "id": "a5968c41-6e3b-4f82-8182-e7b88efd2b26",
       "fullName": "Kumaran",
       "email": "smily1918@gmail.com",
       "passwordHash": "$2b$10$LEtb2qFbMJ09PNw.RRseu.fu7/v78yL2ptHN8Yqj4P0muB9vjorWC",
       "salt": "6c322094164ffafa06feee09f2719c2a",
       "targetExamId": "upsc-cse",
       "createdAt": "2026-10-05T15:39:36.890Z",
-      "updatedAt": "2026-10-05T15:39:36.890Z"
+      "updatedAt": "2026-10-11T16:48:08.627Z"
+    },
+    "f133f089-ad94-4be8-8e1a-c92e9c0054ef": {
+      "id": "f133f089-ad94-4be8-8e1a-c92e9c0054ef",
+      "fullName": "Launch Auditor",
+      "email": "launch_auditor_1791737701363@prepstreak.ai",
+      "passwordHash": "$2b$10$AcoXDGxcJ183rATd2y8TUuekmupAMJ8KYr9G47L6E6gRBLiJQtA52",
+      "salt": "a4fbff128ff60a6ba133e0aeffc27097",
+      "targetExamId": "ssc-cgl",
+      "createdAt": "2026-10-11T16:55:03.551Z",
+      "updatedAt": "2026-10-11T16:55:03.551Z"
+    },
+    "71d1a8cb-202c-4dbd-9c3f-8f67a4b40521": {
+      "id": "71d1a8cb-202c-4dbd-9c3f-8f67a4b40521",
+      "fullName": "Launch Auditor",
+      "email": "launch_auditor_1791737767969@prepstreak.ai",
+      "passwordHash": "$2b$10$naAeXybeIiYAN1o9hphQUOpR0uC8jV//Mu.S9u.VOG5JsbiqgJ0Nq",
+      "salt": "324382480c902133b9d55fe564fe216a",
+      "targetExamId": "ssc-cgl",
+      "createdAt": "2026-10-11T16:56:09.083Z",
+      "updatedAt": "2026-10-11T16:56:09.083Z"
     }
   },
   "usersByEmail": {
     "kalaiskeditz@gmail.com": "usr_eb45a0701b26b47635aca242",
-    "smily1918@gmail.com": "usr_cb866b9f9f4497b167aa115a"
+    "smily1918@gmail.com": "a5968c41-6e3b-4f82-8182-e7b88efd2b26",
+    "anu492480@gmail.com": "usr_a6f6611643c0f3ac1418e317",
+    "sriii191811@gmail.com": "57cf4986-8acd-405d-8915-5353b789183f",
+    "karthik_1791730250258@gmail.com": "b6798e29-1aa5-48ce-8420-b32eec843601",
+    "user_b_1791730436207@test.com": "f2e8be3b-8809-44e4-9e13-ce6122662bf0",
+    "ananya_1791730471848@gmail.com": "db841a9f-02ee-4b09-90c8-9b0b990003c5",
+    "rahul_1791730474040@gmail.com": "7435aa38-ee7e-40fb-a239-5e91f6b38ae6",
+    "suresh_tnpsc_1791733665471@gmail.com": "e078e68d-cc7d-47c4-8288-fd2b311e3074",
+    "deepa_tnpsc_1791734911384@gmail.com": "dd7580cb-d1bd-4710-93b5-4cf491174aeb",
+    "student_e2e_1791735727629@gmail.com": "81462005-6a12-474f-9118-178a600eda13",
+    "persistent_user_1791736884697@gmail.com": "59fa374b-7918-40c5-87d3-132d7e867686",
+    "launch_auditor_1791737701363@prepstreak.ai": "f133f089-ad94-4be8-8e1a-c92e9c0054ef",
+    "launch_auditor_1791737767969@prepstreak.ai": "71d1a8cb-202c-4dbd-9c3f-8f67a4b40521"
   },
   "sessions": {
-    "eyJ1c2VySWQiOiJ1c3JfY2I4NjZiOWY5ZjQ0OTdiMTY3YWExMTVhIiwiZW1haWwiOiJzbWlseTE5MThAZ21haWwuY29tIiwiZXhwIjoxNzkzODA2Nzc2fQ.kqJjYpyADgSqAe3nsroDAH9Vf1zGKO3JAp9g8l1FLM8": {
-      "token": "eyJ1c2VySWQiOiJ1c3JfY2I4NjZiOWY5ZjQ0OTdiMTY3YWExMTVhIiwiZW1haWwiOiJzbWlseTE5MThAZ21haWwuY29tIiwiZXhwIjoxNzkzODA2Nzc2fQ.kqJjYpyADgSqAe3nsroDAH9Vf1zGKO3JAp9g8l1FLM8",
-      "userId": "usr_cb866b9f9f4497b167aa115a",
-      "createdAt": "2026-10-05T15:39:36.904Z",
-      "expiresAt": "2026-11-04T15:39:36.904Z"
+    "eyJ1c2VySWQiOiJiNjc5OGUyOS0xYWE1LTQ4Y2UtODQyMC1iMzJlZWM4NDM2MDEiLCJlbWFpbCI6ImthcnRoaWtfMTc5MTczMDI1MDI1OEBnbWFpbC5jb20iLCJleHAiOjE3OTQzMjIyNTl9.JivDaQ27F_vt91DKldtSm5txJyk5Cdsv5FQoZHkvF0s": {
+      "token": "eyJ1c2VySWQiOiJiNjc5OGUyOS0xYWE1LTQ4Y2UtODQyMC1iMzJlZWM4NDM2MDEiLCJlbWFpbCI6ImthcnRoaWtfMTc5MTczMDI1MDI1OEBnbWFpbC5jb20iLCJleHAiOjE3OTQzMjIyNTl9.JivDaQ27F_vt91DKldtSm5txJyk5Cdsv5FQoZHkvF0s",
+      "userId": "b6798e29-1aa5-48ce-8420-b32eec843601",
+      "createdAt": "2026-10-11T14:50:59.293Z",
+      "expiresAt": "2026-11-10T14:50:59.293Z"
+    },
+    "eyJ1c2VySWQiOiJmMmU4YmUzYi04ODA5LTQ0ZTQtOWUxMy1jZTYxMjI2NjJiZjAiLCJlbWFpbCI6InVzZXJfYl8xNzkxNzMwNDM2MjA3QHRlc3QuY29tIiwiZXhwIjoxNzk0MzIyNDM3fQ.aKSJL1LMbFPbW0xNfLYep5rxJDFzrYYYns0lkVIwGkE": {
+      "token": "eyJ1c2VySWQiOiJmMmU4YmUzYi04ODA5LTQ0ZTQtOWUxMy1jZTYxMjI2NjJiZjAiLCJlbWFpbCI6InVzZXJfYl8xNzkxNzMwNDM2MjA3QHRlc3QuY29tIiwiZXhwIjoxNzk0MzIyNDM3fQ.aKSJL1LMbFPbW0xNfLYep5rxJDFzrYYYns0lkVIwGkE",
+      "userId": "f2e8be3b-8809-44e4-9e13-ce6122662bf0",
+      "createdAt": "2026-10-11T14:53:57.838Z",
+      "expiresAt": "2026-11-10T14:53:57.838Z"
+    },
+    "eyJ1c2VySWQiOiJkYjg0MWE5Zi0wMmVlLTRiMDktOTBjOC05YjBiOTkwMDAzYzUiLCJlbWFpbCI6ImFuYW55YV8xNzkxNzMwNDcxODQ4QGdtYWlsLmNvbSIsImV4cCI6MTc5NDMyMjQ3M30.Y9Dn1wU_2smCznbU94kGUb2OSThPMJwiHvjwkZRCOIo": {
+      "token": "eyJ1c2VySWQiOiJkYjg0MWE5Zi0wMmVlLTRiMDktOTBjOC05YjBiOTkwMDAzYzUiLCJlbWFpbCI6ImFuYW55YV8xNzkxNzMwNDcxODQ4QGdtYWlsLmNvbSIsImV4cCI6MTc5NDMyMjQ3M30.Y9Dn1wU_2smCznbU94kGUb2OSThPMJwiHvjwkZRCOIo",
+      "userId": "db841a9f-02ee-4b09-90c8-9b0b990003c5",
+      "createdAt": "2026-10-11T14:54:33.458Z",
+      "expiresAt": "2026-11-10T14:54:33.458Z"
+    },
+    "eyJ1c2VySWQiOiI3NDM1YWEzOC1lZTdlLTQwZmItYTIzOS01ZTkxZjZiMzhhZTYiLCJlbWFpbCI6InJhaHVsXzE3OTE3MzA0NzQwNDBAZ21haWwuY29tIiwiZXhwIjoxNzk0MzIyNDc0fQ.hhKcbQAh1NF375z-emv6VjBvfycsqPXLwejtWCGCB-0": {
+      "token": "eyJ1c2VySWQiOiI3NDM1YWEzOC1lZTdlLTQwZmItYTIzOS01ZTkxZjZiMzhhZTYiLCJlbWFpbCI6InJhaHVsXzE3OTE3MzA0NzQwNDBAZ21haWwuY29tIiwiZXhwIjoxNzk0MzIyNDc0fQ.hhKcbQAh1NF375z-emv6VjBvfycsqPXLwejtWCGCB-0",
+      "userId": "7435aa38-ee7e-40fb-a239-5e91f6b38ae6",
+      "createdAt": "2026-10-11T14:54:34.919Z",
+      "expiresAt": "2026-11-10T14:54:34.919Z"
+    },
+    "eyJ1c2VySWQiOiJlMDc4ZTY4ZC1jYzdkLTQ3YzQtODI4OC1mZDJiMzExZTMwNzQiLCJlbWFpbCI6InN1cmVzaF90bnBzY18xNzkxNzMzNjY1NDcxQGdtYWlsLmNvbSIsImV4cCI6MTc5NDMyNTY2N30.PM9XBYv4EMeFaMnkKNwBTHaMP4RrTkAspY-mHV0fvR8": {
+      "token": "eyJ1c2VySWQiOiJlMDc4ZTY4ZC1jYzdkLTQ3YzQtODI4OC1mZDJiMzExZTMwNzQiLCJlbWFpbCI6InN1cmVzaF90bnBzY18xNzkxNzMzNjY1NDcxQGdtYWlsLmNvbSIsImV4cCI6MTc5NDMyNTY2N30.PM9XBYv4EMeFaMnkKNwBTHaMP4RrTkAspY-mHV0fvR8",
+      "userId": "e078e68d-cc7d-47c4-8288-fd2b311e3074",
+      "createdAt": "2026-10-11T15:47:47.472Z",
+      "expiresAt": "2026-11-10T15:47:47.472Z"
+    },
+    "eyJ1c2VySWQiOiJlMDc4ZTY4ZC1jYzdkLTQ3YzQtODI4OC1mZDJiMzExZTMwNzQiLCJlbWFpbCI6InN1cmVzaF90bnBzY18xNzkxNzMzNjY1NDcxQGdtYWlsLmNvbSIsImV4cCI6MTc5NDMyNTY4N30.kFw2AYz1jyBugt3WQ2ODW-SmaKv9_CEcXTgTag4AHZM": {
+      "token": "eyJ1c2VySWQiOiJlMDc4ZTY4ZC1jYzdkLTQ3YzQtODI4OC1mZDJiMzExZTMwNzQiLCJlbWFpbCI6InN1cmVzaF90bnBzY18xNzkxNzMzNjY1NDcxQGdtYWlsLmNvbSIsImV4cCI6MTc5NDMyNTY4N30.kFw2AYz1jyBugt3WQ2ODW-SmaKv9_CEcXTgTag4AHZM",
+      "userId": "e078e68d-cc7d-47c4-8288-fd2b311e3074",
+      "createdAt": "2026-10-11T15:48:07.607Z",
+      "expiresAt": "2026-11-10T15:48:07.607Z"
+    },
+    "eyJ1c2VySWQiOiJkZDc1ODBjYi1kMWJkLTQ3MTAtOTNiNS00Y2Y0OTExNzRhZWIiLCJlbWFpbCI6ImRlZXBhX3RucHNjXzE3OTE3MzQ5MTEzODRAZ21haWwuY29tIiwiZXhwIjoxNzk0MzI2OTEzfQ.e1wgV6ogO8JlrdWSMeFcbMJWCiueFfllyw5pvsKYxuE": {
+      "token": "eyJ1c2VySWQiOiJkZDc1ODBjYi1kMWJkLTQ3MTAtOTNiNS00Y2Y0OTExNzRhZWIiLCJlbWFpbCI6ImRlZXBhX3RucHNjXzE3OTE3MzQ5MTEzODRAZ21haWwuY29tIiwiZXhwIjoxNzk0MzI2OTEzfQ.e1wgV6ogO8JlrdWSMeFcbMJWCiueFfllyw5pvsKYxuE",
+      "userId": "dd7580cb-d1bd-4710-93b5-4cf491174aeb",
+      "createdAt": "2026-10-11T16:08:33.729Z",
+      "expiresAt": "2026-11-10T16:08:33.729Z"
+    },
+    "eyJ1c2VySWQiOiJkZDc1ODBjYi1kMWJkLTQ3MTAtOTNiNS00Y2Y0OTExNzRhZWIiLCJlbWFpbCI6ImRlZXBhX3RucHNjXzE3OTE3MzQ5MTEzODRAZ21haWwuY29tIiwiZXhwIjoxNzk0MzI2OTE1fQ.aiOBxblzUSyVlCk17U4pjymwZpOfVhtxtWU0crPyic0": {
+      "token": "eyJ1c2VySWQiOiJkZDc1ODBjYi1kMWJkLTQ3MTAtOTNiNS00Y2Y0OTExNzRhZWIiLCJlbWFpbCI6ImRlZXBhX3RucHNjXzE3OTE3MzQ5MTEzODRAZ21haWwuY29tIiwiZXhwIjoxNzk0MzI2OTE1fQ.aiOBxblzUSyVlCk17U4pjymwZpOfVhtxtWU0crPyic0",
+      "userId": "dd7580cb-d1bd-4710-93b5-4cf491174aeb",
+      "createdAt": "2026-10-11T16:08:35.873Z",
+      "expiresAt": "2026-11-10T16:08:35.873Z"
+    },
+    "eyJ1c2VySWQiOiI4MTQ2MjAwNS02YTEyLTQ3NGYtOTExOC0xNzhhNjAwZWRhMTMiLCJlbWFpbCI6InN0dWRlbnRfZTJlXzE3OTE3MzU3Mjc2MjlAZ21haWwuY29tIiwiZXhwIjoxNzk0MzI3NzI5fQ.m3WJtuhoowPC6O6_MajkHmrgB6aXXmxf35SGGAsROA0": {
+      "token": "eyJ1c2VySWQiOiI4MTQ2MjAwNS02YTEyLTQ3NGYtOTExOC0xNzhhNjAwZWRhMTMiLCJlbWFpbCI6InN0dWRlbnRfZTJlXzE3OTE3MzU3Mjc2MjlAZ21haWwuY29tIiwiZXhwIjoxNzk0MzI3NzI5fQ.m3WJtuhoowPC6O6_MajkHmrgB6aXXmxf35SGGAsROA0",
+      "userId": "81462005-6a12-474f-9118-178a600eda13",
+      "createdAt": "2026-10-11T16:22:09.516Z",
+      "expiresAt": "2026-11-10T16:22:09.516Z"
+    },
+    "eyJ1c2VySWQiOiI4MTQ2MjAwNS02YTEyLTQ3NGYtOTExOC0xNzhhNjAwZWRhMTMiLCJlbWFpbCI6InN0dWRlbnRfZTJlXzE3OTE3MzU3Mjc2MjlAZ21haWwuY29tIiwiZXhwIjoxNzk0MzI3NzMyfQ._lnx7IDHk7Pmw92Qam3kdV0w9nrRZRLUAK4DBjbex30": {
+      "token": "eyJ1c2VySWQiOiI4MTQ2MjAwNS02YTEyLTQ3NGYtOTExOC0xNzhhNjAwZWRhMTMiLCJlbWFpbCI6InN0dWRlbnRfZTJlXzE3OTE3MzU3Mjc2MjlAZ21haWwuY29tIiwiZXhwIjoxNzk0MzI3NzMyfQ._lnx7IDHk7Pmw92Qam3kdV0w9nrRZRLUAK4DBjbex30",
+      "userId": "81462005-6a12-474f-9118-178a600eda13",
+      "createdAt": "2026-10-11T16:22:12.580Z",
+      "expiresAt": "2026-11-10T16:22:12.580Z"
+    },
+    "eyJ1c2VySWQiOiI1OWZhMzc0Yi03OTE4LTQwYzUtODdkMy0xMzJkN2U4Njc2ODYiLCJlbWFpbCI6InBlcnNpc3RlbnRfdXNlcl8xNzkxNzM2ODg0Njk3QGdtYWlsLmNvbSIsImV4cCI6MTc5NDMyODg4N30.bf17oV1rlpEeMhUh3pXitaAnS1pZoPWOS-lDQU5fFGo": {
+      "token": "eyJ1c2VySWQiOiI1OWZhMzc0Yi03OTE4LTQwYzUtODdkMy0xMzJkN2U4Njc2ODYiLCJlbWFpbCI6InBlcnNpc3RlbnRfdXNlcl8xNzkxNzM2ODg0Njk3QGdtYWlsLmNvbSIsImV4cCI6MTc5NDMyODg4N30.bf17oV1rlpEeMhUh3pXitaAnS1pZoPWOS-lDQU5fFGo",
+      "userId": "59fa374b-7918-40c5-87d3-132d7e867686",
+      "createdAt": "2026-10-11T16:41:27.199Z",
+      "expiresAt": "2026-11-10T16:41:27.199Z"
+    },
+    "eyJ1c2VySWQiOiI1OWZhMzc0Yi03OTE4LTQwYzUtODdkMy0xMzJkN2U4Njc2ODYiLCJlbWFpbCI6InBlcnNpc3RlbnRfdXNlcl8xNzkxNzM2ODg0Njk3QGdtYWlsLmNvbSIsImV4cCI6MTc5NDMyODg5MH0.rXj2XtBocMiIHmJJv0c29EFPek1zzExG2jX1YEp5q1w": {
+      "token": "eyJ1c2VySWQiOiI1OWZhMzc0Yi03OTE4LTQwYzUtODdkMy0xMzJkN2U4Njc2ODYiLCJlbWFpbCI6InBlcnNpc3RlbnRfdXNlcl8xNzkxNzM2ODg0Njk3QGdtYWlsLmNvbSIsImV4cCI6MTc5NDMyODg5MH0.rXj2XtBocMiIHmJJv0c29EFPek1zzExG2jX1YEp5q1w",
+      "userId": "59fa374b-7918-40c5-87d3-132d7e867686",
+      "createdAt": "2026-10-11T16:41:30.687Z",
+      "expiresAt": "2026-11-10T16:41:30.687Z"
+    },
+    "eyJ1c2VySWQiOiJhNTk2OGM0MS02ZTNiLTRmODItODE4Mi1lN2I4OGVmZDJiMjYiLCJlbWFpbCI6InNtaWx5MTkxOEBnbWFpbC5jb20iLCJleHAiOjE3OTQzMjkyODl9.g0zKpMCoEStVnCx6ML-Y_-WiAaTFKurNYZSOWBwKDYc": {
+      "token": "eyJ1c2VySWQiOiJhNTk2OGM0MS02ZTNiLTRmODItODE4Mi1lN2I4OGVmZDJiMjYiLCJlbWFpbCI6InNtaWx5MTkxOEBnbWFpbC5jb20iLCJleHAiOjE3OTQzMjkyODl9.g0zKpMCoEStVnCx6ML-Y_-WiAaTFKurNYZSOWBwKDYc",
+      "userId": "a5968c41-6e3b-4f82-8182-e7b88efd2b26",
+      "createdAt": "2026-10-11T16:48:09.428Z",
+      "expiresAt": "2026-11-10T16:48:09.428Z"
+    },
+    "eyJ1c2VySWQiOiJmMTMzZjA4OS1hZDk0LTRiZTgtOGUxYS1jOTJlOWMwMDU0ZWYiLCJlbWFpbCI6ImxhdW5jaF9hdWRpdG9yXzE3OTE3Mzc3MDEzNjNAcHJlcHN0cmVhay5haSIsImV4cCI6MTc5NDMyOTcwM30.PXulcr5Ni9AsVEQWw7Dd5nJQsFQwAgxk3XWtBHhvbAk": {
+      "token": "eyJ1c2VySWQiOiJmMTMzZjA4OS1hZDk0LTRiZTgtOGUxYS1jOTJlOWMwMDU0ZWYiLCJlbWFpbCI6ImxhdW5jaF9hdWRpdG9yXzE3OTE3Mzc3MDEzNjNAcHJlcHN0cmVhay5haSIsImV4cCI6MTc5NDMyOTcwM30.PXulcr5Ni9AsVEQWw7Dd5nJQsFQwAgxk3XWtBHhvbAk",
+      "userId": "f133f089-ad94-4be8-8e1a-c92e9c0054ef",
+      "createdAt": "2026-10-11T16:55:03.554Z",
+      "expiresAt": "2026-11-10T16:55:03.554Z"
+    },
+    "eyJ1c2VySWQiOiI3MWQxYThjYi0yMDJjLTRkYmQtOWMzZi04ZjY3YTRiNDA1MjEiLCJlbWFpbCI6ImxhdW5jaF9hdWRpdG9yXzE3OTE3Mzc3Njc5NjlAcHJlcHN0cmVhay5haSIsImV4cCI6MTc5NDMyOTc2OX0.kfsywMBP0_D75MCXsG2g7toke9Ckpp4UPX97geXsMps": {
+      "token": "eyJ1c2VySWQiOiI3MWQxYThjYi0yMDJjLTRkYmQtOWMzZi04ZjY3YTRiNDA1MjEiLCJlbWFpbCI6ImxhdW5jaF9hdWRpdG9yXzE3OTE3Mzc3Njc5NjlAcHJlcHN0cmVhay5haSIsImV4cCI6MTc5NDMyOTc2OX0.kfsywMBP0_D75MCXsG2g7toke9Ckpp4UPX97geXsMps",
+      "userId": "71d1a8cb-202c-4dbd-9c3f-8f67a4b40521",
+      "createdAt": "2026-10-11T16:56:09.087Z",
+      "expiresAt": "2026-11-10T16:56:09.087Z"
     }
   },
   "profiles": {
@@ -55,12 +271,12 @@
       "updatedAt": "2026-10-05T15:31:05.321Z",
       "selectedSubject": "upsc-gs-1"
     },
-    "usr_cb866b9f9f4497b167aa115a": {
-      "id": "usr_cb866b9f9f4497b167aa115a",
-      "fullName": "Kumaran",
-      "email": "smily1918@gmail.com",
+    "usr_a6f6611643c0f3ac1418e317": {
+      "id": "usr_a6f6611643c0f3ac1418e317",
+      "fullName": "Anu",
+      "email": "anu492480@gmail.com",
       "avatarUrl": "forest",
-      "selectedExam": "upsc-cse",
+      "selectedExam": "sbi-po",
       "currentStreak": 0,
       "longestStreak": 0,
       "totalQuestionsAttempted": 0,
@@ -70,16 +286,312 @@
       "studyTimeMinutes": 0,
       "onboardingCompleted": true,
       "progress": 0,
-      "dailyQuestionGoal": 50,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-09T13:42:07.073Z",
+      "updatedAt": "2026-10-09T13:42:23.803Z",
+      "selectedSubject": "english-language"
+    },
+    "b6798e29-1aa5-48ce-8420-b32eec843601": {
+      "id": "b6798e29-1aa5-48ce-8420-b32eec843601",
+      "fullName": "Karthik Raman",
+      "email": "karthik_1791730250258@gmail.com",
+      "avatarUrl": "forest",
+      "selectedExam": "tnpsc-group-4",
+      "currentStreak": 0,
+      "longestStreak": 0,
+      "totalQuestionsAttempted": 0,
+      "totalQuestionsCorrect": 0,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 0,
+      "studyTimeMinutes": 0,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-11T14:50:56.270Z",
+      "updatedAt": "2026-10-11T14:50:56.270Z"
+    },
+    "f2e8be3b-8809-44e4-9e13-ce6122662bf0": {
+      "id": "f2e8be3b-8809-44e4-9e13-ce6122662bf0",
+      "fullName": "Rahul Verma",
+      "email": "user_b_1791730436207@test.com",
+      "avatarUrl": "forest",
+      "selectedExam": "ssc-cgl",
+      "currentStreak": 0,
+      "longestStreak": 0,
+      "totalQuestionsAttempted": 0,
+      "totalQuestionsCorrect": 0,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 0,
+      "studyTimeMinutes": 0,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-11T14:53:57.835Z",
+      "updatedAt": "2026-10-11T14:53:57.835Z"
+    },
+    "db841a9f-02ee-4b09-90c8-9b0b990003c5": {
+      "id": "db841a9f-02ee-4b09-90c8-9b0b990003c5",
+      "fullName": "Ananya Sharma",
+      "email": "ananya_1791730471848@gmail.com",
+      "avatarUrl": "forest",
+      "selectedExam": "rrb-ntpc",
+      "currentStreak": 1,
+      "longestStreak": 1,
+      "totalQuestionsAttempted": 10,
+      "totalQuestionsCorrect": 9,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 90,
+      "studyTimeMinutes": 5,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-11T14:54:33.456Z",
+      "updatedAt": "2026-10-11T14:54:34.031Z"
+    },
+    "7435aa38-ee7e-40fb-a239-5e91f6b38ae6": {
+      "id": "7435aa38-ee7e-40fb-a239-5e91f6b38ae6",
+      "fullName": "Rahul Verma",
+      "email": "rahul_1791730474040@gmail.com",
+      "avatarUrl": "forest",
+      "selectedExam": "ssc-cgl",
+      "currentStreak": 0,
+      "longestStreak": 0,
+      "totalQuestionsAttempted": 0,
+      "totalQuestionsCorrect": 0,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 0,
+      "studyTimeMinutes": 0,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-11T14:54:34.916Z",
+      "updatedAt": "2026-10-11T14:54:34.916Z"
+    },
+    "e078e68d-cc7d-47c4-8288-fd2b311e3074": {
+      "id": "e078e68d-cc7d-47c4-8288-fd2b311e3074",
+      "fullName": "Suresh Kumar",
+      "email": "suresh_tnpsc_1791733665471@gmail.com",
+      "avatarUrl": "forest",
+      "selectedExam": "tnpsc-group-4",
+      "currentStreak": 0,
+      "longestStreak": 0,
+      "totalQuestionsAttempted": 0,
+      "totalQuestionsCorrect": 0,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 0,
+      "studyTimeMinutes": 0,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-11T15:47:47.470Z",
+      "updatedAt": "2026-10-11T15:47:47.470Z"
+    },
+    "dd7580cb-d1bd-4710-93b5-4cf491174aeb": {
+      "id": "dd7580cb-d1bd-4710-93b5-4cf491174aeb",
+      "fullName": "Deepa Selvam",
+      "email": "deepa_tnpsc_1791734911384@gmail.com",
+      "avatarUrl": "forest",
+      "selectedExam": "tnpsc-group-4",
+      "currentStreak": 0,
+      "longestStreak": 0,
+      "totalQuestionsAttempted": 0,
+      "totalQuestionsCorrect": 0,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 0,
+      "studyTimeMinutes": 0,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-11T16:08:33.726Z",
+      "updatedAt": "2026-10-11T16:08:33.726Z"
+    },
+    "57cf4986-8acd-405d-8915-5353b789183f": {
+      "id": "57cf4986-8acd-405d-8915-5353b789183f",
+      "fullName": "Kalai",
+      "email": "sriii191811@gmail.com",
+      "avatarUrl": "forest",
+      "selectedExam": "upsc-ese",
+      "currentStreak": 1,
+      "longestStreak": 1,
+      "totalQuestionsAttempted": 0,
+      "totalQuestionsCorrect": 0,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 0,
+      "studyTimeMinutes": 0,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-11T13:27:40.286Z",
+      "updatedAt": "2026-10-11T16:42:47.131Z",
+      "selectedSubject": "reasoning-ability",
+      "selectedTopics": []
+    },
+    "81462005-6a12-474f-9118-178a600eda13": {
+      "id": "81462005-6a12-474f-9118-178a600eda13",
+      "fullName": "E2E Student",
+      "email": "student_e2e_1791735727629@gmail.com",
+      "avatarUrl": "forest",
+      "selectedExam": "ssc-cgl",
+      "currentStreak": 0,
+      "longestStreak": 0,
+      "totalQuestionsAttempted": 0,
+      "totalQuestionsCorrect": 0,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 0,
+      "studyTimeMinutes": 0,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-11T16:22:09.507Z",
+      "updatedAt": "2026-10-11T16:22:09.507Z"
+    },
+    "59fa374b-7918-40c5-87d3-132d7e867686": {
+      "id": "59fa374b-7918-40c5-87d3-132d7e867686",
+      "fullName": "Persistence Test Aspirant",
+      "email": "persistent_user_1791736884697@gmail.com",
+      "avatarUrl": "forest",
+      "selectedExam": "ssc-cgl",
+      "currentStreak": 0,
+      "longestStreak": 0,
+      "totalQuestionsAttempted": 0,
+      "totalQuestionsCorrect": 0,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 0,
+      "studyTimeMinutes": 0,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 25,
+      "preferredDifficulty": "Medium",
+      "createdAt": "2026-10-11T16:41:27.194Z",
+      "updatedAt": "2026-10-11T16:41:29.075Z",
+      "selectedSubject": "quantitative-aptitude"
+    },
+    "a5968c41-6e3b-4f82-8182-e7b88efd2b26": {
+      "id": "a5968c41-6e3b-4f82-8182-e7b88efd2b26",
+      "fullName": "Kumaran",
+      "email": "smily1918@gmail.com",
+      "avatarUrl": "forest",
+      "selectedExam": "upsc-cse",
+      "currentStreak": 1,
+      "longestStreak": 1,
+      "totalQuestionsAttempted": 0,
+      "totalQuestionsCorrect": 0,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 0,
+      "studyTimeMinutes": 0,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 20,
       "preferredDifficulty": "Adaptive",
       "createdAt": "2026-10-05T15:39:36.890Z",
-      "updatedAt": "2026-10-05T15:40:26.112Z",
-      "selectedSubject": "upsc-gs-1"
+      "updatedAt": "2026-10-11T16:48:11.080Z",
+      "selectedSubject": "reasoning-ability",
+      "selectedTopics": []
+    },
+    "f133f089-ad94-4be8-8e1a-c92e9c0054ef": {
+      "id": "f133f089-ad94-4be8-8e1a-c92e9c0054ef",
+      "fullName": "Launch Auditor",
+      "email": "launch_auditor_1791737701363@prepstreak.ai",
+      "avatarUrl": "forest",
+      "selectedExam": "ssc-cgl",
+      "currentStreak": 1,
+      "longestStreak": 1,
+      "totalQuestionsAttempted": 5,
+      "totalQuestionsCorrect": 4,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 80,
+      "studyTimeMinutes": 2,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-11T16:55:03.551Z",
+      "updatedAt": "2026-10-11T16:55:29.140Z"
+    },
+    "71d1a8cb-202c-4dbd-9c3f-8f67a4b40521": {
+      "id": "71d1a8cb-202c-4dbd-9c3f-8f67a4b40521",
+      "fullName": "Launch Auditor",
+      "email": "launch_auditor_1791737767969@prepstreak.ai",
+      "avatarUrl": "forest",
+      "selectedExam": "ssc-cgl",
+      "currentStreak": 1,
+      "longestStreak": 1,
+      "totalQuestionsAttempted": 5,
+      "totalQuestionsCorrect": 4,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 80,
+      "studyTimeMinutes": 2,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-11T16:56:09.083Z",
+      "updatedAt": "2026-10-11T16:56:12.043Z"
     }
   },
   "practiceHistory": {
     "usr_eb45a0701b26b47635aca242": [],
-    "usr_cb866b9f9f4497b167aa115a": []
+    "usr_a6f6611643c0f3ac1418e317": [],
+    "b6798e29-1aa5-48ce-8420-b32eec843601": [],
+    "f2e8be3b-8809-44e4-9e13-ce6122662bf0": [],
+    "db841a9f-02ee-4b09-90c8-9b0b990003c5": [
+      {
+        "examId": "rrb-ntpc",
+        "subjectId": "mathematics",
+        "topicId": "number-system",
+        "topicName": "Number System",
+        "totalQuestions": 10,
+        "score": 9,
+        "accuracy": 90,
+        "timeSpentSeconds": 300,
+        "id": "rec_a336dc49bdcad131",
+        "date": "2026-10-11T14:54:34.030Z"
+      }
+    ],
+    "7435aa38-ee7e-40fb-a239-5e91f6b38ae6": [],
+    "e078e68d-cc7d-47c4-8288-fd2b311e3074": [],
+    "dd7580cb-d1bd-4710-93b5-4cf491174aeb": [],
+    "57cf4986-8acd-405d-8915-5353b789183f": [],
+    "81462005-6a12-474f-9118-178a600eda13": [],
+    "59fa374b-7918-40c5-87d3-132d7e867686": [],
+    "a5968c41-6e3b-4f82-8182-e7b88efd2b26": [],
+    "f133f089-ad94-4be8-8e1a-c92e9c0054ef": [
+      {
+        "examId": "ssc-cgl",
+        "subjectId": "quantitative-aptitude",
+        "topicId": "percentage",
+        "topicName": "Percentage",
+        "totalQuestions": 5,
+        "score": 4,
+        "accuracy": 80,
+        "timeSpentSeconds": 120,
+        "id": "rec_b7facf84784e3fdb",
+        "date": "2026-10-11T16:55:29.140Z"
+      }
+    ],
+    "71d1a8cb-202c-4dbd-9c3f-8f67a4b40521": [
+      {
+        "examId": "ssc-cgl",
+        "subjectId": "quantitative-aptitude",
+        "topicId": "percentage",
+        "topicName": "Percentage",
+        "totalQuestions": 5,
+        "score": 4,
+        "accuracy": 80,
+        "timeSpentSeconds": 120,
+        "id": "rec_4a5ab0e4d4620e16",
+        "date": "2026-10-11T16:56:12.043Z"
+      }
+    ]
   },
   "pendingRegistrations": {},
   "passwordResets": {}

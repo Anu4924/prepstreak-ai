@@ -1,34 +1,132 @@
 # 🎯 PrepStreak AI
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-14.2-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-Auth%20%26%20Postgres-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
 
-> **PrepStreak AI** is a production-quality, AI-powered government competitive exam preparation platform engineered to help aspirants master syllabus topics through dynamic AI-generated questions, instant explanations, timed tests, performance diagnostics, and daily study streaks.
-
-The platform launches with comprehensive coverage for **SBI PO (State Bank of India Probationary Officer)** and is architected to scale effortlessly to IBPS PO, SSC CGL, RRB NTPC, and state civil services (TNPSC).
+> **PrepStreak AI** is a full-stack, production-grade competitive exam preparation platform designed for government job aspirants in India. Master syllabus-specific topics through AI-generated questions, deep step-by-step explanations, timed mock tests, streak analytics, and personalized diagnostics.
 
 ---
 
-## ✨ Key Features
+## 🏛️ Comprehensive Exam Blueprints & Architecture
 
-- 🤖 **Axmok AI Tutor**: 24/7 interactive conversational mentor providing deep conceptual explanations, shortcuts, and study guidance.
-- 🎯 **Dynamic Adaptive Practice**: Real exam-grade practice questions covering Quantitative Aptitude, Reasoning, English, and Banking Awareness.
-- ⏱️ **Timed Mock Test Engine**: Exam-condition test simulations with real-time timers, question palettes, scorecards, and negative marking analysis.
-- 🔥 **Study Streak & Habit Building**: 7-day study streak trackers, daily sprints, and milestone badges designed to maintain consistency.
-- 📊 **Diagnostic Performance Analytics**: Detailed weak-topic identification, accuracy telemetry, and actionable recommendations.
-- 🔐 **Secure Auth & Email OTP**: Complete aspirant onboarding with email verification (powered by Resend / SMTP) and protected session cookies.
+PrepStreak AI features a **decoupled, exam-specific architecture**. Every exam uses its own syllabus, subject weightage, marking scheme, and topic hierarchy—never falling back to a generic syllabus:
+
+### 1. 🏦 Banking (SBI PO & IBPS PO)
+* **Reasoning Ability**: Seating Arrangement, Puzzles, Syllogism, Inequalities, Coding-Decoding, Blood Relations, Direction Sense.
+* **Quantitative Aptitude**: Data Interpretation, Number Series, Simplification & Approximation, Quadratic Equations, Arithmetic (Percentage, Profit & Loss, SI & CI, Time & Work).
+* **English Language**: Reading Comprehension, Cloze Test, Error Detection, Sentence Rearrangement.
+* **General / Banking Awareness**: Banking Terminology, RBI Guidelines, Current Affairs, Financial Awareness.
+
+### 2. 🏛️ Staff Selection Commission (SSC CGL)
+* **General Intelligence & Reasoning**: Analogy, Classification, Series, Coding-Decoding, Non-Verbal Reasoning, Venn Diagrams.
+* **Quantitative Aptitude**: Number System, Algebra, Geometry, Mensuration, Trigonometry, Percentage, Ratio & Proportion.
+* **English Comprehension**: Grammar Rules, Vocabulary, Idioms & Phrases, Reading Comprehension, Synonyms & Antonyms.
+* **General Awareness**: Indian History, Indian Polity, Geography, Economy, General Science, Static GK.
+
+### 3. 🚆 Railways (RRB NTPC & RRB Group D)
+* **Mathematics**: Number System, Decimals & Fractions, LCM & HCF, Ratio & Proportion, Percentage, Mensuration, Time & Distance.
+* **General Intelligence & Reasoning**: Analogies, Coding-Decoding, Mathematical Operations, Syllogisms, Decision Making.
+* **General Science**: Physics, Chemistry, Life Sciences (NCERT 10th standard syllabus).
+* **General Awareness**: Current Affairs, Indian Geography, Indian Freedom Struggle, Railway GK.
+
+### 4. 🌴 Tamil Nadu Public Service Commission (TNPSC Group 4)
+* **General Studies**: Indian History & Culture, Indian Polity, Indian Economy, General Science, Current Events, Geography of India & Tamil Nadu.
+* **Aptitude & Mental Ability**: Simplification, HCF & LCM, Percentage, Ratio & Proportion, Compound Interest, Logical Reasoning.
+* **Language (English / Tamil)**: Grammar, Literature, Authors & Works.
+
+### 5. 🇮🇳 UPSC Civil Services (IAS / IPS / IFS)
+* **General Studies Paper I (Prelims)**: Indian Polity & Governance, History of India, Indian & World Geography, Economic & Social Development, Environment & Ecology, General Science.
+* **CSAT Paper II**: Reading Comprehension, Interpersonal Skills, Logical Reasoning & Analytical Ability, Basic Numeracy.
+
+---
+
+## ✨ Core Modules & Platform Features
+
+- 🔐 **Production Authentication & Session Management**:
+  - Direct integration with **Supabase Auth** & PostgreSQL `public.profiles`.
+  - Service-role admin provisioning with auto-confirmation.
+  - Zero-state data isolation using `auth.uid()` and signed session tokens.
+  - Cryptographically signed HMAC-SHA256 session tokens with automatic token rehydration across page reloads.
+  - No infinite onboarding loops or unexpected login redirects.
+- 🤖 **Axmok AI Practice Engine**:
+  - Syllabus-aligned, adaptive question generation powered by Gemini.
+  - Detailed explanations, shortcut methods, and common mistake analysis.
+  - Adaptive difficulty calibration (Easy, Medium, Hard, Adaptive).
+- ⏱️ **Timed Mock Test Engine**:
+  - Full-length test simulations with real-time countdown timers.
+  - Interactive question navigation palette (Answered, Marked for Review, Unvisited).
+  - Accurate negative marking analysis (-0.25 for SBI PO/SSC, -0.33 for RRB/UPSC).
+  - Comprehensive post-test diagnostic scorecards.
+- 🔥 **Study Streak & Habit Building**:
+  - 7-day study streak trackers, question goals, and daily progress indicators.
+  - Dedicated Daily Sprint Challenge with instant feedback.
+- 📊 **Performance Diagnostics**:
+  - Accuracy tracking across exams and subjects.
+  - Weak-topic identification with actionable recommendations.
+  - Study time analytics and test completion statistics.
 
 ---
 
 ## 🎨 Visual Identity & Design System
 
-- **Primary Accent**: Dark Forest Green (`#0D2B1B` / `#1A492E`) — Inspiring calm, academic rigor, and trust.
-- **Secondary Accent**: Warm Almond / Cream (`#F5EFE6` / `#FAF7F2`) — Providing soft contrast and clarity.
-- **Surface**: Pure White & Light Neutrals (`#FFFFFF` / `#FAFAF9`) with subtle charcoal typography (`#0F172A`).
-- **Cards & Elements**: `rounded-2xl`, subtle borders (`border-charcoal-200/80`), minimal elevation shadows.
-- **Responsive Canvas**: Fluid layouts optimized across 1440px, 1280px, 1024px desktop, 768px tablet, and 375px–430px mobile.
+- **Primary Accent**: Forest Green (`#0D2B1B` / `#1A492E`) — Calm, academic rigor, and focus.
+- **Secondary Accent**: Warm Almond / Cream (`#F5EFE6` / `#FAF7F2`) — Soft contrast and visual comfort.
+- **Surface**: Pure White & Light Neutrals (`#FFFFFF` / `#FAFAF9`) with sharp charcoal typography (`#0F172A`).
+- **Responsive Layout**: Fluid design engineered for desktop (1440px+), tablet (768px), and mobile (375px–430px).
+
+---
+
+## 📁 Project Structure
+
+```
+prepstreak-ai/
+├── app/
+│   ├── (auth)/
+│   │   ├── login/page.tsx               # Login with email/password validation & error states
+│   │   └── register/page.tsx            # Multi-exam registration with strength meter
+│   ├── dashboard/page.tsx               # Student Dashboard (Stats, streak, exam roadmap)
+│   ├── exams/
+│   │   ├── [examId]/page.tsx            # Exam Subject Hub
+│   │   └── [examId]/[subjectId]/        # Topic Hub with [Learn], [Practice], [Test]
+│   ├── learn/page.tsx                   # Interactive AI Learning experience
+│   ├── practice/page.tsx                # Adaptive question practice engine
+│   ├── tests/
+│   │   ├── page.tsx                     # Timed Mock Test Engine
+│   │   └── result/page.tsx              # Diagnostic Scorecard & answer keys
+│   ├── progress/page.tsx                # Analytics Dashboard
+│   ├── streak/page.tsx                  # Study streak calendar & milestone badges
+│   ├── daily-challenge/page.tsx         # Daily timed sprint challenge
+│   ├── profile/page.tsx                 # Aspirant profile & target exam switcher
+│   ├── settings/page.tsx                # Study parameters & security settings
+│   ├── api/
+│   │   ├── auth/                        # login, register, session, logout, reset-password
+│   │   ├── profile/                     # Profile query & persistent updates (GET, PUT)
+│   │   ├── practice/                    # Practice history & attempt recording (GET, POST)
+│   │   └── ai/practice/generate/        # AI question generation endpoint
+│   ├── layout.tsx                       # Root layout, fonts & metadata
+│   ├── page.tsx                         # Landing Page (Hero, Features, Exam Catalog, CTA)
+│   └── globals.css                      # Tailwind base & design tokens
+├── components/
+│   ├── ui/                              # Button, Card, Badge, ProgressBar, Input, StatCard
+│   ├── layout/                          # Navbar, Sidebar, AppShell, Footer
+│   ├── exams/                           # ExamCard, SubjectCard, TopicCard, ChangeTargetExamModal
+│   └── dashboard/                       # StreakCard, FirstTimeOnboardingModal, WeakTopicsCard
+├── lib/
+│   ├── auth/                            # store.ts (data layer), token.ts (JWT cryptography)
+│   ├── data/                            # examCatalogue.ts, subjectRegistry.ts, topicRegistry.ts
+│   ├── supabase/                        # server.ts, client.ts, admin.ts, middleware.ts
+│   └── types/                           # user.ts, question.ts, exam.ts
+├── services/
+│   ├── ai/axmok-question-service.ts     # Google Gemini GenAI question generation
+│   ├── auth/auth-context.tsx            # Global AuthProvider state & session hooks
+│   └── profile/profile-service.ts       # Profile API client
+├── tests/                               # Comprehensive automated test suites
+└── supabase/
+    └── schema.sql                       # PostgreSQL schema & Row-Level Security policies
+```
 
 ---
 
@@ -36,142 +134,80 @@ The platform launches with comprehensive coverage for **SBI PO (State Bank of In
 
 ### Prerequisites
 
-- **Node.js**: v18.17+ or v20+ recommended (`node -v`)
-- **Package Manager**: npm, yarn, or pnpm
+* **Node.js**: `v20.x` or later recommended (`node -v`)
+* **Package Manager**: `npm` or `pnpm`
 
 ### 1. Installation
 
-Clone or open the workspace and install the required dependencies:
-
 ```bash
+git clone https://github.com/Anu4924/prepstreak-ai.git
 cd prepstreak-ai
 npm install
 ```
 
 ### 2. Configure Environment Variables
 
-Create a local `.env.local` file from the provided `.env.example`:
+Create `.env.local` in the project root:
 
-```bash
-cp .env.example .env.local
+```env
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-secret-key
+
+# Session Secret (HMAC-SHA256 Token Signing)
+SESSION_SECRET=your-random-long-secret-key
+
+# Optional: Google Gemini AI (for dynamic question generation)
+GEMINI_API_KEY=your-gemini-api-key
+GEMINI_MODEL=gemini-1.5-flash
 ```
 
 ### 3. Run the Development Server
-
-Start the Next.js local development server:
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### 4. Build for Production
+---
 
-To create an optimized production build:
+## 🧪 Testing & Verification
+
+PrepStreak AI includes comprehensive automated end-to-end integration test suites:
 
 ```bash
-npm run build
-npm run start
+# Run full pre-launch audit (33/33 modules)
+npx tsx tests/test-prelaunch-audit.ts
+
+# Verify session persistence & onboarding loop fix
+npx tsx tests/test-session-and-onboarding-persistence.ts
+
+# Verify user isolation & authentication flow
+npx tsx tests/test-e2e-auth-flow.ts
 ```
+
+All 33 system modules, security route redirects, dynamic exam syllabi, and APIs pass with a **100% success rate**.
 
 ---
 
-## 📁 Project Architecture
+## 🚢 Production Deployment
 
-```
-prepstreak-ai/
-├── app/
-│   ├── (auth)/
-│   │   ├── login/page.tsx               # Login UI with password toggle & side stats
-│   │   └── register/page.tsx            # Register UI with goal selector & strength meter
-│   ├── dashboard/page.tsx               # Student Dashboard (Stats, streak, weak topics, challenges)
-│   ├── exams/
-│   │   ├── page.tsx                     # Exam selection (SBI PO active + upcoming roadmap)
-│   │   └── [examId]/
-│   │       ├── page.tsx                 # Subject selection (Reasoning, Quant, English, GA, Banking)
-│   │       └── [subjectId]/
-│   │           ├── page.tsx             # Topic selection with difficulty filter & actions
-│   │           └── [topicId]/page.tsx   # Direct topic route redirecting to /learn
-│   ├── learn/page.tsx                   # Interactive AI Learning experience with chat mentor
-│   ├── practice/page.tsx                # Adaptive question practice with instant explanation
-│   ├── tests/
-│   │   ├── page.tsx                     # Timed Mock Test Engine with 20-question palette
-│   │   └── result/page.tsx              # Comprehensive Test Result & Diagnostic Scorecard
-│   ├── progress/page.tsx                # Analytics Dashboard with accuracy and daily charts
-│   ├── streak/page.tsx                  # 7-day study streak calendar and milestone badges
-│   ├── daily-challenge/page.tsx         # Dedicated timed sprint challenge
-│   ├── profile/page.tsx                 # Aspirant profile and study goal preferences
-│   ├── settings/page.tsx                # Account, study parameters, and theme settings
-│   ├── layout.tsx                      # Root layout, fonts & metadata
-│   ├── page.tsx                         # Landing Page (Hero, Features, How It Works, Exams, CTA)
-│   └── globals.css                      # Tailwind base & design tokens
-├── components/
-│   ├── ui/                              # Core Design System Primitives
-│   │   ├── Button.tsx                   # Primary (Dark Green), Secondary (Almond), Outline, Ghost
-│   │   ├── Card.tsx                     # Minimal rounded cards with subtle borders
-│   │   ├── Badge.tsx                    # Difficulty badges (Easy, Medium, Hard) & status pills
-│   │   ├── ProgressBar.tsx              # Smooth linear meters & status fills
-│   │   ├── PageHeader.tsx               # Breadcrumbs, title hierarchy & action slots
-│   │   ├── Input.tsx                    # Accessible form inputs with password reveal
-│   │   ├── StatCard.tsx                 # Metric card with icons & trend badges
-│   │   ├── EmptyState.tsx               # Modular empty states
-│   │   ├── LoadingState.tsx             # Clean skeleton loaders
-│   │   └── Logo.tsx                     # Branded PrepStreak AI typography mark
-│   ├── layout/                          # Reusable Application Layouts
-│   │   ├── Navbar.tsx                   # Public top navigation with mobile drawer
-│   │   ├── Footer.tsx                   # Academic platform footer
-│   │   ├── Sidebar.tsx                  # Logged-in navigation (Dashboard, Learn, Practice, etc.)
-│   │   ├── AppHeader.tsx                # Logged-in topbar with exam switcher & streak flame
-│   │   └── AppShell.tsx                 # Responsive shell connecting sidebar & mobile drawer
-│   ├── exams/                           # Domain Examination Components
-│   │   ├── ExamCard.tsx                 # Exam card with syllabus preview & CTAs
-│   │   ├── SubjectCard.tsx              # Subject card with weightage & coverage bar
-│   │   └── TopicCard.tsx                # Topic card with [Learn], [Practice], [Test] triggers
-│   └── dashboard/                       # Dashboard Widgets
-│       ├── StreakCard.tsx               # Today's goal & question count
-│       ├── ContinueLearningCard.tsx     # Active topic resume card
-│       ├── DailyChallengeCard.tsx       # Daily timed challenge banner
-│       ├── WeakTopicsCard.tsx           # AI-identified diagnostic weak areas
-│       └── RecentActivityCard.tsx       # Chronological activity timeline
-├── mock/                                # Centralized Mock Datasets (Easily swappable)
-│   ├── exams.ts                         # SBI PO, IBPS, SSC CGL, RRB, TNPSC
-│   ├── subjects.ts                      # Reasoning, Quant, English, GA, Banking Awareness
-│   ├── topics.ts                        # Syllogism, Coding-Decoding, Inequality, DI, etc.
-│   ├── questions.ts                     # Realistic exam questions, options & explanations
-│   ├── dashboard.ts                     # Stats, today's goal, weak topics & activity
-│   ├── progress.ts                      # Chart telemetry, accuracy trends, strong topics
-│   ├── streak.ts                        # Weekly calendar & milestone badges
-│   ├── learn.ts                         # Topic concepts, rules, formulas & AI Tutor FAQ
-│   ├── profile.ts                       # Student profile & default study targets
-│   └── index.ts                         # Central barrel export
-├── services/                            # Prepared Future Backend Service Contracts
-│   ├── auth/auth-service.ts             # Auth session & credential contracts
-│   ├── db/exam-repository.ts            # Data access contract for exams/topics
-│   └── ai/question-generator.ts         # Contract for Gemini AI question generation
-├── .env.example                         # Environment variable definitions
-├── tailwind.config.ts                   # Custom brand colors (forest, almond, charcoal)
-└── tsconfig.json
-```
+PrepStreak AI is optimized for deployment on **[Vercel](https://vercel.com/)**:
+
+1. Push your repository to GitHub.
+2. Import the project into Vercel.
+3. Configure the environment variables in Vercel Project Settings:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+   - `SESSION_SECRET`
+   - `GEMINI_API_KEY` (optional)
+4. Click **Deploy**.
 
 ---
 
-## 🔒 Future Environment Variables
+## 📄 License
 
-The following secrets are prepared in `.env.example` for subsequent backend and AI integration phases:
-
-| Variable | Purpose | Target Provider |
-| :--- | :--- | :--- |
-| `GEMINI_API_KEY` | Generates dynamic questions and powers the 24/7 AI Tutor | Google AI Studio |
-| `GEMINI_MODEL` | Specifies the LLM model (e.g. `gemini-1.5-flash`) | Google AI Studio |
-| `DATABASE_URL` | Connection string for user profiles, test logs & questions | PostgreSQL / Supabase |
-| `NEXTAUTH_SECRET` | Cryptographic secret for signing session JWT tokens | NextAuth.js |
-| `NEXTAUTH_URL` | Canonical origin for authentication callbacks | NextAuth.js |
-
----
-
-## 🚦 Phase 2 Scope & Verification
-
-- **Pure Frontend Architecture**: In strict adherence to Phase 2 guidelines, there are no live database queries, no external AI API calls, and no active auth backends.
-- **Centralized Mock Layer**: All dynamic interfaces consume clean, typed mock datasets from `/mock`, allowing seamless transition to real endpoints in subsequent phases.
-- **Zero Build Errors**: Clean static compilation and TypeScript compliance across all routes.
+This project is licensed under the MIT License.

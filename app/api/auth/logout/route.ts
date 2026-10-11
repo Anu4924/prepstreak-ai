@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AuthStore } from "@/lib/auth/store";
 import { PREPSTREAK_SESSION_COOKIE, verifySessionToken } from "@/lib/auth/token";
+import { isSupabaseConfigured } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 
 export async function POST(req: NextRequest) {
   try {
@@ -8,10 +10,19 @@ export async function POST(req: NextRequest) {
 
     if (token) {
       AuthStore.deleteSession(token);
-      // Optional: verify token to ensure any corresponding session records are wiped
       const payload = await verifySessionToken(token).catch(() => null);
       if (payload?.userId) {
         AuthStore.deleteSession(token);
+      }
+    }
+
+    // Sign out from Supabase Auth if configured
+    if (isSupabaseConfigured()) {
+      try {
+        const supabase = createClient();
+        await supabase.auth.signOut();
+      } catch (sbErr) {
+        console.warn("Supabase auth.signOut warning:", sbErr);
       }
     }
 
@@ -20,7 +31,7 @@ export async function POST(req: NextRequest) {
       message: "Logged out successfully.",
     });
 
-    // Invalidate cookie with immediate expiry across all browsers & protocols
+    // Invalidate session cookie with immediate expiry
     response.cookies.set({
       name: PREPSTREAK_SESSION_COOKIE,
       value: "",

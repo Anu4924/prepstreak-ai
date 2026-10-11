@@ -34,5 +34,11 @@ export function createClient() {
         }
       },
     },
+    realtime: {
+      transport:
+        typeof WebSocket !== "undefined"
+          ? WebSocket
+          : (class DummyWS {} as unknown as typeof WebSocket),
+    },
   });
 }

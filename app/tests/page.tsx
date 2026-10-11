@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { useAuth } from "@/services/auth/auth-context";
 import { getTestBlueprint, getExamBlueprint } from "@/lib/data/examBlueprints";
-import { getTopicsForSubject } from "@/lib/data/topicRegistry";
+import { getTopicsForSubject, getTopicById } from "@/lib/data/topicRegistry";
+import { getSubjectById } from "@/lib/data/subjectRegistry";
+import { getExamById } from "@/lib/data/examCatalogue";
 import { AxmokQuestionService } from "@/services/ai/axmok-question-service";
 import {
   Question,
@@ -28,25 +30,170 @@ import {
 
 type QuestionState = "not_visited" | "not_answered" | "answered" | "marked_review";
 
-export default function TestPage() {
+function TestContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { profile } = useAuth();
 
-  const examId = profile?.currentExam && profile.currentExam !== "None" ? profile.currentExam : "sbi-po";
-  const blueprint = useMemo(() => getTestBlueprint(examId, "mini_mock"), [examId]);
+  const paramExamId = searchParams.get("examId");
+  const paramSubjectId = searchParams.get("subjectId");
+  const paramTopicId = searchParams.get("topic") || searchParams.get("topicId");
+  const paramType = searchParams.get("type") as "full_mock" | "mini_mock" | "sectional" | null;
+
+  // Resolve exam ID: URL query -> profile target exam -> profile current exam -> default sbi-po
+  const examId = useMemo(() => {
+    if (paramExamId) return paramExamId;
+    if (profile?.examId) return profile.examId;
+    if (profile?.currentExam && profile.currentExam !== "None") return profile.currentExam;
+    return "sbi-po";
+  }, [paramExamId, profile?.examId, profile?.currentExam]);
+
   const examBp = useMemo(() => getExamBlueprint(examId), [examId]);
+  const examCatalogueItem = useMemo(() => getExamById(examId), [examId]);
+
+  // Construct blueprint dynamically based on whether this is a topic drill, sectional test, or full/mini mock
+  const blueprint = useMemo(() => {
+    // 1. Topic Diagnostic Drill (if specific topic requested)
+    if (paramTopicId) {
+      const topicObj = getTopicById(paramTopicId, examId, paramSubjectId || undefined);
+      const subId = paramSubjectId || topicObj?.subjectId || examBp.sections[0]?.subjectId || "general";
+      const topicTitle = topicObj?.name || paramTopicId.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+      const examName = examBp.examName || examCatalogueItem?.name || "Exam";
+
+      return {
+        examId,
+        examName,
+        testTitle: `${topicTitle} • Topic Diagnostic Drill`,
+        type: "sectional" as const,
+        sections: [
+          {
+            id: paramTopicId,
+            name: `${topicTitle} Drill`,
+            subjectId: subId,
+            questionCount: 15,
+            durationMinutes: 15,
+            marksPerQuestion: examBp.markingScheme.positiveMarks || 1,
+            negativeMarks: examBp.markingScheme.negativeMarks || 0.25,
+            cutoffExpected: 9,
+          },
+        ],
+        totalDurationMinutes: 15,
+        totalQuestions: 15,
+        totalMarks: 15 * (examBp.markingScheme.positiveMarks || 1),
+        markingScheme: examBp.markingScheme.penaltyDescription || "1 mark per question, 0.25 negative marks",
+        negativeMarking: examBp.negativeMarking,
+        difficultyDistribution: {
+          easyPercent: 30,
+          moderatePercent: 50,
+          hardPercent: 20,
+        },
+      };
+    }
+
+    // 2. Subject Sectional Test (if specific subject requested)
+    if (paramSubjectId) {
+      const subObj = getSubjectById(paramSubjectId, examId);
+      const subTitle = subObj?.name || paramSubjectId.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+      const examName = examBp.examName || examCatalogueItem?.name || "Exam";
+      const subjectSec = examBp.sections.find((s) => s.subjectId === paramSubjectId || s.id === paramSubjectId);
+
+      const qCount = subjectSec?.questionCount || 20;
+      const dMinutes = subjectSec?.durationMinutes || 20;
+
+      return {
+        examId,
+        examName,
+        testTitle: `${examName} • ${subTitle} Sectional Test`,
+        type: "sectional" as const,
+        sections: [
+          {
+            id: paramSubjectId,
+            name: subTitle,
+            subjectId: paramSubjectId,
+            questionCount: qCount,
+            durationMinutes: dMinutes,
+            marksPerQuestion: subjectSec?.marksPerQuestion || examBp.markingScheme.positiveMarks || 1,
+            negativeMarks: subjectSec?.negativeMarks || examBp.markingScheme.negativeMarks || 0.25,
+            cutoffExpected: Math.round(qCount * 0.5),
+          },
+        ],
+        totalDurationMinutes: dMinutes,
+        totalQuestions: qCount,
+        totalMarks: qCount * (examBp.markingScheme.positiveMarks || 1),
+        markingScheme: examBp.markingScheme.penaltyDescription || "Sectional negative marking applies",
+        negativeMarking: examBp.negativeMarking,
+        difficultyDistribution: {
+          easyPercent: 25,
+          moderatePercent: 55,
+          hardPercent: 20,
+        },
+      };
+    }
+
+    // 3. Exam Mock Test (full_mock or mini_mock)
+    const testType = paramType === "full_mock" ? "full_mock" : "mini_mock";
+    return getTestBlueprint(examId, testType);
+  }, [paramTopicId, paramSubjectId, paramType, examId, examBp, examCatalogueItem]);
 
   // Construct questions for each section dynamically from syllabus
   const testQuestions: Question[] = useMemo(() => {
     const list: Question[] = [];
 
+    // If specific topic drill requested
+    if (paramTopicId) {
+      const topicObj = getTopicById(paramTopicId, examId, paramSubjectId || undefined);
+      const sec = blueprint.sections[0];
+      const topicName = topicObj?.name || paramTopicId.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+      const subId = sec?.subjectId || paramSubjectId || "general";
+      const subObj = getSubjectById(subId, examId);
+      const subjectName = subObj?.name || "Subject";
+
+      const topicSubtopics = topicObj && "subtopics" in topicObj && Array.isArray((topicObj as unknown as { subtopics: { name: string }[] }).subtopics)
+        ? (topicObj as unknown as { subtopics: { name: string }[] }).subtopics
+        : [];
+
+      for (let i = 0; i < blueprint.totalQuestions; i++) {
+        const subtopicName = topicSubtopics[i % (topicSubtopics.length || 1)]?.name || `${topicName} Practice`;
+        const diff = (["Easy", "Medium", "Exam Level"][i % 3]) as string;
+
+        const fallbackBatch = AxmokQuestionService.generateCurriculumFallbackQuestions({
+          examId,
+          examName: blueprint.examName,
+          subjectId: subId,
+          subjectName: subjectName,
+          topicId: paramTopicId,
+          topicName: topicName,
+          subtopicName,
+          difficulty: diff,
+          count: 1,
+        });
+
+        const baseQ = fallbackBatch[0];
+        list.push({
+          ...baseQ,
+          id: `topic-drill-q-${i + 1}`,
+          sectionId: sec?.id || paramTopicId,
+          sectionName: sec?.name || topicName,
+          topicId: paramTopicId,
+          topicName: topicName,
+          marks: sec?.marksPerQuestion || 1,
+          negativeMarks: sec?.negativeMarks || 0.25,
+          examTag: `${blueprint.examName} • ${topicName}`,
+        });
+      }
+      return list;
+    }
+
+    // Exam or Subject Sectional Test
     for (const sec of blueprint.sections) {
       const topics = getTopicsForSubject(sec.subjectId, examId);
       const safeTopics = topics.length > 0 ? topics : [{ id: sec.subjectId, name: sec.name }];
 
       for (let i = 0; i < sec.questionCount; i++) {
         const topic = safeTopics[i % safeTopics.length];
-        const topicSubtopics = "subtopics" in topic && Array.isArray(topic.subtopics) ? topic.subtopics : [];
+        const topicSubtopics = "subtopics" in topic && Array.isArray((topic as unknown as { subtopics: { name: string }[] }).subtopics)
+          ? (topic as unknown as { subtopics: { name: string }[] }).subtopics
+          : [];
         const subtopicName = topicSubtopics[i % (topicSubtopics.length || 1)]?.name || `${topic.name} Core Practice`;
 
         const fallbackBatch = AxmokQuestionService.generateCurriculumFallbackQuestions({
@@ -77,7 +224,7 @@ export default function TestPage() {
     }
 
     return list;
-  }, [blueprint, examId]);
+  }, [blueprint, examId, paramTopicId, paramSubjectId]);
 
   const totalQuestions = testQuestions.length || 20;
 
@@ -91,6 +238,15 @@ export default function TestPage() {
     0: "not_answered",
   });
   const [selectedOptions, setSelectedOptions] = useState<Record<number, string>>({});
+
+  // Reset states whenever blueprint or test questions change
+  useEffect(() => {
+    setTimeLeft(blueprint.totalDurationMinutes * 60);
+    setActiveSectionId(blueprint.sections[0]?.id || "");
+    setCurrentQIndex(0);
+    setQuestionStates({ 0: "not_answered" });
+    setSelectedOptions({});
+  }, [blueprint]);
 
   // Countdown timer
   useEffect(() => {
@@ -292,9 +448,9 @@ export default function TestPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           examId,
-          subjectId: "all-sections",
-          topicId: "mock-test",
-          topicName: `${blueprint.examName} Timed Mock Test`,
+          subjectId: paramSubjectId || blueprint.sections[0]?.subjectId || "all-sections",
+          topicId: paramTopicId || "mock-test",
+          topicName: blueprint.testTitle,
           totalQuestions: answeredCount,
           correctAnswers: correctCount,
           incorrectAnswers: wrongCount,
@@ -601,5 +757,22 @@ export default function TestPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function TestPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-charcoal-50 flex items-center justify-center">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-10 h-10 border-4 border-forest-900 border-t-transparent rounded-full animate-spin" />
+            <p className="text-sm font-semibold text-charcoal-700">Loading Exam & Questions...</p>
+          </div>
+        </div>
+      }
+    >
+      <TestContent />
+    </Suspense>
   );
 }

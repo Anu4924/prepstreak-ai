@@ -92,7 +92,7 @@ export function mapDbProfileToUserProfile(db: DbProfile): UserProfile {
   };
 }
 
-export function mapStoredProfileToUserProfile(p: {
+export function mapStoredProfileToUserProfile(p?: {
   id: string;
   fullName: string;
   email: string;
@@ -113,11 +113,44 @@ export function mapStoredProfileToUserProfile(p: {
   progress?: number;
   createdAt: string;
   updatedAt: string;
-}): UserProfile {
+} | null): UserProfile {
+  if (!p) {
+    const nowIso = new Date().toISOString();
+    return {
+      id: "",
+      name: "Student",
+      email: "",
+      avatarUrl: "forest",
+      currentExam: "None",
+      examId: "",
+      joinDate: "Today",
+      questionsSolved: 0,
+      testsCompleted: 0,
+      currentStreak: 0,
+      longestStreak: 0,
+      accuracy: 0,
+      totalAttempted: 0,
+      totalCorrect: 0,
+      studyTimeMinutes: 0,
+      onboardingCompleted: false,
+      selectedSubject: "",
+      selectedTopics: [],
+      progress: 0,
+      preferences: {
+        dailyQuestionGoal: 20,
+        preferredDifficulty: "Adaptive",
+        defaultExam: "",
+        notificationsEnabled: true,
+        darkMode: false,
+      },
+      createdAt: nowIso,
+    };
+  }
+
   return {
-    id: p.id,
+    id: p.id || "",
     name: p.fullName || "Student",
-    email: p.email,
+    email: p.email || "",
     avatarUrl: p.avatarUrl || "forest",
     currentExam: p.selectedExam || "None",
     examId: p.selectedExam || "",
@@ -146,7 +179,7 @@ export function mapStoredProfileToUserProfile(p: {
       notificationsEnabled: true,
       darkMode: false,
     },
-    createdAt: p.createdAt,
+    createdAt: p.createdAt || new Date().toISOString(),
   };
 }
 

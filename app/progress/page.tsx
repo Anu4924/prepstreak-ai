@@ -29,9 +29,12 @@ export default function ProgressPage() {
   const testsCompleted = profile?.testsCompleted ?? 0;
   const isBrandNewUser = questionsSolved === 0;
 
-  const targetExamId = profile?.examId || "sbi-po";
+  const targetExamId =
+    profile?.examId ||
+    (profile?.currentExam && profile.currentExam !== "None" ? profile.currentExam : "") ||
+    "sbi-po";
   const currentExamObj = getExamById(targetExamId);
-  const targetExamName = currentExamObj?.name || profile?.currentExam || "Competitive Exam";
+  const targetExamName = currentExamObj?.name || (profile?.currentExam && profile.currentExam !== "None" ? profile.currentExam : "Competitive Exam");
 
   const formatStudyTime = (mins: number) => {
     if (mins === 0) return "0m";

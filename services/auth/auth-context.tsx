@@ -74,8 +74,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         const p = await ProfileService.getProfile(userId);
         if (p) {
-          setProfile(p);
+          const hasExam = Boolean(p.examId && p.examId !== "None") ||
+                          Boolean(p.currentExam && p.currentExam !== "None") ||
+                          Boolean(authExam && authExam !== "None");
+          setProfile({
+            ...p,
+            onboardingCompleted: p.onboardingCompleted || hasExam,
+          });
         } else {
+          const hasExam = Boolean(authExam && authExam !== "None");
           setProfile({
             id: userId,
             name: authUserName || "Student",
@@ -91,7 +98,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             totalAttempted: 0,
             totalCorrect: 0,
             studyTimeMinutes: 0,
-            onboardingCompleted: Boolean(authExam),
+            onboardingCompleted: hasExam,
             preferences: {
               dailyQuestionGoal: 20,
               preferredDifficulty: "Adaptive",
@@ -102,6 +109,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           });
         }
       } catch {
+        const hasExam = Boolean(authExam && authExam !== "None");
         setProfile({
           id: userId,
           name: authUserName || "Student",
@@ -117,7 +125,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           totalAttempted: 0,
           totalCorrect: 0,
           studyTimeMinutes: 0,
-          onboardingCompleted: Boolean(authExam),
+          onboardingCompleted: hasExam,
           preferences: {
             dailyQuestionGoal: 20,
             preferredDifficulty: "Adaptive",
