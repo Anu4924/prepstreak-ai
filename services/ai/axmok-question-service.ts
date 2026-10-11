@@ -51,6 +51,25 @@ interface RawAiQuestion {
   topic?: string;
 }
 
+function getCandidateGeminiModels(): string[] {
+  const envModel = process.env.GEMINI_MODEL?.trim();
+  const candidates: string[] = [];
+  if (
+    envModel &&
+    !envModel.includes("2.0") &&
+    !envModel.includes("2.5") &&
+    !envModel.includes("1.5") &&
+    !envModel.includes("1.0")
+  ) {
+    candidates.push(envModel);
+  }
+  const defaults = ["gemini-3.5-flash", "gemini-3.7-flash", "gemini-flash-latest", "gemini-3.8-flash"];
+  for (const d of defaults) {
+    if (!candidates.includes(d)) candidates.push(d);
+  }
+  return candidates;
+}
+
 export const AxmokQuestionService = {
   /**
    * Generates structured practice questions using live Gemini model with robust validation & fallback.
@@ -111,7 +130,11 @@ export const AxmokQuestionService = {
       userAccuracy,
     } = params;
 
-    const aiModel = process.env.GEMINI_MODEL || "gemini-2.0-flash";
+    // Get active resilient models, auto-upgrading deprecated names
+    const candidateModels = getCandidateGeminiModels();
+
+    // Unique variation seed for every request to guarantee non-deterministic generation
+    const variationSeed = `RUN-${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
 
     // Adaptive difficulty guidance based on student accuracy
     let adaptivePrompt = "";
@@ -141,10 +164,11 @@ export const AxmokQuestionService = {
 
     const repetitionPrompt =
       previousQuestions.length > 0
-        ? `\nCRITICAL - AVOID REPETITION: The user has already solved the following questions. DO NOT repeat or generate questions that are conceptually identical or use identical numbers/variables to these:\n${previousQuestions
-            .slice(-10)
-            .map((q, idx) => `${idx + 1}. "${q.slice(0, 120)}..."`)
-            .join("\n")}`
+        ? `\n### CRITICAL ANTI-REPETITION CONSTRAINT:
+The user has already solved the following questions. YOU MUST NOT REPEAT OR GENERATE NEAR-DUPLICATES OF ANY OF THESE. Use completely different scenarios, distinct names, and new numerical values:\n${previousQuestions
+            .slice(-20)
+            .map((q, idx) => `${idx + 1}. "${q.replace(/\s+/g, " ").slice(0, 130)}..."`)
+            .join("\n")}\n`
         : "";
 
     const systemPrompt = `You are Axmok AI, the expert test creator and intelligent tutor for PrepStreak AI.
@@ -161,6 +185,13 @@ Selected Difficulty: ${difficulty} (Must be calibrated strictly for ${examName};
 Practice Mode: ${practiceMode}
 ${adaptivePrompt}
 ${repetitionPrompt}
+
+### MANDATORY UNIQUENESS & DIVERSITY DIRECTIVE:
+- Dynamic Variation Seed: ${variationSeed}
+- EVERY GENERATION MUST BE FRESH AND ORIGINAL. Never output standard overused clichés.
+- For Quantitative Aptitude: Use varied, realistic figures (e.g. 14 2/7%, 16 2/3%, 8.5% interest, Rs. 16,500, Rs. 48,000, 360m trains, etc.).
+- For Reasoning: Generate novel puzzle setups, new family relations, fresh coded sequences.
+- For Verbal / General Awareness: Diverse real-world scenarios, fresh vocabulary stems, and genuine exam-standard options.
 
 ### CRITICAL EXAM SYLLABUS CONTEXT:
 The questions must NEVER be generic school questions. They MUST strictly match ${examName}'s question style:
@@ -201,58 +232,73 @@ The questions must NEVER be generic school questions. They MUST strictly match $
   ]
 }`;
 
-    const userPrompt = `Generate ${count} ${difficulty} level questions for ${examName} - ${subjectName} - ${topicName}${subtopicName ? ` - ${subtopicName}` : ""}.`;
+    const userPrompt = `Generate exactly ${count} completely fresh, unique ${difficulty} level questions for ${examName} - ${subjectName} - ${topicName}${subtopicName ? ` - ${subtopicName}` : ""}. Variation Key: ${variationSeed}`;
 
-    try {
-      const ai = new GoogleGenAI({ apiKey });
-      const response = await ai.models.generateContent({
-        model: aiModel,
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: `${systemPrompt}\n\nUser Request: ${userPrompt}` }],
-          },
-        ],
-        config: {
-          temperature: 0.35,
-          maxOutputTokens: 3500,
-        },
-      });
+    for (const aiModel of candidateModels) {
+      try {
+        const ai = new GoogleGenAI({ apiKey });
+        const timeoutPromise = new Promise<never>((_, reject) => {
+          const t = setTimeout(() => reject(new Error("AI generation timed out")), 15000);
+          t.unref?.();
+        });
 
-      const responseText = response.text?.trim() || "";
-      const parsed = this.parseAndValidateAiResponse(responseText, params);
-      if (parsed && parsed.length > 0) {
-        return parsed;
-      }
-    } catch (sdkError) {
-      console.warn("AxmokQuestionService: SDK attempt failed, trying REST API:", sdkError);
-
-      // REST fallback
-      const restUrl = `https://generativelanguage.googleapis.com/v1beta/models/${aiModel}:generateContent?key=${apiKey}`;
-      const restResponse = await fetch(restUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+        const sdkCall = ai.models.generateContent({
+          model: aiModel,
           contents: [
             {
               role: "user",
               parts: [{ text: `${systemPrompt}\n\nUser Request: ${userPrompt}` }],
             },
           ],
-          generationConfig: {
-            temperature: 0.35,
+          config: {
+            temperature: 0.8,
             maxOutputTokens: 3500,
+            responseMimeType: "application/json",
           },
-        }),
-        signal: AbortSignal.timeout(25000),
-      });
+        });
 
-      if (restResponse.ok) {
-        const data = await restResponse.json();
-        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (text) {
-          const parsed = this.parseAndValidateAiResponse(text, params);
-          if (parsed && parsed.length > 0) return parsed;
+        const response = await Promise.race([sdkCall, timeoutPromise]);
+
+        const responseText = response.text?.trim() || "";
+        const parsed = this.parseAndValidateAiResponse(responseText, params);
+        if (parsed && parsed.length > 0) {
+          return parsed;
+        }
+      } catch (sdkError) {
+        console.warn(`AxmokQuestionService: SDK attempt failed with ${aiModel}, trying REST API:`, sdkError);
+
+        try {
+          // REST fallback for this model
+          const restUrl = `https://generativelanguage.googleapis.com/v1beta/models/${aiModel}:generateContent?key=${apiKey}`;
+          const restResponse = await fetch(restUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [
+                {
+                  role: "user",
+                  parts: [{ text: `${systemPrompt}\n\nUser Request: ${userPrompt}` }],
+                },
+              ],
+              generationConfig: {
+                temperature: 0.8,
+                maxOutputTokens: 3500,
+                responseMimeType: "application/json",
+              },
+            }),
+            signal: AbortSignal.timeout(25000),
+          });
+
+          if (restResponse.ok) {
+            const data = await restResponse.json();
+            const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (text) {
+              const parsed = this.parseAndValidateAiResponse(text, params);
+              if (parsed && parsed.length > 0) return parsed;
+            }
+          }
+        } catch (restError) {
+          console.warn(`AxmokQuestionService: REST API failed with ${aiModel}:`, restError);
         }
       }
     }
@@ -372,14 +418,39 @@ The questions must NEVER be generic school questions. They MUST strictly match $
    * Guarantees realistic, exam-standard questions for all subjects and topics.
    */
   generateCurriculumFallbackQuestions(params: GeneratePracticeQuestionsParams): Question[] {
-    const { examName, examId, subjectName, subjectId, topicName, topicId, count, difficulty } =
-      params;
+    const {
+      examName,
+      examId,
+      subjectName,
+      subjectId,
+      topicName,
+      topicId,
+      count,
+      difficulty,
+      previousQuestions = [],
+    } = params;
 
     const templates = getCurriculumBankForTopic(topicId, topicName, subjectName, examName);
     const result: Question[] = [];
 
+    // Filter out questions previously seen if possible to prevent repetition
+    const prevSet = new Set(previousQuestions.map((q) => q.trim().toLowerCase()));
+    let pool = templates.filter((t) => !prevSet.has(t.question.trim().toLowerCase()));
+    if (pool.length === 0) {
+      pool = templates;
+    }
+
+    // Shuffle pool with Fisher-Yates so order is randomized
+    const shuffled = [...pool];
+    for (let j = shuffled.length - 1; j > 0; j--) {
+      const k = Math.floor(Math.random() * (j + 1));
+      [shuffled[j], shuffled[k]] = [shuffled[k], shuffled[j]];
+    }
+
+    const runSeed = Math.floor(Math.random() * 10000);
+
     for (let i = 0; i < count; i++) {
-      const template = templates[i % templates.length];
+      const template = shuffled[i % shuffled.length];
       const diffLabel =
         difficulty === "Mixed"
           ? (["Easy", "Medium", "Hard"][i % 3] as "Easy" | "Medium" | "Hard")
@@ -388,7 +459,7 @@ The questions must NEVER be generic school questions. They MUST strictly match $
           : "Medium";
 
       result.push({
-        id: `axmok-q-${topicId}-${i + 1}-${Date.now()}`,
+        id: `axmok-q-${topicId}-${i + 1}-${runSeed}-${Date.now()}`,
         topicId,
         topicName,
         subjectId,

@@ -91,6 +91,7 @@ export default function DynamicPracticePage() {
 
   // 4. Active Session State
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [seenQuestionTexts, setSeenQuestionTexts] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
@@ -170,10 +171,21 @@ export default function DynamicPracticePage() {
     try {
       // Gather recently solved questions to prevent repetition
       const recentHistory = await PracticeService.getPracticeHistory(user?.id);
-      const previousQuestions: string[] = [];
-      recentHistory.slice(0, 3).forEach((s) => {
+      const previousQuestions: string[] = [...seenQuestionTexts];
+
+      // Add questions currently rendered in this session
+      questions.forEach((q) => {
+        if (q.questionText && !previousQuestions.includes(q.questionText)) {
+          previousQuestions.push(q.questionText);
+        }
+      });
+
+      // Add recent database history
+      recentHistory.slice(0, 5).forEach((s) => {
         s.questions?.forEach((q) => {
-          if (q.questionText) previousQuestions.push(q.questionText);
+          if (q.questionText && !previousQuestions.includes(q.questionText)) {
+            previousQuestions.push(q.questionText);
+          }
         });
       });
 
@@ -215,6 +227,10 @@ export default function DynamicPracticePage() {
       if (!data.questions || data.questions.length === 0) {
         throw new Error("No questions were generated. Please try again.");
       }
+
+      // Record newly generated questions to prevent repetition across subsequent runs
+      const newTexts = data.questions.map((q: Question) => q.questionText).filter(Boolean);
+      setSeenQuestionTexts((prev) => Array.from(new Set([...prev, ...newTexts])));
 
       setQuestions(data.questions);
       setPracticeState("active");
@@ -882,15 +898,27 @@ export default function DynamicPracticePage() {
             )}
 
             {/* Action Footer */}
-            <div className="pt-4 border-t border-charcoal-100 flex items-center justify-between gap-3">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setPracticeState("config")}
-                leftIcon={<ArrowLeft className="w-4 h-4 mr-1" />}
-              >
-                Quit Session
-              </Button>
+            <div className="pt-4 border-t border-charcoal-100 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPracticeState("config")}
+                  leftIcon={<ArrowLeft className="w-4 h-4 mr-1" />}
+                >
+                  Quit Session
+                </Button>
+
+                <button
+                  type="button"
+                  onClick={handleStartPractice}
+                  title="Generate a completely new set of questions"
+                  className="px-3 py-1.5 rounded-xl border border-charcoal-200 hover:border-forest-500 hover:bg-forest-50 text-charcoal-700 hover:text-forest-900 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-2xs"
+                >
+                  <RotateCcw className="w-3.5 h-3.5 text-forest-700" />
+                  <span>Regenerate Different Questions</span>
+                </button>
+              </div>
 
               {!isAnswerSubmitted ? (
                 <Button

@@ -139,6 +139,26 @@
       "targetExamId": "ssc-cgl",
       "createdAt": "2026-10-11T16:56:09.083Z",
       "updatedAt": "2026-10-11T16:56:09.083Z"
+    },
+    "bec14d04-acfb-429e-bc57-d54a8d6d830f": {
+      "id": "bec14d04-acfb-429e-bc57-d54a8d6d830f",
+      "fullName": "Launch Auditor",
+      "email": "launch_auditor_1791741664790@prepstreak.ai",
+      "passwordHash": "$2b$10$jgmp4aOmrGcANoUv/K4x7.c0MmrYFEpqU4HM5kysUAP4gaRbzkyOi",
+      "salt": "c97bfbaed86db49dc2a49e6f1621227b",
+      "targetExamId": "ssc-cgl",
+      "createdAt": "2026-10-11T18:01:06.874Z",
+      "updatedAt": "2026-10-11T18:01:06.874Z"
+    },
+    "00f64330-615a-4765-b113-c2a5247e0a52": {
+      "id": "00f64330-615a-4765-b113-c2a5247e0a52",
+      "fullName": "Launch Auditor",
+      "email": "launch_auditor_1791741891234@prepstreak.ai",
+      "passwordHash": "$2b$10$LcPY32D5R1lpKkb/Vi5LduEvTXcAMspJHGmqJvTlBzuuqXhDvo/bi",
+      "salt": "dd589a31ef4ac3280610b8d7fa388fed",
+      "targetExamId": "ssc-cgl",
+      "createdAt": "2026-10-11T18:04:52.710Z",
+      "updatedAt": "2026-10-11T18:04:52.710Z"
     }
   },
   "usersByEmail": {
@@ -155,7 +175,9 @@
     "student_e2e_1791735727629@gmail.com": "81462005-6a12-474f-9118-178a600eda13",
     "persistent_user_1791736884697@gmail.com": "59fa374b-7918-40c5-87d3-132d7e867686",
     "launch_auditor_1791737701363@prepstreak.ai": "f133f089-ad94-4be8-8e1a-c92e9c0054ef",
-    "launch_auditor_1791737767969@prepstreak.ai": "71d1a8cb-202c-4dbd-9c3f-8f67a4b40521"
+    "launch_auditor_1791737767969@prepstreak.ai": "71d1a8cb-202c-4dbd-9c3f-8f67a4b40521",
+    "launch_auditor_1791741664790@prepstreak.ai": "bec14d04-acfb-429e-bc57-d54a8d6d830f",
+    "launch_auditor_1791741891234@prepstreak.ai": "00f64330-615a-4765-b113-c2a5247e0a52"
   },
   "sessions": {
     "eyJ1c2VySWQiOiJiNjc5OGUyOS0xYWE1LTQ4Y2UtODQyMC1iMzJlZWM4NDM2MDEiLCJlbWFpbCI6ImthcnRoaWtfMTc5MTczMDI1MDI1OEBnbWFpbC5jb20iLCJleHAiOjE3OTQzMjIyNTl9.JivDaQ27F_vt91DKldtSm5txJyk5Cdsv5FQoZHkvF0s": {
@@ -247,6 +269,18 @@
       "userId": "71d1a8cb-202c-4dbd-9c3f-8f67a4b40521",
       "createdAt": "2026-10-11T16:56:09.087Z",
       "expiresAt": "2026-11-10T16:56:09.087Z"
+    },
+    "eyJ1c2VySWQiOiJiZWMxNGQwNC1hY2ZiLTQyOWUtYmM1Ny1kNTRhOGQ2ZDgzMGYiLCJlbWFpbCI6ImxhdW5jaF9hdWRpdG9yXzE3OTE3NDE2NjQ3OTBAcHJlcHN0cmVhay5haSIsImV4cCI6MTc5NDMzMzY2Nn0.qfamZlDbcK3qaxUTwkt0JPP_EGgbfjocz4pusOz4h2s": {
+      "token": "eyJ1c2VySWQiOiJiZWMxNGQwNC1hY2ZiLTQyOWUtYmM1Ny1kNTRhOGQ2ZDgzMGYiLCJlbWFpbCI6ImxhdW5jaF9hdWRpdG9yXzE3OTE3NDE2NjQ3OTBAcHJlcHN0cmVhay5haSIsImV4cCI6MTc5NDMzMzY2Nn0.qfamZlDbcK3qaxUTwkt0JPP_EGgbfjocz4pusOz4h2s",
+      "userId": "bec14d04-acfb-429e-bc57-d54a8d6d830f",
+      "createdAt": "2026-10-11T18:01:06.877Z",
+      "expiresAt": "2026-11-10T18:01:06.877Z"
+    },
+    "eyJ1c2VySWQiOiIwMGY2NDMzMC02MTVhLTQ3NjUtYjExMy1jMmE1MjQ3ZTBhNTIiLCJlbWFpbCI6ImxhdW5jaF9hdWRpdG9yXzE3OTE3NDE4OTEyMzRAcHJlcHN0cmVhay5haSIsImV4cCI6MTc5NDMzMzg5Mn0.b7EHIwXZFEVblHjRYKvyvaAs6AFjKNEx5Jw4jBomXKo": {
+      "token": "eyJ1c2VySWQiOiIwMGY2NDMzMC02MTVhLTQ3NjUtYjExMy1jMmE1MjQ3ZTBhNTIiLCJlbWFpbCI6ImxhdW5jaF9hdWRpdG9yXzE3OTE3NDE4OTEyMzRAcHJlcHN0cmVhay5haSIsImV4cCI6MTc5NDMzMzg5Mn0.b7EHIwXZFEVblHjRYKvyvaAs6AFjKNEx5Jw4jBomXKo",
+      "userId": "00f64330-615a-4765-b113-c2a5247e0a52",
+      "createdAt": "2026-10-11T18:04:52.714Z",
+      "expiresAt": "2026-11-10T18:04:52.714Z"
     }
   },
   "profiles": {
@@ -536,6 +570,46 @@
       "preferredDifficulty": "Adaptive",
       "createdAt": "2026-10-11T16:56:09.083Z",
       "updatedAt": "2026-10-11T16:56:12.043Z"
+    },
+    "bec14d04-acfb-429e-bc57-d54a8d6d830f": {
+      "id": "bec14d04-acfb-429e-bc57-d54a8d6d830f",
+      "fullName": "Launch Auditor",
+      "email": "launch_auditor_1791741664790@prepstreak.ai",
+      "avatarUrl": "forest",
+      "selectedExam": "ssc-cgl",
+      "currentStreak": 1,
+      "longestStreak": 1,
+      "totalQuestionsAttempted": 5,
+      "totalQuestionsCorrect": 4,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 80,
+      "studyTimeMinutes": 2,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-11T18:01:06.874Z",
+      "updatedAt": "2026-10-11T18:01:16.479Z"
+    },
+    "00f64330-615a-4765-b113-c2a5247e0a52": {
+      "id": "00f64330-615a-4765-b113-c2a5247e0a52",
+      "fullName": "Launch Auditor",
+      "email": "launch_auditor_1791741891234@prepstreak.ai",
+      "avatarUrl": "forest",
+      "selectedExam": "ssc-cgl",
+      "currentStreak": 1,
+      "longestStreak": 1,
+      "totalQuestionsAttempted": 5,
+      "totalQuestionsCorrect": 4,
+      "totalTestsCompleted": 0,
+      "overallAccuracy": 80,
+      "studyTimeMinutes": 2,
+      "onboardingCompleted": true,
+      "progress": 0,
+      "dailyQuestionGoal": 20,
+      "preferredDifficulty": "Adaptive",
+      "createdAt": "2026-10-11T18:04:52.710Z",
+      "updatedAt": "2026-10-11T18:05:04.881Z"
     }
   },
   "practiceHistory": {
@@ -590,6 +664,34 @@
         "timeSpentSeconds": 120,
         "id": "rec_4a5ab0e4d4620e16",
         "date": "2026-10-11T16:56:12.043Z"
+      }
+    ],
+    "bec14d04-acfb-429e-bc57-d54a8d6d830f": [
+      {
+        "examId": "ssc-cgl",
+        "subjectId": "quantitative-aptitude",
+        "topicId": "percentage",
+        "topicName": "Percentage",
+        "totalQuestions": 5,
+        "score": 4,
+        "accuracy": 80,
+        "timeSpentSeconds": 120,
+        "id": "rec_3e62c44cec63c8cc",
+        "date": "2026-10-11T18:01:16.479Z"
+      }
+    ],
+    "00f64330-615a-4765-b113-c2a5247e0a52": [
+      {
+        "examId": "ssc-cgl",
+        "subjectId": "quantitative-aptitude",
+        "topicId": "percentage",
+        "topicName": "Percentage",
+        "totalQuestions": 5,
+        "score": 4,
+        "accuracy": 80,
+        "timeSpentSeconds": 120,
+        "id": "rec_130afc70a5aa6d8e",
+        "date": "2026-10-11T18:05:04.881Z"
       }
     ]
   },

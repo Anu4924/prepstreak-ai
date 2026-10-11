@@ -1,6 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 import { verifySessionToken, PREPSTREAK_SESSION_COOKIE } from "@/lib/auth/token";
+import { AxmokQuestionService } from "@/services/ai/axmok-question-service";
+
+function getCandidateChatModels(): string[] {
+  const envModel = process.env.GEMINI_MODEL?.trim();
+  const candidates: string[] = [];
+  if (
+    envModel &&
+    !envModel.includes("2.0") &&
+    !envModel.includes("2.5") &&
+    !envModel.includes("1.5") &&
+    !envModel.includes("1.0")
+  ) {
+    candidates.push(envModel);
+  }
+  const defaults = ["gemini-3.5-flash", "gemini-3.7-flash", "gemini-flash-latest", "gemini-3.8-flash"];
+  for (const d of defaults) {
+    if (!candidates.includes(d)) candidates.push(d);
+  }
+  return candidates;
+}
 
 // ---------------------------------------------------------------------------
 // In-Memory Rate Limiting (Sliding Window per IP / Client)
@@ -175,12 +195,10 @@ export async function POST(req: NextRequest) {
 
     // 4. If Gemini API Key IS configured, call the live Google GenAI model
     if (isApiKeyConfigured && geminiApiKey) {
-      try {
-        const aiModel = process.env.GEMINI_MODEL || "gemini-2.0-flash";
+      const candidateModels = getCandidateChatModels();
+      const recentHistory = (conversationHistory || []).slice(-6);
 
-        // Build recent conversation turns (limit to last 6 for prompt efficiency and context focus)
-        const recentHistory = (conversationHistory || []).slice(-6);
-
+      for (const aiModel of candidateModels) {
         // Try using official @google/genai SDK
         try {
           const ai = new GoogleGenAI({ apiKey: geminiApiKey });
@@ -203,70 +221,79 @@ export async function POST(req: NextRequest) {
             parts: [{ text: trimmedPrompt }],
           });
 
-          const response = await ai.models.generateContent({
+          const timeoutPromise = new Promise<never>((_, reject) => {
+            const t = setTimeout(() => reject(new Error("AI response timed out")), 15000);
+            t.unref?.();
+          });
+
+          const sdkCall = ai.models.generateContent({
             model: aiModel,
             contents: contents,
             config: {
               systemInstruction: systemInstruction,
-              temperature: 0.4,
-              maxOutputTokens: 1500,
+              temperature: 0.7,
+              maxOutputTokens: 2000,
             },
           });
+
+          const response = await Promise.race([sdkCall, timeoutPromise]);
 
           const generatedText = response.text?.trim();
 
           if (generatedText) {
-            // Generate smart follow-up suggestions based on response context
             const followUps = deriveFollowUpPrompts(trimmedPrompt, topicName);
-
             return NextResponse.json({
               text: generatedText,
               suggestedFollowUps: followUps,
               isLiveAi: true,
+              modelUsed: aiModel,
             });
           }
         } catch (sdkError) {
-          console.warn("GoogleGenAI SDK call failed, attempting direct REST fallback:", sdkError);
+          console.warn(`GoogleGenAI SDK call failed with ${aiModel}, attempting direct REST fallback:`, sdkError);
 
-          // Direct REST API Fallback
-          const restUrl = `https://generativelanguage.googleapis.com/v1beta/models/${aiModel}:generateContent?key=${geminiApiKey}`;
+          try {
+            // Direct REST API Fallback
+            const restUrl = `https://generativelanguage.googleapis.com/v1beta/models/${aiModel}:generateContent?key=${geminiApiKey}`;
 
-          const contentsPayload = [
-            ...recentHistory.map((m: { sender: string; text: string }) => ({
-              role: m.sender === "user" ? "user" : "model",
-              parts: [{ text: m.text }],
-            })),
-            { role: "user", parts: [{ text: trimmedPrompt }] },
-          ];
+            const contentsPayload = [
+              ...recentHistory.map((m: { sender: string; text: string }) => ({
+                role: m.sender === "user" ? "user" : "model",
+                parts: [{ text: m.text }],
+              })),
+              { role: "user", parts: [{ text: trimmedPrompt }] },
+            ];
 
-          const restResponse = await fetch(restUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              contents: contentsPayload,
-              systemInstruction: { parts: [{ text: systemInstruction }] },
-              generationConfig: {
-                temperature: 0.4,
-                maxOutputTokens: 1500,
-              },
-            }),
-            signal: AbortSignal.timeout(20000), // 20-second timeout
-          });
+            const restResponse = await fetch(restUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                contents: contentsPayload,
+                systemInstruction: { parts: [{ text: systemInstruction }] },
+                generationConfig: {
+                  temperature: 0.7,
+                  maxOutputTokens: 2000,
+                },
+              }),
+              signal: AbortSignal.timeout(20000),
+            });
 
-          if (restResponse.ok) {
-            const data = await restResponse.json();
-            const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (text) {
-              return NextResponse.json({
-                text: text.trim(),
-                suggestedFollowUps: deriveFollowUpPrompts(trimmedPrompt, topicName),
-                isLiveAi: true,
-              });
+            if (restResponse.ok) {
+              const data = await restResponse.json();
+              const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+              if (text) {
+                return NextResponse.json({
+                  text: text.trim(),
+                  suggestedFollowUps: deriveFollowUpPrompts(trimmedPrompt, topicName),
+                  isLiveAi: true,
+                  modelUsed: aiModel,
+                });
+              }
             }
+          } catch (restError) {
+            console.warn(`Direct REST API call failed with ${aiModel}:`, restError);
           }
         }
-      } catch (liveAiError) {
-        console.error("Live AI generation encountered error, falling back:", liveAiError);
       }
     }
 
@@ -469,41 +496,52 @@ Would you like a step-by-step exam problem to apply this right away?`,
 
   // Quick Action / Command: "Give me an example"
   if (lower.includes("example") || lower.includes("worked problem")) {
-    return {
-      text: `### 📝 Realistic ${examName} Worked Problem: ${topicName}
+    const sampleQuestions = AxmokQuestionService.generateCurriculumFallbackQuestions({
+      examName,
+      examId: "exam-context",
+      subjectName,
+      subjectId: "sub-context",
+      topicName,
+      topicId: topicName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      count: 1,
+      difficulty: "Medium",
+    });
+    const sample = sampleQuestions[0];
 
-Here is a representative question reflecting current ${examName} patterns:
+    if (sample) {
+      return {
+        text: `### 📝 Realistic ${examName} Worked Problem: ${topicName}
+
+Here is a representative question reflecting current **${examName}** patterns:
 
 ---
 
 **Question:**
-*Under typical ${topicName} rules, if entity **A** operates at twice the speed of **B**, and together they complete a standardized assignment in 12 hours, how many hours will **A** require to complete the entire assignment alone?*
+*${sample.questionText}*
+
+**Options:**
+${sample.options.map((o) => `- **(${o.id})** ${o.text}`).join("\n")}
 
 ---
 
 ### 💡 Step-by-Step Axmok AI Walkthrough:
-1. **Identify Unit Work Rates:**
-   - Let the efficiency rate of **B** = $1\\text{ unit/hour}$.
-   - Since A is twice as fast, rate of **A** = $2\\text{ units/hour}$.
-2. **Calculate Combined Output:**
-   - Together, $(A + B)$ generate $2 + 1 = 3\\text{ units/hour}$.
-3. **Calculate Total Work Required:**
-   - $\\text{Total Work} = \\text{Combined Rate} \\times \\text{Total Time} = 3\\text{ units/hour} \\times 12\\text{ hours} = 36\\text{ units}$.
-4. **Isolate Time for A Alone:**
-   - $\\text{Time for A} = \\frac{\\text{Total Work}}{\\text{A's Rate}} = \\frac{36}{2} = 18\\text{ hours}$.
+${sample.explanation}
 
----
+⚡ **Speed Solving Shortcut:**
+${sample.shortcut}
 
-✅ **Final Answer:** **18 Hours**
+⚠️ **Common Examiner Trap:**
+${sample.commonMistake}
 
-> **Exam Tip:** Converting relational statements into discrete daily/hourly units eliminates messy fractional algebra and cuts solving time under 30 seconds!`,
-      suggestedFollowUps: [
-        "Explain with a shortcut",
-        "Give me another problem with higher difficulty",
-        "Ask me a practice question",
-      ],
-      callout,
-    };
+✅ **Final Answer:** Option **(${sample.correctAnswer})**`,
+        suggestedFollowUps: [
+          "Explain with a shortcut",
+          "Give me another problem with higher difficulty",
+          "Ask me a practice question",
+        ],
+        callout,
+      };
+    }
   }
 
   // Quick Action / Command: "Give me a shortcut"
