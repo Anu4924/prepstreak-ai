@@ -158,9 +158,10 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-secret-key
 # Session Secret (HMAC-SHA256 Token Signing)
 SESSION_SECRET=your-random-long-secret-key
 
-# Optional: Google Gemini AI (for dynamic question generation)
-GEMINI_API_KEY=your-gemini-api-key
-GEMINI_MODEL=gemini-1.5-flash
+# Google Gemini AI (with automatic Multi-Key Failover)
+GEMINI_API_KEY=your-primary-gemini-api-key
+GEMINI_API_KEY_FALLBACK=your-fallback-gemini-api-key # Optional fallback key if primary is exhausted
+GEMINI_MODEL=gemini-3.5-flash
 ```
 
 ### 3. Run the Development Server
@@ -203,7 +204,9 @@ PrepStreak AI is optimized for deployment on **[Vercel](https://vercel.com/)**:
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY`
    - `SESSION_SECRET`
-   - `GEMINI_API_KEY` (optional)
+   - `GEMINI_API_KEY`
+   - `GEMINI_API_KEY_FALLBACK` (optional backup key)
+   - `GEMINI_MODEL` (optional, defaults to `gemini-3.5-flash`)
 4. Click **Deploy**.
 
 ---

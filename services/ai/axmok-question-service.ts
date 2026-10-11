@@ -12,6 +12,7 @@ import { GoogleGenAI } from "@google/genai";
 import { Question, QuestionOption, PracticeDifficulty, PracticeMode } from "@/lib/types/question";
 import { getTopicsForSubject } from "@/lib/data/topicRegistry";
 import { getSubjectsForExam } from "@/lib/data/subjectRegistry";
+import { getGeminiApiKeys, getCandidateGeminiModels } from "./gemini-config";
 
 export interface GeneratePracticeQuestionsParams {
   examId: string;
@@ -51,28 +52,9 @@ interface RawAiQuestion {
   topic?: string;
 }
 
-function getCandidateGeminiModels(): string[] {
-  const envModel = process.env.GEMINI_MODEL?.trim();
-  const candidates: string[] = [];
-  if (
-    envModel &&
-    !envModel.includes("2.0") &&
-    !envModel.includes("2.5") &&
-    !envModel.includes("1.5") &&
-    !envModel.includes("1.0")
-  ) {
-    candidates.push(envModel);
-  }
-  const defaults = ["gemini-3.5-flash", "gemini-3.7-flash", "gemini-flash-latest", "gemini-3.8-flash"];
-  for (const d of defaults) {
-    if (!candidates.includes(d)) candidates.push(d);
-  }
-  return candidates;
-}
-
 export const AxmokQuestionService = {
   /**
-   * Generates structured practice questions using live Gemini model with robust validation & fallback.
+   * Generates structured practice questions using live Gemini model with multi-key failover & fallback.
    */
   async generateQuestions(params: GeneratePracticeQuestionsParams): Promise<Question[]> {
     const {
@@ -86,20 +68,26 @@ export const AxmokQuestionService = {
       userAccuracy,
     } = params;
 
-    const geminiApiKey = process.env.GEMINI_API_KEY?.trim();
-    const isApiKeyConfigured =
-      Boolean(geminiApiKey) &&
-      !geminiApiKey?.includes("your_gemini_api_key") &&
-      geminiApiKey !== "undefined";
+    const apiKeys = getGeminiApiKeys();
 
-    if (isApiKeyConfigured && geminiApiKey) {
-      try {
-        const liveQuestions = await this.callGeminiQuestionGenerator(params, geminiApiKey);
-        if (liveQuestions && liveQuestions.length >= Math.min(count, 3)) {
-          return liveQuestions.slice(0, count);
+    if (apiKeys.length > 0) {
+      for (let i = 0; i < apiKeys.length; i++) {
+        const apiKey = apiKeys[i];
+        const isFallback = i > 0;
+        try {
+          if (isFallback) {
+            console.info(`[AxmokQuestionService] Using fallback Gemini API key #${i + 1}...`);
+          }
+          const liveQuestions = await this.callGeminiQuestionGenerator(params, apiKey);
+          if (liveQuestions && liveQuestions.length >= Math.min(count, 3)) {
+            return liveQuestions.slice(0, count);
+          }
+        } catch (err) {
+          console.warn(
+            `AxmokQuestionService: Key #${i + 1} attempt failed, attempting fallback key:`,
+            err
+          );
         }
-      } catch (err) {
-        console.warn("AxmokQuestionService: Live generation error, using curated syllabus engine fallback:", err);
       }
     }
 

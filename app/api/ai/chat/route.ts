@@ -2,25 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 import { verifySessionToken, PREPSTREAK_SESSION_COOKIE } from "@/lib/auth/token";
 import { AxmokQuestionService } from "@/services/ai/axmok-question-service";
-
-function getCandidateChatModels(): string[] {
-  const envModel = process.env.GEMINI_MODEL?.trim();
-  const candidates: string[] = [];
-  if (
-    envModel &&
-    !envModel.includes("2.0") &&
-    !envModel.includes("2.5") &&
-    !envModel.includes("1.5") &&
-    !envModel.includes("1.0")
-  ) {
-    candidates.push(envModel);
-  }
-  const defaults = ["gemini-3.5-flash", "gemini-3.7-flash", "gemini-flash-latest", "gemini-3.8-flash"];
-  for (const d of defaults) {
-    if (!candidates.includes(d)) candidates.push(d);
-  }
-  return candidates;
-}
+import { getGeminiApiKeys, getCandidateGeminiModels } from "@/services/ai/gemini-config";
 
 // ---------------------------------------------------------------------------
 // In-Memory Rate Limiting (Sliding Window per IP / Client)
@@ -179,12 +161,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 3. Check for Gemini API Key
-    const geminiApiKey = process.env.GEMINI_API_KEY?.trim();
-    const isApiKeyConfigured =
-      Boolean(geminiApiKey) &&
-      !geminiApiKey?.includes("your_gemini_api_key") &&
-      geminiApiKey !== "undefined";
+    // 3. Check for configured Gemini API Keys (primary & fallback)
+    const apiKeys = getGeminiApiKeys();
+    const isApiKeyConfigured = apiKeys.length > 0;
 
     const systemInstruction = buildAxmokSystemPrompt({
       examName,
@@ -193,105 +172,115 @@ export async function POST(req: NextRequest) {
       studentName,
     });
 
-    // 4. If Gemini API Key IS configured, call the live Google GenAI model
-    if (isApiKeyConfigured && geminiApiKey) {
-      const candidateModels = getCandidateChatModels();
+    // 4. If Gemini API Keys ARE configured, call the live Google GenAI model with multi-key failover
+    if (isApiKeyConfigured) {
+      const candidateModels = getCandidateGeminiModels();
       const recentHistory = (conversationHistory || []).slice(-6);
 
-      for (const aiModel of candidateModels) {
-        // Try using official @google/genai SDK
-        try {
-          const ai = new GoogleGenAI({ apiKey: geminiApiKey });
+      for (let k = 0; k < apiKeys.length; k++) {
+        const apiKey = apiKeys[k];
+        const isFallbackKey = k > 0;
 
-          // Format contents with role and parts for multi-turn conversational context
-          const contents: Array<{ role: string; parts: Array<{ text: string }> }> = [];
+        if (isFallbackKey) {
+          console.info(`[AxmokChat] Primary key failed; trying fallback API key #${k + 1}...`);
+        }
 
-          for (const msg of recentHistory) {
-            if (msg.text && typeof msg.text === "string") {
-              contents.push({
-                role: msg.sender === "user" ? "user" : "model",
-                parts: [{ text: msg.text }],
-              });
-            }
-          }
-
-          // Add current user prompt
-          contents.push({
-            role: "user",
-            parts: [{ text: trimmedPrompt }],
-          });
-
-          const timeoutPromise = new Promise<never>((_, reject) => {
-            const t = setTimeout(() => reject(new Error("AI response timed out")), 15000);
-            t.unref?.();
-          });
-
-          const sdkCall = ai.models.generateContent({
-            model: aiModel,
-            contents: contents,
-            config: {
-              systemInstruction: systemInstruction,
-              temperature: 0.7,
-              maxOutputTokens: 2000,
-            },
-          });
-
-          const response = await Promise.race([sdkCall, timeoutPromise]);
-
-          const generatedText = response.text?.trim();
-
-          if (generatedText) {
-            const followUps = deriveFollowUpPrompts(trimmedPrompt, topicName);
-            return NextResponse.json({
-              text: generatedText,
-              suggestedFollowUps: followUps,
-              isLiveAi: true,
-              modelUsed: aiModel,
-            });
-          }
-        } catch (sdkError) {
-          console.warn(`GoogleGenAI SDK call failed with ${aiModel}, attempting direct REST fallback:`, sdkError);
-
+        for (const aiModel of candidateModels) {
+          // Try using official @google/genai SDK
           try {
-            // Direct REST API Fallback
-            const restUrl = `https://generativelanguage.googleapis.com/v1beta/models/${aiModel}:generateContent?key=${geminiApiKey}`;
+            const ai = new GoogleGenAI({ apiKey });
 
-            const contentsPayload = [
-              ...recentHistory.map((m: { sender: string; text: string }) => ({
-                role: m.sender === "user" ? "user" : "model",
-                parts: [{ text: m.text }],
-              })),
-              { role: "user", parts: [{ text: trimmedPrompt }] },
-            ];
+            // Format contents with role and parts for multi-turn conversational context
+            const contents: Array<{ role: string; parts: Array<{ text: string }> }> = [];
 
-            const restResponse = await fetch(restUrl, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                contents: contentsPayload,
-                systemInstruction: { parts: [{ text: systemInstruction }] },
-                generationConfig: {
-                  temperature: 0.7,
-                  maxOutputTokens: 2000,
-                },
-              }),
-              signal: AbortSignal.timeout(20000),
-            });
-
-            if (restResponse.ok) {
-              const data = await restResponse.json();
-              const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-              if (text) {
-                return NextResponse.json({
-                  text: text.trim(),
-                  suggestedFollowUps: deriveFollowUpPrompts(trimmedPrompt, topicName),
-                  isLiveAi: true,
-                  modelUsed: aiModel,
+            for (const msg of recentHistory) {
+              if (msg.text && typeof msg.text === "string") {
+                contents.push({
+                  role: msg.sender === "user" ? "user" : "model",
+                  parts: [{ text: msg.text }],
                 });
               }
             }
-          } catch (restError) {
-            console.warn(`Direct REST API call failed with ${aiModel}:`, restError);
+
+            // Add current user prompt
+            contents.push({
+              role: "user",
+              parts: [{ text: trimmedPrompt }],
+            });
+
+            const timeoutPromise = new Promise<never>((_, reject) => {
+              const t = setTimeout(() => reject(new Error("AI response timed out")), 15000);
+              t.unref?.();
+            });
+
+            const sdkCall = ai.models.generateContent({
+              model: aiModel,
+              contents: contents,
+              config: {
+                systemInstruction: systemInstruction,
+                temperature: 0.7,
+                maxOutputTokens: 2000,
+              },
+            });
+
+            const response = await Promise.race([sdkCall, timeoutPromise]);
+            const generatedText = response.text?.trim();
+
+            if (generatedText) {
+              const followUps = deriveFollowUpPrompts(trimmedPrompt, topicName);
+              return NextResponse.json({
+                text: generatedText,
+                suggestedFollowUps: followUps,
+                isLiveAi: true,
+                modelUsed: aiModel,
+                isFallbackKey,
+              });
+            }
+          } catch (sdkError) {
+            console.warn(`[AxmokChat] SDK failed with key #${k + 1} and model ${aiModel}:`, sdkError);
+
+            try {
+              // Direct REST API Fallback
+              const restUrl = `https://generativelanguage.googleapis.com/v1beta/models/${aiModel}:generateContent?key=${apiKey}`;
+
+              const contentsPayload = [
+                ...recentHistory.map((m: { sender: string; text: string }) => ({
+                  role: m.sender === "user" ? "user" : "model",
+                  parts: [{ text: m.text }],
+                })),
+                { role: "user", parts: [{ text: trimmedPrompt }] },
+              ];
+
+              const restResponse = await fetch(restUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  contents: contentsPayload,
+                  systemInstruction: { parts: [{ text: systemInstruction }] },
+                  generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 2000,
+                  },
+                }),
+                signal: AbortSignal.timeout(20000),
+              });
+
+              if (restResponse.ok) {
+                const data = await restResponse.json();
+                const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (text) {
+                  return NextResponse.json({
+                    text: text.trim(),
+                    suggestedFollowUps: deriveFollowUpPrompts(trimmedPrompt, topicName),
+                    isLiveAi: true,
+                    modelUsed: aiModel,
+                    isFallbackKey,
+                  });
+                }
+              }
+            } catch (restError) {
+              console.warn(`[AxmokChat] REST call failed with key #${k + 1} and model ${aiModel}:`, restError);
+            }
           }
         }
       }
