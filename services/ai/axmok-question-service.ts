@@ -159,7 +159,7 @@ The user has already solved the following questions. YOU MUST NOT REPEAT OR GENE
             .join("\n")}\n`
         : "";
 
-    const systemPrompt = `You are Axmok AI, the expert test creator and intelligent tutor for PrepStreak AI.
+    const systemPrompt = `You are Axmok AI, the expert test creator and intelligent tutor for PrepStreak AI, founded by Anu.
 Your task is to generate exactly ${count} realistic, exam-standard practice questions for students preparing for Indian competitive exams.
 
 Target Examination: ${examName} (Exam ID: ${examId})

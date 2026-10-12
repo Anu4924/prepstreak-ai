@@ -1,7 +1,7 @@
 /**
  * Axmok AI Service Layer
  * 
- * Axmok AI is the intelligent study companion of PrepStreak AI.
+ * Axmok AI is the intelligent study companion of PrepStreak AI, founded by Anu.
  * This service encapsulates all learning content generation, quick action responses,
  * and conversational tutoring interactions.
  * 

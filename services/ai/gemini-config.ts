@@ -49,7 +49,7 @@ export function getCandidateGeminiModels(): string[] {
   }
 
   // Active stable high-performance models
-  const defaults = ["gemini-3.5-flash", "gemini-3.7-flash", "gemini-flash-latest", "gemini-3.8-flash"];
+  const defaults = ["gemini-3.5-flash", "gemini-3.8-flash"];
   for (const d of defaults) {
     if (!candidates.includes(d)) candidates.push(d);
   }

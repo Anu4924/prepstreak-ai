@@ -6,7 +6,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![Supabase](https://img.shields.io/badge/Supabase-Auth%20%26%20Postgres-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
 
-> **PrepStreak AI** is a full-stack, production-grade competitive exam preparation platform designed for government job aspirants in India. Master syllabus-specific topics through AI-generated questions, deep step-by-step explanations, timed mock tests, streak analytics, and personalized diagnostics.
+> **PrepStreak AI** is a full-stack, production-grade competitive exam preparation platform designed for government job aspirants in India, founded by **Anu**. Master syllabus-specific topics through Axmok AI's intelligent study tutoring, practice questions, step-by-step explanations, timed mock tests, streak analytics, and personalized diagnostics.
 
 ---
 

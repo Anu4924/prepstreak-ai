@@ -3,6 +3,13 @@ import { GoogleGenAI } from "@google/genai";
 import { verifySessionToken, PREPSTREAK_SESSION_COOKIE } from "@/lib/auth/token";
 import { AxmokQuestionService } from "@/services/ai/axmok-question-service";
 import { getGeminiApiKeys, getCandidateGeminiModels } from "@/services/ai/gemini-config";
+import {
+  buildAxmokIdentitySystemInstruction,
+  AXMOK_IDENTITY_CONFIG,
+  isFounderOrIdentityQuery,
+  isTamilOrTanglish,
+  isTechnicalCreatorQuery,
+} from "@/services/ai/axmok-identity";
 
 // ---------------------------------------------------------------------------
 // In-Memory Rate Limiting (Sliding Window per IP / Client)
@@ -55,18 +62,24 @@ function buildAxmokSystemPrompt(params: {
 }): string {
   const { examName, subjectName, topicName, studentName } = params;
 
-  return `You are Axmok AI, the dedicated, highly capable, intelligent study companion and personal tutor of PrepStreak AI.
+  return `You are Axmok AI, the dedicated, highly capable, intelligent study companion and personal tutor of PrepStreak AI, founded by Anu.
 You are tutoring ${studentName} who is preparing for the ${examName} competitive examination.
 Current learning context:
 - Target Examination: ${examName}
 - Subject: ${subjectName}
 - Current Active Topic: ${topicName}
 
+${buildAxmokIdentitySystemInstruction({ examName, subjectName, topicName, studentName })}
+
 ### YOUR PERSONALITY & CORE ATTRIBUTES:
+- **Friendly, Helpful, Encouraging & Student-Focused**: Speak with warmth, supportive encouragement, and genuine care for the student's progress.
+- **Accessible for Beginners**: Make learning easier for beginners. Define any technical terms immediately in simple language. Never be condescending or dismissive.
+- **Explain Step-by-Step**: Break down every problem, concept, and deduction into logical, sequential steps from ground-level basics.
+- **Non-Judgmental Support**: Support learners without judging their current knowledge or skill level. Never make a student feel inadequate for asking fundamental questions.
+- **Exam-Specific Practice & Explanations**: Calibrate all advice, practice questions, shortcuts, and explanations to the user's target examination (${examName}) and topic (${topicName}).
+- **Natural & Concise**: Keep answers natural, crisp, and concise unless the user specifically asks for deep-dive detail or step-by-step elaboration.
+- **Preserve Learning Context**: When the user asks about Anu, creator, founder, or casual greetings, answer warmly according to the founder instructions and smoothly invite them to continue with their active study topic (${topicName} in ${examName}) without overriding or dropping their context.
 - **Intelligent & Accurate**: Prioritize conceptual precision and factual accuracy above all. Never hallucinate facts or formulas.
-- **Friendly, Patient & Encouraging**: Speak with warmth and supportive encouragement. Never be condescending or dismissive.
-- **Clear & Student-Friendly**: Avoid unnecessary jargon. When introducing technical or mathematical terms, define them immediately in plain English.
-- **Never Unnecessarily Complicated**: Explain from ground-level basics first. If the student indicates they do not understand, simplify further rather than repeating the same explanation.
 - **Professional & Focused**: Structure answers logically with clean Markdown formatting (headings with ###, bullet points, bold key terms, numbered steps, tables, and code blocks where applicable).
 
 ### UNDERSTANDING CONTEXT:
@@ -107,7 +120,7 @@ Current learning context:
 export async function POST(req: NextRequest) {
   try {
     // 1. Rate Limiting Check (per user ID when authenticated, with IP fallback)
-    const sessionToken = req.cookies.get(PREPSTREAK_SESSION_COOKIE)?.value;
+    const sessionToken = req.cookies?.get?.(PREPSTREAK_SESSION_COOKIE)?.value;
     let identifier = "anonymous-client";
     if (sessionToken) {
       const payload = await verifySessionToken(sessionToken);
@@ -236,34 +249,39 @@ export async function POST(req: NextRequest) {
                 isFallbackKey,
               });
             }
-          } catch (sdkError) {
-            console.warn(`[AxmokChat] SDK failed with key #${k + 1} and model ${aiModel}:`, sdkError);
+          } catch (sdkError: any) {
+            console.warn(`[AxmokChat] SDK failed with key #${k + 1} and model ${aiModel}:`, sdkError?.message || sdkError);
 
-            try {
-              // Direct REST API Fallback
-              const restUrl = `https://generativelanguage.googleapis.com/v1beta/models/${aiModel}:generateContent?key=${apiKey}`;
+            const isQuotaError =
+              sdkError?.status === 429 ||
+              String(sdkError?.message || "").includes("RESOURCE_EXHAUSTED");
 
-              const contentsPayload = [
-                ...recentHistory.map((m: { sender: string; text: string }) => ({
-                  role: m.sender === "user" ? "user" : "model",
-                  parts: [{ text: m.text }],
-                })),
-                { role: "user", parts: [{ text: trimmedPrompt }] },
-              ];
+            if (!isQuotaError) {
+              try {
+                // Direct REST API Fallback
+                const restUrl = `https://generativelanguage.googleapis.com/v1beta/models/${aiModel}:generateContent?key=${apiKey}`;
 
-              const restResponse = await fetch(restUrl, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  contents: contentsPayload,
-                  systemInstruction: { parts: [{ text: systemInstruction }] },
-                  generationConfig: {
-                    temperature: 0.7,
-                    maxOutputTokens: 2000,
-                  },
-                }),
-                signal: AbortSignal.timeout(20000),
-              });
+                const contentsPayload = [
+                  ...recentHistory.map((m: { sender: string; text: string }) => ({
+                    role: m.sender === "user" ? "user" : "model",
+                    parts: [{ text: m.text }],
+                  })),
+                  { role: "user", parts: [{ text: trimmedPrompt }] },
+                ];
+
+                const restResponse = await fetch(restUrl, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    contents: contentsPayload,
+                    systemInstruction: { parts: [{ text: systemInstruction }] },
+                    generationConfig: {
+                      temperature: 0.7,
+                      maxOutputTokens: 2000,
+                    },
+                  }),
+                  signal: AbortSignal.timeout(10000),
+                });
 
               if (restResponse.ok) {
                 const data = await restResponse.json();
@@ -278,8 +296,9 @@ export async function POST(req: NextRequest) {
                   });
                 }
               }
-            } catch (restError) {
-              console.warn(`[AxmokChat] REST call failed with key #${k + 1} and model ${aiModel}:`, restError);
+              } catch (restError) {
+                console.warn(`[AxmokChat] REST call failed with key #${k + 1} and model ${aiModel}:`, restError);
+              }
             }
           }
         }
@@ -310,6 +329,15 @@ export async function POST(req: NextRequest) {
 // Contextual Follow-up Chips Derivation
 // ---------------------------------------------------------------------------
 function deriveFollowUpPrompts(prompt: string, topicName: string): string[] {
+  if (isFounderOrIdentityQuery(prompt)) {
+    return [
+      "Teach me from basics",
+      `Give me an exam example for ${topicName}`,
+      "Ask me a practice question",
+      "Explain with a shortcut",
+    ];
+  }
+
   const p = prompt.toLowerCase();
 
   if (p.includes("basics") || p.includes("overview")) {
@@ -374,6 +402,48 @@ function generateCurriculumFallbackAnswer(params: {
         type: "tip" as const,
       }
     : undefined;
+
+  // 1. Founder & Platform Identity Inquiry (English, Tamil, Tanglish)
+  if (isFounderOrIdentityQuery(prompt)) {
+    const isTamil = isTamilOrTanglish(prompt);
+    const text = isTamil
+      ? AXMOK_IDENTITY_CONFIG.canonicalTamilResponse
+      : AXMOK_IDENTITY_CONFIG.canonicalEnglishResponse;
+
+    return {
+      text,
+      suggestedFollowUps: [
+        "Teach me from basics",
+        `Give me an exam example for ${topicName}`,
+        "Ask me a practice question",
+        "Explain with a shortcut",
+      ],
+      callout: {
+        title: "PrepStreak AI • Founder Vision",
+        content: `Founded by Anu to empower students with accessible, high-clarity exam preparation for ${examName}.`,
+        type: "tip" as const,
+      },
+    };
+  }
+
+  // 2. Technical Creator / AI Model Architecture Inquiry
+  if (isTechnicalCreatorQuery(prompt)) {
+    const isTamil = isTamilOrTanglish(prompt);
+    const text = isTamil
+      ? `Naan **Axmok AI** — PrepStreak AI-oda intelligent study companion! Technically naan server-side configured Google Gemini generative AI models moolama run aaguren. Un ${examName} exam preparation-ku concept explanations, shortcuts, and practice questions kuduthu unakku support panradhu dhaan enoda role! 💚`
+      : AXMOK_IDENTITY_CONFIG.canonicalTechnicalResponse;
+
+    return {
+      text,
+      suggestedFollowUps: [
+        `Back to ${topicName} in ${examName}`,
+        "Teach me from basics",
+        "Give me an example",
+        "Ask me a practice question",
+      ],
+      callout,
+    };
+  }
 
   // General programming: Java constructor question handling
   if (lower.includes("constructor") && lower.includes("java")) {
