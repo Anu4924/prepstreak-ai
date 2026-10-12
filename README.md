@@ -1,11 +1,14 @@
 # 🎯 PrepStreak AI
 
+[![Live Application](https://img.shields.io/badge/Live_App-prepstreak--ai--gov.vercel.app-0070F3?style=for-the-badge&logo=vercel&logoColor=white)](https://prepstreak-ai-gov.vercel.app/)
 [![Next.js](https://img.shields.io/badge/Next.js-14.2-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![Supabase](https://img.shields.io/badge/Supabase-Auth%20%26%20Postgres-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
 
+> 🌐 **Live Website:** [https://prepstreak-ai-gov.vercel.app](https://prepstreak-ai-gov.vercel.app/)
+>
 > **PrepStreak AI** is a full-stack, production-grade competitive exam preparation platform designed for government job aspirants in India, founded by **Anu**. Master syllabus-specific topics through Axmok AI's intelligent study tutoring, practice questions, step-by-step explanations, timed mock tests, streak analytics, and personalized diagnostics.
 
 ---
@@ -195,19 +198,27 @@ All 33 system modules, security route redirects, dynamic exam syllabi, and APIs 
 
 ## 🚢 Production Deployment
 
-PrepStreak AI is optimized for deployment on **[Vercel](https://vercel.com/)**:
+PrepStreak AI is deployed on **[Vercel](https://prepstreak-ai-gov.vercel.app/)**:
 
-1. Push your repository to GitHub.
-2. Import the project into Vercel.
-3. Configure the environment variables in Vercel Project Settings:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_ROLE_KEY`
-   - `SESSION_SECRET`
-   - `GEMINI_API_KEY`
-   - `Gemini_API_Key_FallBack` (optional backup key)
-   - `GEMINI_MODEL` (optional, defaults to `gemini-3.5-flash`)
-4. Click **Deploy**.
+* **Live URL:** [https://prepstreak-ai-gov.vercel.app](https://prepstreak-ai-gov.vercel.app/)
+* **Platform:** Vercel (Next.js 14 App Router)
+* **Continuous Deployment:** Automated builds from the `main` branch of `Anu4924/prepstreak-ai`.
+
+### Production Environment Configuration
+Configure these environment variables in your Vercel Project Settings (**Settings → Environment Variables**):
+
+| Key | Description |
+| :--- | :--- |
+| `NEXT_PUBLIC_APP_URL` | `https://prepstreak-ai-gov.vercel.app` |
+| `SESSION_SECRET` | 32+ character random secret for signed HMAC-SHA256 session tokens |
+| `GEMINI_API_KEY` | Primary Google Gemini API key for Axmok AI tutor & practice questions |
+| `Gemini_API_Key_FallBack` | Backup Gemini key for automatic zero-downtime quota failover |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project API URL (`https://<project-ref>.supabase.co`) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anonymous public key |
+| `RESEND_API_KEY` | Resend API key (`re_...`) for real OTP email delivery |
+| `EMAIL_FROM` | Sender address (e.g. `PrepStreak AI <onboarding@resend.dev>`) |
+| `GEMINI_MODEL` | *(Optional)* Model tier, defaults to `gemini-3.5-flash` |
+| `SUPABASE_SERVICE_ROLE_KEY` | *(Optional)* Supabase admin service role key |
 
 ---
 
