@@ -160,7 +160,7 @@ SESSION_SECRET=your-random-long-secret-key
 
 # Google Gemini AI (with automatic Multi-Key Failover)
 GEMINI_API_KEY=your-primary-gemini-api-key
-GEMINI_API_KEY_FALLBACK=your-fallback-gemini-api-key # Optional fallback key if primary is exhausted
+Gemini_API_Key_FallBack=your-fallback-gemini-api-key # Optional fallback key if primary is exhausted
 GEMINI_MODEL=gemini-3.5-flash
 ```
 
@@ -205,7 +205,7 @@ PrepStreak AI is optimized for deployment on **[Vercel](https://vercel.com/)**:
    - `SUPABASE_SERVICE_ROLE_KEY`
    - `SESSION_SECRET`
    - `GEMINI_API_KEY`
-   - `GEMINI_API_KEY_FALLBACK` (optional backup key)
+   - `Gemini_API_Key_FallBack` (optional backup key)
    - `GEMINI_MODEL` (optional, defaults to `gemini-3.5-flash`)
 4. Click **Deploy**.
 

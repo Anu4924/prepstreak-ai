@@ -24,11 +24,28 @@ export function getGeminiApiKeys(): string[] {
 
   // Primary key
   addKeys(process.env.GEMINI_API_KEY);
+  addKeys(process.env.Gemini_API_Key);
 
-  // Fallback keys (supports various natural variable names)
+  // Fallback keys (supporting Gemini_API_Key_FallBack, GEMINI_API_KEY_FALLBACK, etc.)
+  addKeys(process.env.Gemini_API_Key_FallBack);
   addKeys(process.env.GEMINI_API_KEY_FALLBACK);
   addKeys(process.env.GEMINI_FALLBACK_API_KEY);
+  addKeys(process.env.Gemini_Fallback_API_Key);
   addKeys(process.env.GEMINI_API_KEY_2);
+  addKeys(process.env["Gemini API Key2"]);
+  addKeys(process.env["Gemini API Key 2"]);
+
+  // Case-insensitive dynamic check for fallback keys in process.env
+  for (const envKey of Object.keys(process.env)) {
+    const normalizedKey = envKey.toLowerCase().replace(/[\s_-]/g, "");
+    if (
+      normalizedKey === "geminiapikeyfallback" ||
+      normalizedKey === "geminifallbackapikey" ||
+      normalizedKey === "geminiapikey2"
+    ) {
+      addKeys(process.env[envKey]);
+    }
+  }
 
   return keys;
 }

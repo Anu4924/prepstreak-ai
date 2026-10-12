@@ -124,6 +124,20 @@ async function runTestSuite() {
   assert(systemInstruction.includes("Preserve Learning Context"), "System instruction contains context preservation directive");
   assert(systemInstruction.includes("DO NOT invent additional founder details"), "System instruction contains accuracy constraints");
 
+  // Verify Gemini API key fallback detection
+  const previousFallback = process.env.Gemini_API_Key_FallBack;
+  process.env.Gemini_API_Key_FallBack = "test_custom_fallback_key_12345";
+  const detectedKeys = getGeminiApiKeys();
+  assert(
+    detectedKeys.includes("test_custom_fallback_key_12345"),
+    "Successfully resolved fallback key from Gemini_API_Key_FallBack"
+  );
+  if (previousFallback !== undefined) {
+    process.env.Gemini_API_Key_FallBack = previousFallback;
+  } else {
+    delete process.env.Gemini_API_Key_FallBack;
+  }
+
   // --------------------------------------------------------------------------
   // TEST SUITE 3: Server Fallback Engine Response Verification
   // --------------------------------------------------------------------------
