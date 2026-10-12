@@ -249,12 +249,13 @@ export async function POST(req: NextRequest) {
                 isFallbackKey,
               });
             }
-          } catch (sdkError: any) {
-            console.warn(`[AxmokChat] SDK failed with key #${k + 1} and model ${aiModel}:`, sdkError?.message || sdkError);
+          } catch (sdkError: unknown) {
+            const err = sdkError as { status?: number; message?: string } | undefined;
+            console.warn(`[AxmokChat] SDK failed with key #${k + 1} and model ${aiModel}:`, err?.message || sdkError);
 
             const isQuotaError =
-              sdkError?.status === 429 ||
-              String(sdkError?.message || "").includes("RESOURCE_EXHAUSTED");
+              err?.status === 429 ||
+              String(err?.message || "").includes("RESOURCE_EXHAUSTED");
 
             if (!isQuotaError) {
               try {
